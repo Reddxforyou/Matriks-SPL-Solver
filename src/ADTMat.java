@@ -24,11 +24,6 @@ public class ADTMat{
 		/* F.S. M terdefinisi nilai elemen efektifnya, berukuran NB x NK */
 		/* Proses: Melakukan MakeMATRIKS(M,NB,NK) dan mengisi nilai efektifnya */
 		/* Selanjutnya membaca nilai elemen per baris dan kolom */
-		/* Contoh: Jika NB = 3 dan NK = 3, maka contoh cara membaca isi matriks :
-		1 2 3
-		4 5 6
-		8 9 10 
-		*/
 		int i,j,n;
 		Scanner input = new Scanner(System.in);
 		System.out.print("Masukkan ordo matriks nxn : ");
@@ -41,6 +36,26 @@ public class ADTMat{
 		}
 		MakeMATRIKS(n,n,M);
 	}
+
+	public void BacaMATRIKSAugmented(MATRIKS M){
+		// Reihan Andhika Putra , Checked
+		/* I.S. IsIdxValid(NB,NK) */ 
+		/* F.S. M terdefinisi nilai elemen efektifnya, berukuran NB x NK */
+		/* Proses: Melakukan MakeMATRIKS(M,NB,NK) dan mengisi nilai efektifnya */
+		/* Selanjutnya membaca nilai elemen per baris dan kolom */
+		int i,j,m,n;
+		Scanner input = new Scanner(System.in);
+		System.out.print("Masukkan ordo matriks mxn : ");
+		m = input.nextInt();
+		n = input.nextInt();
+
+		for(i = 0; i < m; i++){
+			for (j = 0; j < n; j++){
+				M.Mem[i][j]= input.nextDouble();
+			}
+		}
+		MakeMATRIKS(m,n,M);
+	}
 	
 	public void TulisMATRIKS (MATRIKS M){
 		// Reihan Andhika Putra , Checked
@@ -48,17 +63,12 @@ public class ADTMat{
 		/* F.S. Nilai M(i,j) ditulis ke layar per baris per kolom, masing-masing elemen per baris 
 			dipisahkan sebuah spasi */
 		/* Proses: Menulis nilai setiap elemen M ke layar dengan traversal per baris dan per kolom */
-		/* Contoh: menulis matriks 3x3 (ingat di akhir tiap baris, tidak ada spasi)
-		1 2 3
-		4 5 6
-		8 9 10
-		*/
 		int i,j ;
 		for(i = 0; i <= M.NBrsEff-1; i++){
-			for (j = 0; j <= M.NBrsEff-1; j++){
-				if (j == (M.NBrsEff-1) && i == (M.NBrsEff-1)) {
+			for (j = 0; j <= M.NKolEff-1; j++){
+				if (j == (M.NKolEff-1) && i == (M.NBrsEff-1)) {
 					System.out.print(M.Mem[i][j]);
-				} else if (j == (M.NBrsEff-1)){
+				} else if (j == (M.NKolEff-1)){
 					System.out.print(M.Mem[i][j]);
 					System.out.println();
 				} else {
@@ -70,23 +80,11 @@ public class ADTMat{
 	}
 	public void TestReihan(){
 		MATRIKS M1= new MATRIKS();
-		// MATRIKS M2 = new MATRIKS();
 		System.out.println("Masukkan elemen M1");
-		BacaMATRIKS(M1);
+		BacaMATRIKSAugmented(M1);
 		TulisMATRIKS(M1);
-		// System.out.println("Masukkan elemen M2");
-		// BacaMATRIKS(M2);
-		// TulisMATRIKS(M2);
-		// MATRIKS M3 = new MATRIKS();
-		// M3 = KaliMATRIKS(M1, M2);
-		// System.out.println("Hasil kali M1 M2");
-		// TulisMATRIKS(M3);
 		System.out.println();
-		// double x = EkspansiKofaktor(M1);
-		// System.out.println(x);
-		// PKaliKons(M1, 0.5);
-		InverseKofaktor(M1);
-		System.out.println();
+		MetodeCramer(M1);
 	}
 
 	public MATRIKS KaliMATRIKS (MATRIKS M1, MATRIKS M2){
@@ -126,7 +124,6 @@ public class ADTMat{
 	}
 
 	public void TukarBaris(MATRIKS M, int B1, int B2) {
-		// Reihan Andhika Putra
 		// Reihan Andhika Putra
 		/* I.S. M terdefinisi dan B1 , B2 dalam range, perhatikan bahwa indeks (0,x) adalah baris ke 1
 		/* F.S. M di baris ke B1 ditukar dengan B2*/
@@ -258,8 +255,89 @@ public class ADTMat{
 		Adjoint = MATRIKSKofaktor(M);
 		Transpose(Adjoint);
 		double perdet ;
-		perdet = 1/EkspansiKofaktor(M);
-		PKaliKons(Adjoint, perdet);
-		TulisMATRIKS(Adjoint);
+		if (EkspansiKofaktor(M)==0){
+			System.out.println("Tidak mempunyai invers");
+		} else {
+			perdet = 1/EkspansiKofaktor(M);
+			PKaliKons(Adjoint, perdet);
+			TulisMATRIKS(Adjoint);
+		}
+	}
+
+	public void GetMATRIKSKoefisien (MATRIKS MAug, MATRIKS MK){	
+		// Reihan Andhika Putra, Checked
+		/* I.S. MAug, dan MK terdefinisi */
+		/* F.S. Mengambil matriks yang merupakan matriks koefisien dari variabel di matriks augmented */
+    int i,j;
+    MakeMATRIKS(MAug.NBrsEff, MAug.NKolEff-1, MK);
+    for (i=0; i< MK.NBrsEff;i++){
+      for (j=0; j< MK.NKolEff;j++){
+        MK.Mem[i][j] = MAug.Mem[i][j];
+      }
+    }
+	}
+
+	public void GetMATRIKSHasil (MATRIKS MAug, MATRIKS MH) {
+		// Reihan Andhika Putra, Checked
+		/* I.S. MAug, dan MH terdefinisi */
+		/* F.S. Membentuk matriks MK berukuran Nx1 yang berisikan bagian konstanta dari MAug */
+		int i;
+		MakeMATRIKS(MAug.NBrsEff, 1, MH);
+		for (i=0; i< MAug.NBrsEff; i++){
+			MH.Mem[i][0]=MAug.Mem[i][MAug.NKolEff-1];
+		}
+	}
+
+	public void CopyMATRIKS(MATRIKS MIn, MATRIKS MHsl){
+		// Reihan Andhika Putra, Checked
+		/* I.S. MIn, dan MHsl terdefinisi */
+		/* F.S. Melakukan assignment MHsl  MIn */
+		int i,j;
+		for (i=0; i< MIn.NBrsEff; i++){
+			for (j=0; j< MIn.NKolEff; j++){
+				 MHsl.Mem[i][j] = MIn.Mem[i][j];
+			}
+	 }
+	}
+
+	public MATRIKS MATRIKSCramer(MATRIKS MK, MATRIKS MH, int kol) {
+		// Reihan Andhika Putra, Checked
+		/* I.S. Mk, Mh, dan kol terdefinisi */
+		/* F.S. Membentuk matriks cramer dengan Mk kolom indeks kol diganti dengan MH */
+		MATRIKS Cramer = new MATRIKS();
+		int i;
+		MakeMATRIKS(MK.NBrsEff, MK.NKolEff, Cramer);
+		CopyMATRIKS(MK, Cramer);
+		for (i=0; i< Cramer.NBrsEff; i++){
+			Cramer.Mem[i][kol] = MH.Mem[i][0];
+		}
+		return Cramer;
+	}
+
+	public void MetodeCramer (MATRIKS Maug) {
+		// Reihan Andhika Putra, Checked
+		/* I.S. Mk, Mh, dan kol terdefinisi */
+		/* F.S. Menyelesaikan SPL dengan metode Cramer */
+		double[] solusi = new double[100];
+		MATRIKS MK = new MATRIKS();
+		MATRIKS MH = new MATRIKS();
+		int i;
+		GetMATRIKSKoefisien(Maug, MK);
+		GetMATRIKSHasil(Maug, MH);
+		System.out.println("Matrisk Koef");
+		TulisMATRIKS(MK);
+		System.out.println();
+		System.out.println("Matrisk Hasil");
+		TulisMATRIKS(MH);
+		System.out.println();
+		System.out.println("Nilai koef");
+		if (EkspansiKofaktor(MK)==0){
+			System.out.println("Tidak mempunyai solusi");
+		} else {
+			for (i=0; i < MK.NKolEff; i++){
+				solusi[i] = EkspansiKofaktor(MATRIKSCramer(MK, MH, i))/EkspansiKofaktor(MK);
+				System.out.println(solusi[i]);
+			}
+		}
 	}
 }
