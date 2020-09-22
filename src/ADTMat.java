@@ -82,9 +82,11 @@ public class ADTMat{
 		// System.out.println("Hasil kali M1 M2");
 		// TulisMATRIKS(M3);
 		System.out.println();
-		double x = EkspansiKofaktor(M1);
-		System.out.println(x);
-
+		// double x = EkspansiKofaktor(M1);
+		// System.out.println(x);
+		// PKaliKons(M1, 0.5);
+		InverseKofaktor(M1);
+		System.out.println();
 	}
 
 	public MATRIKS KaliMATRIKS (MATRIKS M1, MATRIKS M2){
@@ -191,5 +193,73 @@ public class ADTMat{
 			}
 			return det;
 		}
+	}
+
+	public void PKaliKons(MATRIKS M, double K)
+	{
+		// Reihan Andhika Putra checked
+		/* I.S. M terdefinisi, K terdefinisi */
+		/* F.S. Mengalikan setiap elemen M dengan K */
+		int i,j;
+		for (i = 0; i < M.NBrsEff; i++)
+		{
+			for (j = 0; j < M.NKolEff; j++)
+			{
+				M.Mem[i][j] = M.Mem[i][j] * K;
+			}
+		}
+	}
+
+	public double KofakElmt(MATRIKS M, int i, int j){
+		// Reihan Andhika Putra, Checked
+		/* I.S. M terdefinisi, i, j dalam range matriks */
+		/* F.S. Mengeluarkan elemen kofaktor(i,j) dari sebuah matriks */
+		MATRIKS Minor = new MATRIKS();
+		MakeMATRIKS((M.NBrsEff - 1), (M.NKolEff - 1), Minor);
+		int ii, jj, mi, mj;
+		double koef = Math.pow(-1, (i+j+2)) ;
+		mi = 0; 
+		mj = 0;
+		for (ii = 0; ii < M.NBrsEff; ii++) {
+			for (jj = 0; jj < M.NKolEff; jj++) {
+				if (ii != i && jj != j) {
+					Minor.Mem[mi][mj] = M.Mem[ii][jj];
+					mj = mj + 1;
+					if (mj > M.NBrsEff - 2) {
+						mi = mi + 1;
+						mj = 0;
+					}
+				}
+			}
+		}
+		return EkspansiKofaktor(Minor)*koef ;			
+	}
+	public MATRIKS MATRIKSKofaktor (MATRIKS M){
+		// Reihan Andhika Putra, Checked
+		/* I.S. M terdefinisi */
+		/* F.S. Mengeluarkan Matriks kofaktor dari sebuah matriks */
+		int i,j;
+		MATRIKS Kofaktor = new MATRIKS();
+		MakeMATRIKS(M.NBrsEff,M.NKolEff,Kofaktor);
+		for (i = 0; i < M.NBrsEff; i++)
+		{
+			for (j = 0; j < M.NKolEff; j++)
+			{
+				Kofaktor.Mem[i][j] = KofakElmt(M, i, j);
+			}
+		}
+		return Kofaktor;
+	}
+	public void InverseKofaktor (MATRIKS M){
+		// Reihan Andhika Putra, Checked
+		/* I.S. M terdefinisi */
+		/* F.S. Memprint matriks invers dari matriks M dengan metode determinant dan adjoint */
+		MATRIKS Adjoint = new MATRIKS();
+		Adjoint = MATRIKSKofaktor(M);
+		Transpose(Adjoint);
+		double perdet ;
+		perdet = 1/EkspansiKofaktor(M);
+		PKaliKons(Adjoint, perdet);
+		TulisMATRIKS(Adjoint);
 	}
 }
