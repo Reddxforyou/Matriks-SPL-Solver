@@ -10,6 +10,7 @@ public class ADTMat{
 	}
 
 	public void MakeMATRIKS (int NB, int NK, MATRIKS M) { 
+		// Reihan Andhika Putra , Checked
 		/* Membentuk sebuah MATRIKS "kosong" yang siap diisi berukuran NB x NK di "ujung kiri" memori */
 		/* I.S. NB dan NK adalah valid untuk memori matriks yang dibuat */
 		/* F.S. Matriks M sesuai dengan definisi di atas terbentuk */
@@ -18,6 +19,7 @@ public class ADTMat{
    }
 
 	public void BacaMATRIKS(MATRIKS M){
+		// Reihan Andhika Putra , Checked
 		/* I.S. IsIdxValid(NB,NK) */ 
 		/* F.S. M terdefinisi nilai elemen efektifnya, berukuran NB x NK */
 		/* Proses: Melakukan MakeMATRIKS(M,NB,NK) dan mengisi nilai efektifnya */
@@ -34,7 +36,6 @@ public class ADTMat{
 
 		for(i = 0; i < n; i++){
 			for (j = 0; j < n; j++){
-				System.out.println("Masukkan elemen");
 				M.Mem[i][j]= input.nextDouble();
 			}
 		}
@@ -42,6 +43,7 @@ public class ADTMat{
 	}
 	
 	public void TulisMATRIKS (MATRIKS M){
+		// Reihan Andhika Putra , Checked
 		/* I.S. M terdefinisi */
 		/* F.S. Nilai M(i,j) ditulis ke layar per baris per kolom, masing-masing elemen per baris 
 			dipisahkan sebuah spasi */
@@ -66,13 +68,27 @@ public class ADTMat{
 			}
 		}
 	}
-	public void Test(){
-		MATRIKS M = new MATRIKS();
-		BacaMATRIKS(M);
-		TulisMATRIKS(M);
+	public void TestReihan(){
+		MATRIKS M1= new MATRIKS();
+		// MATRIKS M2 = new MATRIKS();
+		System.out.println("Masukkan elemen M1");
+		BacaMATRIKS(M1);
+		TulisMATRIKS(M1);
+		// System.out.println("Masukkan elemen M2");
+		// BacaMATRIKS(M2);
+		// TulisMATRIKS(M2);
+		// MATRIKS M3 = new MATRIKS();
+		// M3 = KaliMATRIKS(M1, M2);
+		// System.out.println("Hasil kali M1 M2");
+		// TulisMATRIKS(M3);
+		System.out.println("Transpose M1");
+		Transpose(M1);
+		TulisMATRIKS(M1);
+
 	}
 
 	public MATRIKS KaliMATRIKS (MATRIKS M1, MATRIKS M2){
+		// Reihan Andhika Putra ,Checked
 		/* Prekondisi : Ukuran kolom efektif M1 = ukuran baris efektif M2 */
 		/* Mengirim hasil perkalian matriks: salinan M1 * M2 */
 		int i,j,k;
@@ -90,4 +106,21 @@ public class ADTMat{
 		}
 		return M3;
 	}
+	public void Transpose(MATRIKS M){
+		// Reihan Andhika Putra
+		/* I.S. M terdefinisi dan IsBujursangkar(M) */
+		/* F.S. M "di-transpose", yaitu setiap elemen M(i,j) ditukar nilainya dengan elemen M(j,i) */
+		MATRIKS M3 = new MATRIKS();
+		int i,j;
+		MakeMATRIKS(M.NBrsEff,M.NKolEff,M3);
+		for (i = 0; i < M.NBrsEff; i++)
+		{
+			for (j = 0; j < M.NKolEff; j++)
+			{
+				M3.Mem[i][j] = M.Mem[j][i] ;
+			}
+		}
+		M.Mem = M3.Mem;
+	}
+
 }
