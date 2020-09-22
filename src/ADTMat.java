@@ -81,9 +81,9 @@ public class ADTMat{
 		// M3 = KaliMATRIKS(M1, M2);
 		// System.out.println("Hasil kali M1 M2");
 		// TulisMATRIKS(M3);
-		System.out.println("Transpose M1");
-		Transpose(M1);
-		TulisMATRIKS(M1);
+		System.out.println();
+		double x = EkspansiKofaktor(M1);
+		System.out.println(x);
 
 	}
 
@@ -123,4 +123,73 @@ public class ADTMat{
 		M.Mem = M3.Mem;
 	}
 
+	public void TukarBaris(MATRIKS M, int B1, int B2) {
+		// Reihan Andhika Putra
+		// Reihan Andhika Putra
+		/* I.S. M terdefinisi dan B1 , B2 dalam range, perhatikan bahwa indeks (0,x) adalah baris ke 1
+		/* F.S. M di baris ke B1 ditukar dengan B2*/
+		B1 = B1-1; 
+		B2 = B2-1;
+		int j ;
+		double temp;
+		for (j = 0; j < M.NKolEff; j++){
+			temp = M.Mem[B1][j];
+			M.Mem[B1][j] = M.Mem[B2][j];
+			M.Mem[B2][j] = temp;
+		}
+	}
+
+	public double EkspansiKofaktor(MATRIKS M)
+	{
+		// Reihan Andhika Putra
+		/* Prekondisi: IsBujurSangkar(M) */
+		/* Menghitung nilai determinan M menggunakan ekspansi kofaktor pada baris ke-1 */
+		if (M.NBrsEff == 1)
+		{
+			return M.Mem[0][0];
+		}
+		else
+		{
+			MATRIKS Minor = new MATRIKS();
+			MakeMATRIKS((M.NBrsEff - 1), (M.NKolEff - 1), Minor);
+			int i, j, k, ci, cj;
+			double det;
+			int koef = 1;
+
+			det = 0;
+			if (M.NBrsEff == 2)
+			{
+
+				det = M.Mem[0][0] * M.Mem[1][1] - M.Mem[0][1] * M.Mem[1][0];
+				return det;
+			}
+			else
+			{
+				for (i = 0; i < M.NBrsEff; i++)
+				{
+					ci = 0; 
+					cj = 0;
+					for (j = 0; j < M.NBrsEff; j++)
+					{
+						for (k = 0; k < M.NBrsEff; k++)
+						{
+							if (j != 0 && k != i)
+							{
+								Minor.Mem[ci][cj] = M.Mem[j][k];
+								cj = cj + 1;
+								if (cj > M.NBrsEff - 2)
+								{
+									ci = ci + 1;
+									cj = 0;
+								}
+							}
+						}
+					}
+					det = det + koef * ((M.Mem[0][i]) * EkspansiKofaktor(Minor));
+					koef = -1 * koef;
+				}
+			}
+			return det;
+		}
+	}
 }
