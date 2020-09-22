@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.lang.Math; 
 
 public class ADTMat{
 	/* Tipe data matriks */
@@ -70,6 +71,7 @@ public class ADTMat{
 		BacaMATRIKS(M);
 		TulisMATRIKS(M);
 	}
+
 	public MATRIKS KaliMATRIKS (MATRIKS M1, MATRIKS M2){
 		/* Prekondisi : Ukuran kolom efektif M1 = ukuran baris efektif M2 */
 		/* Mengirim hasil perkalian matriks: salinan M1 * M2 */
