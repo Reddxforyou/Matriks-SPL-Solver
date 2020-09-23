@@ -362,7 +362,6 @@ public class ADTMat{
 			}
 		}
 	}
-<<<<<<< HEAD
 	public boolean IsTidakAdaSolusi(MATRIKS M){
 		int i,j;
 		boolean solusi, hasil;
@@ -399,7 +398,7 @@ public class ADTMat{
 	}
 
 	public MATRIKS GaussSPL(MATRIKS M){
-		int i,j,a, k awal, current; 
+		int i,j,a, k, awal, current; 
 		j = 0;
 		i = 0; 
 		// kemungkinan terbanyak kita akan menukar sebanyanyak nbrseff -1 
@@ -453,7 +452,6 @@ public class ADTMat{
 	}
 
 }
-=======
 
 	public void SPLInvers (MATRIKS Maug) {
 		// Reihan Andhika Putra, Checked
@@ -666,4 +664,3 @@ public class ADTMat{
 	}
 }
 
->>>>>>> 82381909b2c5c1d571adf8dfae2e33e0369dc4dc
