@@ -94,7 +94,7 @@ public class ADTMat{
 		int i,j,k;
 		double el;
 		MATRIKS M3 = new MATRIKS();
-		MakeMATRIKS(M1.NBrsEff,M1.NKolEff,M3);
+		MakeMATRIKS(M1.NBrsEff,M2.NKolEff,M3);
 		for(i = 0; i <= M3.NBrsEff-1; i++){
 			for (j = 0; j <= M3.NKolEff-1; j++){
 				el = 0;
@@ -247,6 +247,14 @@ public class ADTMat{
 		}
 		return Kofaktor;
 	}
+
+	public boolean IsPunyaInvers (MATRIKS M) {
+		// Reihan Andhika Putra, Checked
+		/* I.S. M terdefinisi */
+		/* F.S. Mereturn true apabila matriks m mempunyai invers */
+		return (EkspansiKofaktor(M) != 0);
+	}
+
 	public void InverseKofaktor (MATRIKS M){
 		// Reihan Andhika Putra, Checked
 		/* I.S. M terdefinisi */
@@ -255,13 +263,27 @@ public class ADTMat{
 		Adjoint = MATRIKSKofaktor(M);
 		Transpose(Adjoint);
 		double perdet ;
-		if (EkspansiKofaktor(M)==0){
+		if (!IsPunyaInvers(M)){
 			System.out.println("Tidak mempunyai invers");
 		} else {
 			perdet = 1/EkspansiKofaktor(M);
 			PKaliKons(Adjoint, perdet);
 			TulisMATRIKS(Adjoint);
 		}
+	}
+
+	public MATRIKS Inverse (MATRIKS M){
+		// Reihan Andhika Putra, Checked
+		/* I.S. M terdefinisi dan pasti punya invers */
+		/* F.S. return matriks hasil inverse */
+		MATRIKS Invers = new MATRIKS();
+		Invers = MATRIKSKofaktor(M);
+		Transpose(Invers);
+		double perdet ;
+		perdet = 1/EkspansiKofaktor(M);
+		PKaliKons(Invers, perdet);
+		return (Invers);
+		
 	}
 
 	public void GetMATRIKSKoefisien (MATRIKS MAug, MATRIKS MK){	
@@ -316,7 +338,7 @@ public class ADTMat{
 
 	public void MetodeCramer (MATRIKS Maug) {
 		// Reihan Andhika Putra, Checked
-		/* I.S. Mk, Mh, dan kol terdefinisi */
+		/* I.S. Maug terdefinisi */
 		/* F.S. Menyelesaikan SPL dengan metode Cramer */
 		double[] solusi = new double[100];
 		MATRIKS MK = new MATRIKS();
@@ -331,7 +353,7 @@ public class ADTMat{
 		TulisMATRIKS(MH);
 		System.out.println();
 		System.out.println("Nilai koef");
-		if (EkspansiKofaktor(MK)==0){
+		if (!IsPunyaInvers(MK)){
 			System.out.println("Tidak mempunyai solusi");
 		} else {
 			for (i=0; i < MK.NKolEff; i++){
@@ -340,6 +362,7 @@ public class ADTMat{
 			}
 		}
 	}
+<<<<<<< HEAD
 	public boolean IsTidakAdaSolusi(MATRIKS M){
 		int i,j;
 		boolean solusi, hasil;
@@ -430,3 +453,217 @@ public class ADTMat{
 	}
 
 }
+=======
+
+	public void SPLInvers (MATRIKS Maug) {
+		// Reihan Andhika Putra, Checked
+		/* I.S. Maug terdefinisi */
+		/* F.S. Menyelesaikan SPL dengan metode invers */
+		MATRIKS Solusi = new MATRIKS();
+		MATRIKS MK = new MATRIKS();
+		MATRIKS MH = new MATRIKS();
+		GetMATRIKSKoefisien(Maug, MK);
+		GetMATRIKSHasil(Maug, MH);
+		System.out.println("Matrisk Koef");
+		TulisMATRIKS(MK);
+		System.out.println();
+		System.out.println("Matrisk Hasil");
+		TulisMATRIKS(MH);
+		MakeMATRIKS(MK.NBrsEff, MH.NKolEff, Solusi);
+		System.out.println();
+		if (!IsPunyaInvers(MK)){
+			System.out.println("Tidak mempunyai solusi");
+		} else {
+			MK = Inverse(MK);
+			Solusi = KaliMATRIKS(MK, MH);
+			TulisMATRIKS(Solusi);
+		}
+	}
+
+	public void Segiatas(MATRIKS M){
+		// Ryo Richardo, Checked
+		/* I.S. M terdefinisi, IsBujurSangkar(M) */
+		/* F.S. Menghitung nilai determinan matriks M dengan metode segitiga atas. 
+		   Menulis ke layar matriks segitiga atas yang terbentuk dan determinan matriks awal. */
+		int n, i, j; 
+		double line1, line2;
+		float count = 1;
+		boolean found;
+		for (n = 0; n < M.NBrsEff; n++){
+			if (M.Mem[n][n] == 0){
+				found = false;
+			  	i = n+1;
+			  	while (!found && i < M.NBrsEff){
+					if (M.Mem[i][n] != 0){
+						found = true;
+						for (j = n; j < M.NKolEff; j++){
+							M.Mem[n][j] += M.Mem[i][j];
+						}
+				 	}
+				 	i++;
+				}
+				if (!found){
+					count = 0;
+					n = M.NBrsEff;
+					System.out.println("Matriks tidak dapat membentuk matriks segitiga atas.");
+					System.out.println("Kondisi matriks setelah melakukan OBE:");
+					TulisMATRIKS(M);
+					System.out.println();
+					System.out.println("Determinan matriks = 0.0");
+				}  
+			}
+		   	for (i = n+1; i < M.NBrsEff; i++){       
+			  	if (M.Mem[i][n] != 0){        
+				 	line1 = M.Mem[n][n];
+				 	line2 = M.Mem[i][n]; 
+					for (j = n; j < M.NKolEff; j++){
+						M.Mem[i][j] *= line1;
+						M.Mem[n][j] *= line2;
+						M.Mem[i][j] -= M.Mem[n][j];
+					}
+					count /= (line1 * line2);
+				}
+			}
+			count *= M.Mem[n][n];
+		}
+		if (count != 0){
+			System.out.println("Matriks segitiga atas berhasil terbentuk.");
+			System.out.println("Matriks segitiga atas tersebut adalah:");
+			TulisMATRIKS(M);
+			System.out.println();
+			System.out.println("Determinan matriks = " + count);
+		}
+	}
+
+	public void Segibawah(MATRIKS M){
+		// Ryo Richardo, Checked
+		/* I.S. M terdefinisi, IsBujurSangkar(M) */
+		/* F.S. Menghitung nilai determinan matriks M dengan metode segitiga bawah. 
+		   Menulis ke layar matriks segitiga bawah yang terbentuk dan determinan matriks awal. */
+		int n, i, j; 
+		double line1, line2;
+		float count = 1;
+		boolean found;
+		for (n = M.NBrsEff-1; n >= 0; n--){
+			if (M.Mem[n][n] == 0){
+				found = false;
+			  	i = n-1;
+			  	while (!found && i >= 0){
+					if (M.Mem[i][n] != 0){
+						found = true;
+						for (j = n; j >= 0; j--){
+							M.Mem[n][j] += M.Mem[i][j];
+						}
+				 	}
+				 	i--;
+				}
+				if (!found){
+					count = 0;
+					n = -1;
+					System.out.println("Matriks tidak dapat membentuk matriks segitiga bawah.");
+					System.out.println("Kondisi matriks setelah melakukan OBE:");
+					TulisMATRIKS(M);
+					System.out.println();
+					System.out.println("Determinan matriks = 0.0");
+				}  
+			}
+		   	for (i = n-1; i >= 0; i--){       
+			  	if (M.Mem[i][n] != 0){        
+				 	line1 = M.Mem[n][n];
+				 	line2 = M.Mem[i][n]; 
+					for (j = n; j >= 0; j--){
+						M.Mem[i][j] *= line1;
+						M.Mem[n][j] *= line2;
+						M.Mem[i][j] -= M.Mem[n][j];
+					}
+					count /= (line1 * line2);
+				}
+			}
+			count *= M.Mem[n][n];
+		}
+		if (count != 0){
+			System.out.println("Matriks segitiga bawah berhasil terbentuk.");
+			System.out.println("Matriks segitiga bawah tersebut adalah:");
+			TulisMATRIKS(M);
+			System.out.println();
+			System.out.println("Determinan matriks = " + count);
+		}
+	}
+
+	public void TestRyo(){
+		MATRIKS M1= new MATRIKS();
+		//System.out.println("Masukkan elemen M1");
+		BacaMATRIKSAugmented(M1);
+		TulisMATRIKS(M1);
+		System.out.println();		
+		System.out.println(EkspansiKofaktor(M1));
+		Segibawah(M1);
+		//M1 = MakeMatriksInterpolasi(3, M1);
+	}
+
+	public MATRIKS MakeMatriksInterpolasi(int n, MATRIKS Mout) {
+		// Ryo Richardo, Checked
+		// I.S. n (derajat interpolasi), Mout terdefinisi
+		// F.S. terbentuk matriks representasi Interpolasi inputnya.
+
+		int i, j;
+		MATRIKS M = new MATRIKS();
+		Scanner input = new Scanner(System.in);
+
+		for(i = 0; i <= n ; i++){
+			for (j = 0; j < 2; j++){
+				M.Mem[i][j]= input.nextDouble();
+			}
+		}
+		MakeMATRIKS(n, 2, M);
+
+		for(i = 0; i <= n+1; i++){
+			for (j = 0; j <= n+1; j++){
+				if (j == 0){
+					Mout.Mem[i][j] = 1;
+				}
+				else if (j == n+1){
+					Mout.Mem[i][j] = M.Mem[i][1];
+				}
+				else{
+					Mout.Mem[i][j] = Math.pow(M.Mem[i][0], j);
+				}
+			}
+		}
+		MakeMATRIKS(n+1, n+2, Mout);
+		return Mout;
+	}
+
+	public void Interpolasi(){
+		// Ryo Richardo
+		// I.S. x (angka yang ingin dicari nilai interpolasinya) dan M (matriks interpolasi) terdefinisi
+		// F.S. memberikan nilai y, yaitu hasil interpolasi x
+		float x, y = 0;
+		int i, n, op;
+		MATRIKS Mout = new MATRIKS(); 
+		MATRIKS MH = new MATRIKS();
+		MATRIKS MK = new MATRIKS();
+		
+		Scanner input = new Scanner(System.in);
+		System.out.println("Masukkan derajat polinom n: ");
+		n = input.nextInt();
+
+		System.out.println("Masukkan 1 untuk input keyboard, 2 untuk input dari file: ");
+		op = input.nextInt();
+		
+		if (op == 1){
+			Mout = MakeMatriksInterpolasi(n, Mout);
+			GetMATRIKSKoefisien(Mout, MK);
+			GetMATRIKSHasil(Mout, MH);
+		}
+		else{
+
+		}
+
+		System.out.println("Masukkan bilangan x yang indin dicari nilainya: ");
+		x = input.nextInt();
+	 // punten belom kelar, mau nungguin prosedur SPL dulu biar lebih enak buat pilihan cara ngelarin interpolasinya.
+	}
+}
+
+>>>>>>> 82381909b2c5c1d571adf8dfae2e33e0369dc4dc
