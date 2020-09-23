@@ -443,6 +443,61 @@ public class ADTMat{
 		}
 	}
 
+	public void Segibawah(MATRIKS M){
+		// Ryo Richardo, Checked
+		/* I.S. M terdefinisi, IsBujurSangkar(M) */
+		/* F.S. Menghitung nilai determinan matriks M dengan metode segitiga bawah. 
+		   Menulis ke layar matriks segitiga bawah yang terbentuk dan determinan matriks awal. */
+		int n, i, j; 
+		double line1, line2;
+		float count = 1;
+		boolean found;
+		for (n = M.NBrsEff-1; n >= 0; n--){
+			if (M.Mem[n][n] == 0){
+				found = false;
+			  	i = n-1;
+			  	while (!found && i >= 0){
+					if (M.Mem[i][n] != 0){
+						found = true;
+						for (j = n; j >= 0; j--){
+							M.Mem[n][j] += M.Mem[i][j];
+						}
+				 	}
+				 	i--;
+				}
+				if (!found){
+					count = 0;
+					n = -1;
+					System.out.println("Matriks tidak dapat membentuk matriks segitiga bawah.");
+					System.out.println("Kondisi matriks setelah melakukan OBE:");
+					TulisMATRIKS(M);
+					System.out.println();
+					System.out.println("Determinan matriks = 0.0");
+				}  
+			}
+		   	for (i = n-1; i >= 0; i--){       
+			  	if (M.Mem[i][n] != 0){        
+				 	line1 = M.Mem[n][n];
+				 	line2 = M.Mem[i][n]; 
+					for (j = n; j >= 0; j--){
+						M.Mem[i][j] *= line1;
+						M.Mem[n][j] *= line2;
+						M.Mem[i][j] -= M.Mem[n][j];
+					}
+					count /= (line1 * line2);
+				}
+			}
+			count *= M.Mem[n][n];
+		}
+		if (count != 0){
+			System.out.println("Matriks segitiga bawah berhasil terbentuk.");
+			System.out.println("Matriks segitiga bawah tersebut adalah:");
+			TulisMATRIKS(M);
+			System.out.println();
+			System.out.println("Determinan matriks = " + count);
+		}
+	}
+
 	public void TestRyo(){
 		MATRIKS M1= new MATRIKS();
 		//System.out.println("Masukkan elemen M1");
@@ -450,7 +505,7 @@ public class ADTMat{
 		TulisMATRIKS(M1);
 		System.out.println();		
 		System.out.println(EkspansiKofaktor(M1));
-		Segiatas(M1);
+		Segibawah(M1);
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
