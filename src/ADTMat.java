@@ -416,7 +416,8 @@ public class ADTMat{
 					System.out.println("Matriks tidak dapat membentuk matriks segitiga atas.");
 					System.out.println("Kondisi matriks setelah melakukan OBE:");
 					TulisMATRIKS(M);
-					System.out.println("Determinan matriks = 0");
+					System.out.println();
+					System.out.println("Determinan matriks = 0.0");
 				}  
 			}
 		   	for (i = n+1; i < M.NBrsEff; i++){       
@@ -433,11 +434,13 @@ public class ADTMat{
 			}
 			count *= M.Mem[n][n];
 		}
-		System.out.println("Matriks segitiga atas berhasil terbentuk.");
-		System.out.println("Matriks segitiga atas tersebut adalah:");
-		TulisMATRIKS(M);
-		System.out.println();
-		System.out.println("Determinan matriks = " + count);
+		if (count != 0){
+			System.out.println("Matriks segitiga atas berhasil terbentuk.");
+			System.out.println("Matriks segitiga atas tersebut adalah:");
+			TulisMATRIKS(M);
+			System.out.println();
+			System.out.println("Determinan matriks = " + count);
+		}
 	}
 
 	public void TestRyo(){
@@ -449,7 +452,6 @@ public class ADTMat{
 		System.out.println(EkspansiKofaktor(M1));
 		Segiatas(M1);
 		//M1 = MakeMatriksInterpolasi(3, M1);
-		TulisMATRIKS(M1);
 	}
 
 	public MATRIKS MakeMatriksInterpolasi(int n, MATRIKS Mout) {
