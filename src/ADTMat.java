@@ -382,5 +382,14 @@ public class ADTMat{
 		}
 		return count;
 	}
+
+	public void TestRyo(){
+		MATRIKS M1= new MATRIKS();
+		System.out.println("Masukkan elemen M1");
+		BacaMATRIKSAugmented(M1);
+		TulisMATRIKS(M1);
+		System.out.println();
+		System.out.println(DetGaus(M1));
+	}
 }
 
