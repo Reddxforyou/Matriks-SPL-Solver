@@ -340,4 +340,93 @@ public class ADTMat{
 			}
 		}
 	}
+	public boolean IsTidakAdaSolusi(MATRIKS M){
+		int i,j;
+		boolean solusi, hasil;
+		hasil = false;
+		for (i=0; i< M.NBrsEff; i++){
+			solusi = true;
+			for (j=0; j< M.NKolEff-1; j++){
+				 if (M.Mem[i][j] != 0){
+					solusi = false;
+				 }
+			}
+			if (solusi)[
+				if (M.Mem[i][j+1] != 0){
+					hasil = true
+				 }
+			]
+		 }
+		 return hasil;
+	}
+
+	public void BagiBaris(MATRIKS M, int i){
+		int j, penyebut, j1;
+		j = 0;
+		while (M.Mem[i][j] == 0 && j < NKolEff){
+			j +=1; 
+		}
+		if (j < NKolEff){
+			penyebut = M.Mem[i][j];
+			for (j1 = 0; j1 < NKolEff;j1++){
+				M.Mem[i][j] = M.Mem[i][i]/penyebut;
+			}
+		}
+
+	}
+
+	public MATRIKS GaussSPL(MATRIKS M){
+		int i,j,a, k awal, current; 
+		j = 0;
+		i = 0; 
+		// kemungkinan terbanyak kita akan menukar sebanyanyak nbrseff -1 
+		for (k =0; k < NBrsEff-1; k++){
+			// inisiasikan indeks baris dengan k
+			a = k; 
+			while (M.Mem[a][j] == 0){
+				a +=1 ;
+				if (a >= NBrsEff){
+					a = 0 ; 
+					j += 1;
+				}
+			}
+			if (k != a){
+				TukarBaris(M, k, a);
+			}
+			for (i= 0 ;i < NBrsEff; i++){
+				BagiBaris(M, i);
+			}
+
+			for (awal=k+1 ;awal < NBrsEff; awal++){
+				for (current = j ; current < NKolEff; current++ ){
+					M.Mem[awal][curent] = M.Mem[awal][current] - M.Mem[i][current]
+				}
+			}
+		}
+		return M;
+	}
+
+	public MATRIKS GaussJordan(MATRIKS M){
+		int i,j, a, k, awal;
+		GaussSPL(M);
+		for (i = 1 ; i < NBrsEff; i++){
+			for (j=0; j < NKolEff; j++){
+				a = -1;
+				if (M.Mem[i][j] == 1){
+					a = j;
+				}
+			}
+			if (a != -1){
+				for (awal = i-1; awal >=0; awal--){
+					if (M.Mem[awal][a] != 0){
+						for (k = 0; k < NKolEff; k++){
+							M.Mem[awal][k] -= M.Mem[i][k]*M.Mem[awal][a];
+						}
+					}
+				}
+			}	
+		}
+		return M;
+	}
+
 }
