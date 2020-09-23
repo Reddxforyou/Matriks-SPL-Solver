@@ -94,7 +94,7 @@ public class ADTMat{
 		int i,j,k;
 		double el;
 		MATRIKS M3 = new MATRIKS();
-		MakeMATRIKS(M1.NBrsEff,M1.NKolEff,M3);
+		MakeMATRIKS(M1.NBrsEff,M2.NKolEff,M3);
 		for(i = 0; i <= M3.NBrsEff-1; i++){
 			for (j = 0; j <= M3.NKolEff-1; j++){
 				el = 0;
@@ -247,6 +247,14 @@ public class ADTMat{
 		}
 		return Kofaktor;
 	}
+
+	public boolean IsPunyaInvers (MATRIKS M) {
+		// Reihan Andhika Putra, Checked
+		/* I.S. M terdefinisi */
+		/* F.S. Mereturn true apabila matriks m mempunyai invers */
+		return (EkspansiKofaktor(M) != 0);
+	}
+
 	public void InverseKofaktor (MATRIKS M){
 		// Reihan Andhika Putra, Checked
 		/* I.S. M terdefinisi */
@@ -255,13 +263,27 @@ public class ADTMat{
 		Adjoint = MATRIKSKofaktor(M);
 		Transpose(Adjoint);
 		double perdet ;
-		if (EkspansiKofaktor(M)==0){
+		if (!IsPunyaInvers(M)){
 			System.out.println("Tidak mempunyai invers");
 		} else {
 			perdet = 1/EkspansiKofaktor(M);
 			PKaliKons(Adjoint, perdet);
 			TulisMATRIKS(Adjoint);
 		}
+	}
+
+	public MATRIKS Inverse (MATRIKS M){
+		// Reihan Andhika Putra, Checked
+		/* I.S. M terdefinisi dan pasti punya invers */
+		/* F.S. return matriks hasil inverse */
+		MATRIKS Invers = new MATRIKS();
+		Invers = MATRIKSKofaktor(M);
+		Transpose(Invers);
+		double perdet ;
+		perdet = 1/EkspansiKofaktor(M);
+		PKaliKons(Invers, perdet);
+		return (Invers);
+		
 	}
 
 	public void GetMATRIKSKoefisien (MATRIKS MAug, MATRIKS MK){	
@@ -316,7 +338,7 @@ public class ADTMat{
 
 	public void MetodeCramer (MATRIKS Maug) {
 		// Reihan Andhika Putra, Checked
-		/* I.S. Mk, Mh, dan kol terdefinisi */
+		/* I.S. Maug terdefinisi */
 		/* F.S. Menyelesaikan SPL dengan metode Cramer */
 		double[] solusi = new double[100];
 		MATRIKS MK = new MATRIKS();
@@ -331,13 +353,38 @@ public class ADTMat{
 		TulisMATRIKS(MH);
 		System.out.println();
 		System.out.println("Nilai koef");
-		if (EkspansiKofaktor(MK)==0){
+		if (!IsPunyaInvers(MK)){
 			System.out.println("Tidak mempunyai solusi");
 		} else {
 			for (i=0; i < MK.NKolEff; i++){
 				solusi[i] = EkspansiKofaktor(MATRIKSCramer(MK, MH, i))/EkspansiKofaktor(MK);
 				System.out.println(solusi[i]);
 			}
+		}
+	}
+
+	public void SPLInvers (MATRIKS Maug) {
+		// Reihan Andhika Putra, Checked
+		/* I.S. Maug terdefinisi */
+		/* F.S. Menyelesaikan SPL dengan metode invers */
+		MATRIKS Solusi = new MATRIKS();
+		MATRIKS MK = new MATRIKS();
+		MATRIKS MH = new MATRIKS();
+		GetMATRIKSKoefisien(Maug, MK);
+		GetMATRIKSHasil(Maug, MH);
+		System.out.println("Matrisk Koef");
+		TulisMATRIKS(MK);
+		System.out.println();
+		System.out.println("Matrisk Hasil");
+		TulisMATRIKS(MH);
+		MakeMATRIKS(MK.NBrsEff, MH.NKolEff, Solusi);
+		System.out.println();
+		if (!IsPunyaInvers(MK)){
+			System.out.println("Tidak mempunyai solusi");
+		} else {
+			MK = Inverse(MK);
+			Solusi = KaliMATRIKS(MK, MH);
+			TulisMATRIKS(Solusi);
 		}
 	}
 
@@ -427,19 +474,19 @@ public class ADTMat{
 		return Mout;
 	}
 
-	public double Interpolasi(double x, MATRIKS M){
-		// Ryo Richardo
-		// I.S. x (angka yang ingin dicari nilai interpolasinya) dan M (matriks interpolasi) terdefinisi
-		// F.S. memberikan nilai y, yaitu hasil interpolasi x
-		float y = 0;
-		int i;
-		MATRIKS MH = new MATRIKS();
-		M = GaussJordan(M); //nunggu fungsi GaussJordan terdefinisi dulu @dwik
-		GetMATRIKSHasil(M, MH);
-		for (i = 0; i < MH.NBrsEff; i++){
-			y += (Math.pow(x, i)*MH.Mem[i][0]);
-		}
-		return y;
-	}
+	// public double Interpolasi(double x, MATRIKS M){
+	// 	// Ryo Richardo
+	// 	// I.S. x (angka yang ingin dicari nilai interpolasinya) dan M (matriks interpolasi) terdefinisi
+	// 	// F.S. memberikan nilai y, yaitu hasil interpolasi x
+	// 	float y = 0;
+	// 	int i;
+	// 	MATRIKS MH = new MATRIKS();
+	// 	M = GaussJordan(M); //nunggu fungsi GaussJordan terdefinisi dulu @dwik
+	// 	GetMATRIKSHasil(M, MH);
+	// 	for (i = 0; i < MH.NBrsEff; i++){
+	// 		y += (Math.pow(x, i)*MH.Mem[i][0]);
+	// 	}
+	// 	return y;
+	// }
 }
 
