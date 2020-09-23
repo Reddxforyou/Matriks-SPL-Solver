@@ -340,4 +340,47 @@ public class ADTMat{
 			}
 		}
 	}
+
+	public float DetGaus(MATRIKS M){
+		// Ryo Richardo
+		/* I.S. M terdefinisi, IsBujurSangkar(M) */
+		/* F.S. Menghitung nilai dedterminan matriks M dengan metode Gauss */
+		int n, i, j; 
+		double line1, line2;
+		float count = 1;
+		boolean found;
+		for (n = 0; n < M.NBrsEff; n++){
+			if (M.Mem[n][n] == 0){
+				found = false;
+			  	i = n+1;
+			  	while (!found && i < M.NBrsEff){
+					if (M.Mem[i][n] != 0){
+						found = true;
+						for (j = n; j < M.NKolEff; j++){
+							M.Mem[n][j] += M.Mem[i][j];
+						}
+				 	}
+				 	i++;
+			  	}
+			  	if (!found){
+					return 0;
+			  	}
+		   	}
+		   	for (i = n+1; i < M.NBrsEff; i++){       
+			  	if (M.Mem[i][n] != 0){        
+				 	line1 = M.Mem[n][n];
+				 	line2 = M.Mem[i][n]; 
+					for (j = n; j < M.NKolEff; j++){
+						M.Mem[i][j] *= line1;
+						M.Mem[n][j] *= line2;
+						M.Mem[i][j] -= M.Mem[n][j];
+					}
+					count /= (line1 * line2);
+				}
+			}
+			count *= M.Mem[n][n];
+		}
+		return count;
+	}
 }
+
