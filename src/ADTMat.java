@@ -426,5 +426,20 @@ public class ADTMat{
 		MakeMATRIKS(n+1, n+2, Mout);
 		return Mout;
 	}
+
+	public double Interpolasi(double x, MATRIKS M){
+		// Ryo Richardo
+		// I.S. x (angka yang ingin dicari nilai interpolasinya) dan M (matriks interpolasi) terdefinisi
+		// F.S. memberikan nilai y, yaitu hasil interpolasi x
+		float y = 0;
+		int i;
+		MATRIKS MH = new MATRIKS();
+		M = GaussJordan(M); //nunggu fungsi GaussJordan terdefinisi dulu @dwik
+		GetMATRIKSHasil(M, MH);
+		for (i = 0; i < MH.NBrsEff; i++){
+			y += (Math.pow(x, i)*MH.Mem[i][0]);
+		}
+		return y;
+	}
 }
 
