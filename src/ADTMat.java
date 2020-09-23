@@ -542,19 +542,35 @@ public class ADTMat{
 		return Mout;
 	}
 
-	// public double Interpolasi(double x, MATRIKS M){
-	// 	// Ryo Richardo
-	// 	// I.S. x (angka yang ingin dicari nilai interpolasinya) dan M (matriks interpolasi) terdefinisi
-	// 	// F.S. memberikan nilai y, yaitu hasil interpolasi x
-	// 	float y = 0;
-	// 	int i;
-	// 	MATRIKS MH = new MATRIKS();
-	// 	M = GaussJordan(M); //nunggu fungsi GaussJordan terdefinisi dulu @dwik
-	// 	GetMATRIKSHasil(M, MH);
-	// 	for (i = 0; i < MH.NBrsEff; i++){
-	// 		y += (Math.pow(x, i)*MH.Mem[i][0]);
-	// 	}
-	// 	return y;
-	// }
+	public void Interpolasi(){
+		// Ryo Richardo
+		// I.S. x (angka yang ingin dicari nilai interpolasinya) dan M (matriks interpolasi) terdefinisi
+		// F.S. memberikan nilai y, yaitu hasil interpolasi x
+		float x, y = 0;
+		int i, n, op;
+		MATRIKS Mout = new MATRIKS(); 
+		MATRIKS MH = new MATRIKS();
+		MATRIKS MK = new MATRIKS();
+		
+		Scanner input = new Scanner(System.in);
+		System.out.println("Masukkan derajat polinom n: ");
+		n = input.nextInt();
+
+		System.out.println("Masukkan 1 untuk input keyboard, 2 untuk input dari file: ");
+		op = input.nextInt();
+		
+		if (op == 1){
+			Mout = MakeMatriksInterpolasi(n, Mout);
+			GetMATRIKSKoefisien(Mout, MK);
+			GetMATRIKSHasil(Mout, MH);
+		}
+		else{
+
+		}
+
+		System.out.println("Masukkan bilangan x yang indin dicari nilainya: ");
+		x = input.nextInt();
+	 // punten belom kelar, mau nungguin prosedur SPL dulu biar lebih enak buat pilihan cara ngelarin interpolasinya.
+	}
 }
 
