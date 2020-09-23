@@ -388,10 +388,11 @@ public class ADTMat{
 		}
 	}
 
-	public float DetGaus(MATRIKS M){
+	public void Segiatas(MATRIKS M){
 		// Ryo Richardo, Checked
 		/* I.S. M terdefinisi, IsBujurSangkar(M) */
-		/* F.S. Menghitung nilai dedterminan matriks M dengan metode Gauss */
+		/* F.S. Menghitung nilai determinan matriks M dengan metode segitiga atas. 
+		   Menulis ke layar matriks segitiga atas yang terbentuk dan determinan matriks awal. */
 		int n, i, j; 
 		double line1, line2;
 		float count = 1;
@@ -408,11 +409,16 @@ public class ADTMat{
 						}
 				 	}
 				 	i++;
-			  	}
-			  	if (!found){
-					return 0;
-			  	}
-		   	}
+				}
+				if (!found){
+					count = 0;
+					n = M.NBrsEff;
+					System.out.println("Matriks tidak dapat membentuk matriks segitiga atas.");
+					System.out.println("Kondisi matriks setelah melakukan OBE:");
+					TulisMATRIKS(M);
+					System.out.println("Determinan matriks = 0");
+				}  
+			}
 		   	for (i = n+1; i < M.NBrsEff; i++){       
 			  	if (M.Mem[i][n] != 0){        
 				 	line1 = M.Mem[n][n];
@@ -427,17 +433,22 @@ public class ADTMat{
 			}
 			count *= M.Mem[n][n];
 		}
-		return count;
+		System.out.println("Matriks segitiga atas berhasil terbentuk.");
+		System.out.println("Matriks segitiga atas tersebut adalah:");
+		TulisMATRIKS(M);
+		System.out.println();
+		System.out.println("Determinan matriks = " + count);
 	}
 
 	public void TestRyo(){
 		MATRIKS M1= new MATRIKS();
 		//System.out.println("Masukkan elemen M1");
-		// BacaMATRIKSAugmented(M1);
-		//TulisMATRIKS(M1);
-		//System.out.println();
-		//System.out.println(DetGaus(M1));
-		M1 = MakeMatriksInterpolasi(3, M1);
+		BacaMATRIKSAugmented(M1);
+		TulisMATRIKS(M1);
+		System.out.println();		
+		System.out.println(EkspansiKofaktor(M1));
+		Segiatas(M1);
+		//M1 = MakeMatriksInterpolasi(3, M1);
 		TulisMATRIKS(M1);
 	}
 
