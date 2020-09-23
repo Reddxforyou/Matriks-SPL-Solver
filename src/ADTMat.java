@@ -342,7 +342,7 @@ public class ADTMat{
 	}
 
 	public float DetGaus(MATRIKS M){
-		// Ryo Richardo
+		// Ryo Richardo, Checked
 		/* I.S. M terdefinisi, IsBujurSangkar(M) */
 		/* F.S. Menghitung nilai dedterminan matriks M dengan metode Gauss */
 		int n, i, j; 
@@ -385,11 +385,46 @@ public class ADTMat{
 
 	public void TestRyo(){
 		MATRIKS M1= new MATRIKS();
-		System.out.println("Masukkan elemen M1");
-		BacaMATRIKSAugmented(M1);
+		//System.out.println("Masukkan elemen M1");
+		// BacaMATRIKSAugmented(M1);
+		//TulisMATRIKS(M1);
+		//System.out.println();
+		//System.out.println(DetGaus(M1));
+		M1 = MakeMatriksInterpolasi(3, M1);
 		TulisMATRIKS(M1);
-		System.out.println();
-		System.out.println(DetGaus(M1));
+	}
+
+	public MATRIKS MakeMatriksInterpolasi(int n, MATRIKS Mout) {
+		// Ryo Richardo, Checked
+		// I.S. n (derajat interpolasi), Mout terdefinisi
+		// F.S. terbentuk matriks representasi Interpolasi inputnya.
+
+		int i, j;
+		MATRIKS M = new MATRIKS();
+		Scanner input = new Scanner(System.in);
+
+		for(i = 0; i <= n ; i++){
+			for (j = 0; j < 2; j++){
+				M.Mem[i][j]= input.nextDouble();
+			}
+		}
+		MakeMATRIKS(n, 2, M);
+
+		for(i = 0; i <= n+1; i++){
+			for (j = 0; j <= n+1; j++){
+				if (j == 0){
+					Mout.Mem[i][j] = 1;
+				}
+				else if (j == n+1){
+					Mout.Mem[i][j] = M.Mem[i][1];
+				}
+				else{
+					Mout.Mem[i][j] = Math.pow(M.Mem[i][0], j);
+				}
+			}
+		}
+		MakeMATRIKS(n+1, n+2, Mout);
+		return Mout;
 	}
 }
 
