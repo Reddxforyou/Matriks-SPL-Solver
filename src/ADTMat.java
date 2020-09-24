@@ -634,7 +634,7 @@ public class ADTMat{
 	}
 
 	public void Interpolasi(){
-		// Ryo Richardo, Pake Cramer checked
+		// Ryo Richardo, Pake Invers, Cramer checked
 		// I.S. 
 		// F.S. memberikan nilai y, yaitu hasil interpolasi x (prosedur bakal minta input derajat polinom, titik2 sampel, dan titik yg ingin dicari)
 		double x, y = 0;
@@ -709,7 +709,7 @@ public class ADTMat{
 			else {
 				System.out.print(" + ");
 				System.out.printf("%.2f", solusi[i]);
-				System.out.print("x");
+				System.out.print("x^" + i);
 			}
 			y += solusi[i]*(Math.pow(x, i));
 		}
