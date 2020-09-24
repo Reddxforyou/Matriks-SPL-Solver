@@ -373,24 +373,24 @@ public class ADTMat{
 					solusi = false;
 				 }
 			}
-			if (solusi)[
+			if (solusi){
 				if (M.Mem[i][j+1] != 0){
-					hasil = true
-				 }
-			]
-		 }
-		 return hasil;
+					hasil = true;
+				}
+			}
+		}
+		return hasil;
 	}
 
 	public void BagiBaris(MATRIKS M, int i){
 		int j, penyebut, j1;
 		j = 0;
-		while (M.Mem[i][j] == 0 && j < NKolEff){
+		while (M.Mem[i][j] == 0 && j < M.NKolEff){
 			j +=1; 
 		}
-		if (j < NKolEff){
+		if (j < M.NKolEff){
 			penyebut = M.Mem[i][j];
-			for (j1 = 0; j1 < NKolEff;j1++){
+			for (j1 = 0; j1 < M.NKolEff;j1++){
 				M.Mem[i][j] = M.Mem[i][i]/penyebut;
 			}
 		}
@@ -402,12 +402,12 @@ public class ADTMat{
 		j = 0;
 		i = 0; 
 		// kemungkinan terbanyak kita akan menukar sebanyanyak nbrseff -1 
-		for (k =0; k < NBrsEff-1; k++){
+		for (k =0; k < M.NBrsEff-1; k++){
 			// inisiasikan indeks baris dengan k
 			a = k; 
 			while (M.Mem[a][j] == 0){
 				a +=1 ;
-				if (a >= NBrsEff){
+				if (a >= M.NBrsEff){
 					a = 0 ; 
 					j += 1;
 				}
@@ -415,13 +415,13 @@ public class ADTMat{
 			if (k != a){
 				TukarBaris(M, k, a);
 			}
-			for (i= 0 ;i < NBrsEff; i++){
+			for (i= 0 ;i < M.NBrsEff; i++){
 				BagiBaris(M, i);
 			}
 
-			for (awal=k+1 ;awal < NBrsEff; awal++){
-				for (current = j ; current < NKolEff; current++ ){
-					M.Mem[awal][curent] = M.Mem[awal][current] - M.Mem[i][current]
+			for (awal=k+1 ;awal < M.NBrsEff; awal++){
+				for (current = j ; current < M.NKolEff; current++ ){
+					M.Mem[awal][curent] = M.Mem[awal][current] - M.Mem[i][current];
 				}
 			}
 		}
@@ -431,8 +431,8 @@ public class ADTMat{
 	public MATRIKS GaussJordan(MATRIKS M){
 		int i,j, a, k, awal;
 		GaussSPL(M);
-		for (i = 1 ; i < NBrsEff; i++){
-			for (j=0; j < NKolEff; j++){
+		for (i = 1 ; i < M.NBrsEff; i++){
+			for (j=0; j < M.NKolEff; j++){
 				a = -1;
 				if (M.Mem[i][j] == 1){
 					a = j;
@@ -441,7 +441,7 @@ public class ADTMat{
 			if (a != -1){
 				for (awal = i-1; awal >=0; awal--){
 					if (M.Mem[awal][a] != 0){
-						for (k = 0; k < NKolEff; k++){
+						for (k = 0; k < M.NKolEff; k++){
 							M.Mem[awal][k] -= M.Mem[i][k]*M.Mem[awal][a];
 						}
 					}
@@ -451,7 +451,7 @@ public class ADTMat{
 		return M;
 	}
 
-}
+
 
 	public void SPLInvers (MATRIKS Maug) {
 		// Reihan Andhika Putra, Checked
@@ -589,13 +589,8 @@ public class ADTMat{
 	}
 
 	public void TestRyo(){
-		MATRIKS M1= new MATRIKS();
 		//System.out.println("Masukkan elemen M1");
-		BacaMATRIKSAugmented(M1);
-		TulisMATRIKS(M1);
-		System.out.println();		
-		System.out.println(EkspansiKofaktor(M1));
-		Segibawah(M1);
+		Interpolasi();
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
@@ -610,6 +605,12 @@ public class ADTMat{
 
 		for(i = 0; i <= n ; i++){
 			for (j = 0; j < 2; j++){
+				if (j == 0){
+					System.out.println("Masukkan kooridnat x" + i);
+				}
+				else{
+					System.out.println("Masukkan koordinat y" + i);
+				}
 				M.Mem[i][j]= input.nextDouble();
 			}
 		}
@@ -633,33 +634,74 @@ public class ADTMat{
 	}
 
 	public void Interpolasi(){
-		// Ryo Richardo
-		// I.S. x (angka yang ingin dicari nilai interpolasinya) dan M (matriks interpolasi) terdefinisi
-		// F.S. memberikan nilai y, yaitu hasil interpolasi x
-		float x, y = 0;
+		// Ryo Richardo, Pake Cramer checked
+		// I.S. 
+		// F.S. memberikan nilai y, yaitu hasil interpolasi x (prosedur bakal minta input derajat polinom, titik2 sampel, dan titik yg ingin dicari)
+		double x, y = 0;
 		int i, n, op;
 		MATRIKS Mout = new MATRIKS(); 
 		MATRIKS MH = new MATRIKS();
 		MATRIKS MK = new MATRIKS();
 		
 		Scanner input = new Scanner(System.in);
-		System.out.println("Masukkan derajat polinom n: ");
-		n = input.nextInt();
 
 		System.out.println("Masukkan 1 untuk input keyboard, 2 untuk input dari file: ");
 		op = input.nextInt();
 		
-		if (op == 1){
+		if (op == 1){		
+			System.out.println("Masukkan derajat polinom n: ");
+			n = input.nextInt();
 			Mout = MakeMatriksInterpolasi(n, Mout);
 			GetMATRIKSKoefisien(Mout, MK);
-			GetMATRIKSHasil(Mout, MH);
+			GetMATRIKSHasil(Mout, MH);		
+			System.out.println("Masukkan bilangan x yang ingin dicari nilainya: ");
+			x = input.nextDouble();
 		}
 		else{
-
+			x = 0;
+			n = 0; //nanti bakal dibikin klo udh tau cara input dri file
 		}
 
-		System.out.println("Masukkan bilangan x yang indin dicari nilainya: ");
-		x = input.nextInt();
+		System.out.println("Pilihan Cara 1 = Gauss, 2 =GJordan, 3 = Balikan, 4 = Cramer");
+		op = input.nextInt();
+			
+		double[] solusi = new double[100];
+		// note to self: nanti array solusi dipake buat ngelist a0, a1, a2... dari tiap meetode
+		if (op == 1){
+
+		}
+		else if (op == 2){
+
+		}
+		else if (op == 3){
+
+		}
+		else if (op == 4){
+
+			if (!IsPunyaInvers(MK)){
+				System.out.println("Tidak mempunyai solusi");
+			} 
+			else {
+				for (i=0; i < MK.NKolEff; i++){
+					solusi[i] = EkspansiKofaktor(MATRIKSCramer(MK, MH, i))/EkspansiKofaktor(MK);
+					y += solusi[i]*(Math.pow(x, i));
+				}
+			}
+		}
+		System.out.println("Fungsi interpolasi yang terbentuk adalah:");
+		System.out.print("y = ");
+		for (i = 0; i <= n; i++){
+			if (i == 0){
+				System.out.print(solusi[i]);
+			}
+			else if (i == 1){
+				System.out.print(" + " + solusi[i] + "x");
+			}
+			else {
+				System.out.print(" + " + solusi[i] + "x^" + i);
+			}
+		}
+		System.out.println("\nMaka input " + x + " berdasarkan interpolasi memiliki nilai " + y);
 	 // punten belom kelar, mau nungguin prosedur SPL dulu biar lebih enak buat pilihan cara ngelarin interpolasinya.
 	}
 }
