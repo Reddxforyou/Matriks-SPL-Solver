@@ -674,17 +674,24 @@ public class ADTMat{
 
 		}
 		else if (op == 3){
-
+			//Balikan
+			if (!IsPunyaInvers(MK)){
+				System.out.println("Tidak mempunyai solusi");
+			} else {
+				MK = Inverse(MK);
+				for (i = 0; i < MK.NKolEff; i++){
+					solusi[i] = KaliMATRIKS(MK, MH).Mem[i][0];
+				}
+			}
 		}
 		else if (op == 4){
-
+			//Cramer
 			if (!IsPunyaInvers(MK)){
 				System.out.println("Tidak mempunyai solusi");
 			} 
 			else {
 				for (i=0; i < MK.NKolEff; i++){
 					solusi[i] = EkspansiKofaktor(MATRIKSCramer(MK, MH, i))/EkspansiKofaktor(MK);
-					y += solusi[i]*(Math.pow(x, i));
 				}
 			}
 		}
@@ -692,16 +699,22 @@ public class ADTMat{
 		System.out.print("y = ");
 		for (i = 0; i <= n; i++){
 			if (i == 0){
-				System.out.print(solusi[i]);
+				System.out.printf("%.2f", solusi[i]);
 			}
 			else if (i == 1){
-				System.out.print(" + " + solusi[i] + "x");
+				System.out.print(" + ");
+				System.out.printf("%.2f", solusi[i]);
+				System.out.print("x");
 			}
 			else {
-				System.out.print(" + " + solusi[i] + "x^" + i);
+				System.out.print(" + ");
+				System.out.printf("%.2f", solusi[i]);
+				System.out.print("x");
 			}
+			y += solusi[i]*(Math.pow(x, i));
 		}
-		System.out.println("\nMaka input " + x + " berdasarkan interpolasi memiliki nilai " + y);
+		System.out.print("\nMaka input " + x + " berdasarkan interpolasi memiliki nilai ");
+		System.out.printf("%.2f\n", y);
 	 // punten belom kelar, mau nungguin prosedur SPL dulu biar lebih enak buat pilihan cara ngelarin interpolasinya.
 	}
 }
