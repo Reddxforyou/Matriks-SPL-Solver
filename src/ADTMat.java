@@ -391,65 +391,151 @@ public class ADTMat{
 		}
 		if (j < M.NKolEff){
 			penyebut = M.Mem[i][j];
-			for (j1 = 0; j1 < M.NKolEff;j1++){
-				M.Mem[i][j] = M.Mem[i][i]/penyebut;
+			for (j1 = j+1; j1 < M.NKolEff;j1++){
+				M.Mem[i][j1] = M.Mem[i][j1]/penyebut;
 			}
 		}
 
 	}
 
-	public MATRIKS GaussSPL(MATRIKS M){
-		int i,j,a, k, awal, current; 
+	public int IndeksKolom(MATRIKS M, int i){
+		//  mencari indeks kolom yang berawal nilai 0 
+		int j, idxKol;
+		boolean isKetemu;
+		isKetemu = false;
 		j = 0;
-		i = 0; 
-		// kemungkinan terbanyak kita akan menukar sebanyanyak nbrseff -1 
-		for (k =0; k < M.NBrsEff-1; k++){
-			// inisiasikan indeks baris dengan k
-			a = k; 
-			while (M.Mem[a][j] == 0){
-				a +=1 ;
-				if (a >= M.NBrsEff){
-					a = 0 ; 
-					j += 1;
-				}
+		idxKol = 0;
+		while ( j < M.NKolEff && !isKetemu){
+			if (M.Mem[i][j] == 0){
+				isKetemu = true;
+				idxKol = j;
 			}
-			if (k != a){
-				TukarBaris(M, k, a);
-			}
-			for (i= 0 ;i < M.NBrsEff; i++){
-				BagiBaris(M, i);
-			}
+			j +=1;
+		} 
+		if (idxKol == 0){
+			idxKol = -1;
+		}
+		return idxKol;
+		
+	}
 
-			for (awal=k+1 ;awal < M.NBrsEff; awal++){
-				for (current = j ; current < M.NKolEff; current++ ){
-					M.Mem[awal][current] = M.Mem[awal][current] - M.Mem[i][current];
+	public void SortBaris(MATRIKS M){
+		int i, j; 
+		for (i= 0; i < M.NBrsEff-1; i++){
+			for (j = i+1; j < M.NBrsEff; j++){
+				if (IndeksKolom(M,i) > IndeksKolom(M,j)){
+					TukarBaris(M,i,j);
 				}
 			}
 		}
-		return M;
 	}
 
-	public MATRIKS GaussJordan(MATRIKS M){
-		int i,j, a, k, awal;
-		GaussSPL(M);
-		for (i = 1 ; i < M.NBrsEff; i++){
-			for (j=0; j < M.NKolEff; j++){
-				a = -1;
+
+
+	public void EliminasiOBE(MATRIKS M, int indeks){
+		// Prekondisi bahwa matriks udah di sort
+		int i,j,a; 
+		// buat semua dimulai dengan angka 1 
+		for (i=0; i < M.NBrsEff; i++){
+			BagiBaris(M,i);
+		}
+		j=0;
+		while (M.Mem[indeks][j] != 1 && j < M.NKolEff){
+			j+=1;
+		}
+		if (j < M.NKolEff){
+			for (i=indeks+1;i < M.NBrsEff;i++){
 				if (M.Mem[i][j] == 1){
-					a = j;
-				}
-			}
-			if (a != -1){
-				for (awal = i-1; awal >=0; awal--){
-					if (M.Mem[awal][a] != 0){
-						for (k = 0; k < M.NKolEff; k++){
-							M.Mem[awal][k] -= M.Mem[i][k]*M.Mem[awal][a];
-						}
+					for (a=j; a < M.NKolEff; a++){
+						M.Mem[i][a] -= M.Mem[indeks][a];
 					}
 				}
-			}	
+			}
 		}
-		return M;
+
+	}
+
+	public void EliminasiOBEjordan(MATRIKS M , int indeks){
+		int i,j,a; 
+		while (M.Mem[indeks][j] != 1 && j < M.NKolEff){
+			j+=1;
+		}
+		for (i=0; i < indeks; i++){
+			if (M.Mem[i][j] != 0){
+				for (a=j; a < M.NKolEff; a++){
+					M.Mem[i][a] -= M.Mem[indeks][a] * M.Mem[indeks][j];
+				}
+			}
+		}
+	}
+
+	public void GaussSPL(MATRIKS M){
+		// int i,j,a, k, awal, current; 
+		// j = 0;
+		// i = 0; 
+		// // kemungkinan terbanyak kita akan menukar sebanyanyak nbrseff -1 
+		// for (k =0; k < M.NBrsEff-1; k++){
+		// 	// inisiasikan indeks baris dengan k
+		// 	a = k; 
+		// 	while (M.Mem[a][j] == 0){
+		// 		a +=1 ;
+		// 		if (a >= M.NBrsEff){
+		// 			a = 0 ; 
+		// 			j += 1;
+		// 		}
+		// 	}
+		// 	if (k != a){
+		// 		TukarBaris(M, k, a);
+		// 	}
+		// 	for (i= 0 ;i < M.NBrsEff; i++){
+		// 		BagiBaris(M, i);
+		// 	}
+
+		// 	for (awal=k+1 ;awal < M.NBrsEff; awal++){
+		// 		for (current = j ; current < M.NKolEff; current++ ){
+		// 			M.Mem[awal][current] = M.Mem[awal][current] - M.Mem[i][current];
+		// 		}
+		// 	}
+		// }
+		// return M;
+		int i;
+		for (i = 0; i < M.NBrsEff-1; i++){
+			// urutkan matriks, yang ada 0 taruh paling bawah  
+			SortBaris(M);
+			// kurangkan semua 
+			EliminasiOBE(M,i);
+		}
+		// TulisMATRIKS(M);
+	}
+
+	public void GaussJordan(MATRIKS M){
+		// int i,j, a, k, awal;
+		// GaussSPL(M);
+		// for (i = 1 ; i < M.NBrsEff; i++){
+		// 	for (j=0; j < M.NKolEff; j++){
+		// 		a = -1;
+		// 		if (M.Mem[i][j] == 1){
+		// 			a = j;
+		// 		}
+		// 	}
+		// 	if (a != -1){
+		// 		for (awal = i-1; awal >=0; awal--){
+		// 			if (M.Mem[awal][a] != 0){
+		// 				for (k = 0; k < M.NKolEff; k++){
+		// 					M.Mem[awal][k] -= M.Mem[i][k]*M.Mem[awal][a];
+		// 				}
+		// 			}
+		// 		}
+		// 	}	
+		// }
+		// return M;
+
+		GaussSPL(M);
+		for (i = 1; i < M.NBrsEff; i++){
+			EliminasiOBEjordan(M, i);
+		}
+		TulisMATRIKS(M);
+
 	}
 
 
