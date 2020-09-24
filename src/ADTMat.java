@@ -383,7 +383,8 @@ public class ADTMat{
 	}
 
 	public void BagiBaris(MATRIKS M, int i){
-		int j, penyebut, j1;
+		int j, j1;
+		double penyebut;
 		j = 0;
 		while (M.Mem[i][j] == 0 && j < M.NKolEff){
 			j +=1; 
@@ -421,7 +422,7 @@ public class ADTMat{
 
 			for (awal=k+1 ;awal < M.NBrsEff; awal++){
 				for (current = j ; current < M.NKolEff; current++ ){
-					M.Mem[awal][curent] = M.Mem[awal][current] - M.Mem[i][current];
+					M.Mem[awal][current] = M.Mem[awal][current] - M.Mem[i][current];
 				}
 			}
 		}
@@ -590,7 +591,9 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
-		Interpolasi();
+		MATRIKS M = new MATRIKS();
+		BacaMATRIKS(M);
+		TulisMATRIKS(GaussSPL(M));
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
@@ -635,7 +638,7 @@ public class ADTMat{
 
 	public void Interpolasi(){
 		// Ryo Richardo, Pake Invers, Cramer checked
-		// I.S. 
+		// I.S. titik sampel tidak ada yang diinput 2 kali, dan tidak boleh ada 2 titik dengan x sama namun y berbeda (bukan fungsi)
 		// F.S. memberikan nilai y, yaitu hasil interpolasi x (prosedur bakal minta input derajat polinom, titik2 sampel, dan titik yg ingin dicari)
 		double x, y = 0;
 		int i, n, op;
@@ -695,27 +698,35 @@ public class ADTMat{
 				}
 			}
 		}
-		System.out.println("Fungsi interpolasi yang terbentuk adalah:");
-		System.out.print("y = ");
-		for (i = 0; i <= n; i++){
-			if (i == 0){
-				System.out.printf("%.2f", solusi[i]);
+		// pilih jenis output
+		System.out.println("Pilih 1 output ke layar, 2 output ke file");
+		op = input.nextInt();
+
+		if (op == 1){
+			System.out.println("Fungsi interpolasi yang terbentuk adalah:");
+			System.out.print("y = ");
+			for (i = 0; i <= n; i++){
+				if (i == 0){
+					System.out.printf("%.2f", solusi[i]);
+				}
+				else if (i == 1){
+					System.out.print(" + ");
+					System.out.printf("%.2f", solusi[i]);
+					System.out.print("x");
+				}
+				else {
+					System.out.print(" + ");
+					System.out.printf("%.2f", solusi[i]);
+					System.out.print("x^" + i);
+				}
+				y += solusi[i]*(Math.pow(x, i));
 			}
-			else if (i == 1){
-				System.out.print(" + ");
-				System.out.printf("%.2f", solusi[i]);
-				System.out.print("x");
-			}
-			else {
-				System.out.print(" + ");
-				System.out.printf("%.2f", solusi[i]);
-				System.out.print("x^" + i);
-			}
-			y += solusi[i]*(Math.pow(x, i));
+			System.out.print("\nMaka input " + x + " berdasarkan interpolasi memiliki nilai ");
+			System.out.printf("%.2f\n", y);
 		}
-		System.out.print("\nMaka input " + x + " berdasarkan interpolasi memiliki nilai ");
-		System.out.printf("%.2f\n", y);
-	 // punten belom kelar, mau nungguin prosedur SPL dulu biar lebih enak buat pilihan cara ngelarin interpolasinya.
+		else if (op == 2){
+			//punten blom
+		}
 	}
 }
 
