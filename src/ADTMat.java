@@ -80,11 +80,13 @@ public class ADTMat{
 	}
 	public void TestReihan(){
 		MATRIKS M1= new MATRIKS();
+		MATRIKS M2= new MATRIKS();
 		System.out.println("Masukkan elemen M1");
 		BacaMATRIKSAugmented(M1);
 		TulisMATRIKS(M1);
 		System.out.println();
-		MetodeCramer(M1);
+		M2 = GaussSPL(M1);
+		TulisMATRIKS(M2);
 	}
 
 	public MATRIKS KaliMATRIKS (MATRIKS M1, MATRIKS M2){
@@ -430,7 +432,7 @@ public class ADTMat{
 	}
 
 	public MATRIKS GaussJordan(MATRIKS M){
-		int i,j, a, k, awal;
+		int i,j,k, awal;
 		GaussSPL(M);
 		for (i = 1 ; i < M.NBrsEff; i++){
 			for (j=0; j < M.NKolEff; j++){
