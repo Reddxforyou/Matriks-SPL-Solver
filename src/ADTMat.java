@@ -677,9 +677,7 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
-		MATRIKS M = new MATRIKS();
-		BacaMATRIKS(M);
-		TulisMATRIKS(GaussSPL(M));
+		Interpolasi();
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
@@ -751,67 +749,78 @@ public class ADTMat{
 			n = 0; //nanti bakal dibikin klo udh tau cara input dri file
 		}
 
-		System.out.println("Pilihan Cara 1 = Gauss, 2 =GJordan, 3 = Balikan, 4 = Cramer");
-		op = input.nextInt();
+		if (IsPunyaInvers(MK)){
+			System.out.println("Pilihan Cara 1 = Gauss, 2 =GJordan, 3 = Balikan, 4 = Cramer");
+			op = input.nextInt();
 			
-		double[] solusi = new double[100];
-		// note to self: nanti array solusi dipake buat ngelist a0, a1, a2... dari tiap meetode
-		if (op == 1){
-
-		}
-		else if (op == 2){
-
-		}
-		else if (op == 3){
-			//Balikan
-			if (!IsPunyaInvers(MK)){
-				System.out.println("Tidak mempunyai solusi");
-			} else {
+			double[] solusi = new double[100];
+			// note to self: nanti array solusi dipake buat ngelist a0, a1, a2... dari tiap meetode
+			if (op == 1){
+				int j;
+				GaussSPL(Mout);
+				solusi[Mout.NBrsEff-1] = Mout.Mem[Mout.NBrsEff-1][Mout.NKolEff-1];
+				for (i = Mout.NBrsEff-2; i >= 0; i--){
+					for (j = Mout.NKolEff-2; j > i; j--){
+						Mout.Mem[i][Mout.NKolEff-1] -= Mout.Mem[i][j]*solusi[j+1];
+					}
+					solusi[i] = Mout.Mem[i][Mout.NKolEff-1];
+				}
+			}
+			else if (op == 2){
+				GaussJordan(Mout);
+				GetMATRIKSHasil(Mout, MH);
+				for (i = 0; i < MH.NBrsEff; i++){
+					solusi[i] = MH.Mem[i][0];
+				}
+			}
+			else if (op == 3){
+				//Balikan
 				MK = Inverse(MK);
 				for (i = 0; i < MK.NKolEff; i++){
 					solusi[i] = KaliMATRIKS(MK, MH).Mem[i][0];
 				}
 			}
-		}
-		else if (op == 4){
+			else if (op == 4){
 			//Cramer
-			if (!IsPunyaInvers(MK)){
-				System.out.println("Tidak mempunyai solusi");
-			} 
-			else {
 				for (i=0; i < MK.NKolEff; i++){
 					solusi[i] = EkspansiKofaktor(MATRIKSCramer(MK, MH, i))/EkspansiKofaktor(MK);
 				}
 			}
-		}
-		// pilih jenis output
-		System.out.println("Pilih 1 output ke layar, 2 output ke file");
-		op = input.nextInt();
+	
+			// pilih jenis output
+			System.out.println("Pilih 1 output ke layar, 2 output ke file");
+			op = input.nextInt();
 
-		if (op == 1){
-			System.out.println("Fungsi interpolasi yang terbentuk adalah:");
-			System.out.print("y = ");
-			for (i = 0; i <= n; i++){
-				if (i == 0){
-					System.out.printf("%.2f", solusi[i]);
+			if (op == 1){
+				System.out.println("Fungsi interpolasi yang terbentuk adalah:");
+				System.out.print("y = ");
+				for (i = 0; i <= n; i++){
+					if (i == 0){
+						System.out.printf("%.2f", solusi[i]);
+					}
+					else if (i == 1){
+						System.out.print(" + ");
+						System.out.printf("%.2f", solusi[i]);
+						System.out.print("x");
+					}
+					else {
+						System.out.print(" + ");
+						System.out.printf("%.2f", solusi[i]);
+						System.out.print("x^" + i);
+					}
+					y += solusi[i]*(Math.pow(x, i));
 				}
-				else if (i == 1){
-					System.out.print(" + ");
-					System.out.printf("%.2f", solusi[i]);
-					System.out.print("x");
-				}
-				else {
-					System.out.print(" + ");
-					System.out.printf("%.2f", solusi[i]);
-					System.out.print("x^" + i);
-				}
-				y += solusi[i]*(Math.pow(x, i));
+				System.out.print("\nMaka input " + x + " berdasarkan interpolasi memiliki nilai ");
+				System.out.printf("%.2f\n", y);
 			}
-			System.out.print("\nMaka input " + x + " berdasarkan interpolasi memiliki nilai ");
-			System.out.printf("%.2f\n", y);
+			else if (op == 2){
+				//punten blom
+			}
 		}
-		else if (op == 2){
-			//punten blom
+		else{
+			System.out.println("Terjadi kesalahan pada input.");
+			System.out.println("Pastikan koordinat x titik sampel yang diinput selalu berbeda satu sama lain.");
+			System.out.println("Silahkan mengulang program.");
 		}
 	}
 }
