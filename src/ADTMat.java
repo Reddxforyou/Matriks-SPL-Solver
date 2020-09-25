@@ -677,9 +677,7 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
-		MATRIKS M = new MATRIKS();
-		BacaMATRIKS(M);
-		Segiatas(M);
+		Interpolasi();
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
@@ -751,12 +749,15 @@ public class ADTMat{
 			n = 0; //nanti bakal dibikin klo udh tau cara input dri file
 		}
 
+		System.out.println("Matriks SPL yang terbentuk adalah:");
+		TulisMATRIKS(Mout);
+
 		if (IsPunyaInvers(MK)){
-			System.out.println("Pilihan Cara 1 = Gauss, 2 =GJordan, 3 = Balikan, 4 = Cramer");
+			System.out.println("\nPilihan Cara 1 = Gauss, 2 =GJordan, 3 = Balikan, 4 = Cramer");
 			op = input.nextInt();
 			
 			double[] solusi = new double[100];
-			// note to self: nanti array solusi dipake buat ngelist a0, a1, a2... dari tiap meetode
+			// note to self: nanti array solusi dipake buat ngelist a0, a1, a2... dari tiap metode
 			if (op == 1){
 				int j;
 				GaussSPL(Mout);
@@ -783,7 +784,7 @@ public class ADTMat{
 				}
 			}
 			else if (op == 4){
-			//Cramer
+				//Cramer
 				for (i=0; i < MK.NKolEff; i++){
 					solusi[i] = EkspansiKofaktor(MATRIKSCramer(MK, MH, i))/EkspansiKofaktor(MK);
 				}
@@ -820,7 +821,7 @@ public class ADTMat{
 			}
 		}
 		else{
-			System.out.println("Terjadi kesalahan pada input.");
+			System.out.println("\nTerjadi kesalahan pada input.");
 			System.out.println("Pastikan koordinat x titik sampel yang diinput selalu berbeda satu sama lain.");
 			System.out.println("Silahkan mengulang program.");
 		}
