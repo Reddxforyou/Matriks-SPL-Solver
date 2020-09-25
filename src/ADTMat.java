@@ -127,8 +127,6 @@ public class ADTMat{
 		// Reihan Andhika Putra
 		/* I.S. M terdefinisi dan B1 , B2 dalam range, perhatikan bahwa indeks (0,x) adalah baris ke 1
 		/* F.S. M di baris ke B1 ditukar dengan B2*/
-		B1 = B1-1; 
-		B2 = B2-1;
 		int j ;
 		double temp;
 		for (j = 0; j < M.NKolEff; j++){
@@ -140,7 +138,7 @@ public class ADTMat{
 
 	public double EkspansiKofaktor(MATRIKS M)
 	{
-		// Reihan Andhika Putra
+		// Reihan Andhika Putra`
 		/* Prekondisi: IsBujurSangkar(M) */
 		/* Menghitung nilai determinan M menggunakan ekspansi kofaktor pada baris ke-1 */
 		if (M.NBrsEff == 1)
@@ -391,7 +389,7 @@ public class ADTMat{
 		}
 		if (j < M.NKolEff){
 			penyebut = M.Mem[i][j];
-			for (j1 = j+1; j1 < M.NKolEff;j1++){
+			for (j1 = j; j1 < M.NKolEff;j1++){
 				M.Mem[i][j1] = M.Mem[i][j1]/penyebut;
 			}
 		}
@@ -406,14 +404,15 @@ public class ADTMat{
 		j = 0;
 		idxKol = 0;
 		while ( j < M.NKolEff && !isKetemu){
-			if (M.Mem[i][j] == 0){
+			if (M.Mem[i][j] != 0){
 				isKetemu = true;
 				idxKol = j;
+			} else {
+				j +=1;
 			}
-			j +=1;
 		} 
-		if (idxKol == 0){
-			idxKol = -1;
+		if (j >= M.NKolEff){
+			idxKol = M.NKolEff;
 		}
 		return idxKol;
 		
@@ -456,14 +455,17 @@ public class ADTMat{
 	}
 
 	public void EliminasiOBEjordan(MATRIKS M , int indeks){
-		int i,j,a; 
+		int i,j,a, kali; 
+		j = 0;
 		while (M.Mem[indeks][j] != 1 && j < M.NKolEff){
 			j+=1;
 		}
-		for (i=0; i < indeks; i++){
-			if (M.Mem[i][j] != 0){
-				for (a=j; a < M.NKolEff; a++){
-					M.Mem[i][a] -= M.Mem[indeks][a] * M.Mem[indeks][j];
+		if (j < M.NKolEff){
+			for (i=0; i < indeks; i++){
+				if (M.Mem[i][j] != 0){
+					for (a=j; a < M.NKolEff; a++){
+						M.Mem[i][a] -= (M.Mem[indeks][a] * M.Mem[i][j]);
+					}
 				}
 			}
 		}
@@ -499,12 +501,13 @@ public class ADTMat{
 		// }
 		// return M;
 		int i;
+		// urutkan matriks, yang ada 0 taruh paling bawah  
 		for (i = 0; i < M.NBrsEff-1; i++){
-			// urutkan matriks, yang ada 0 taruh paling bawah  
-			SortBaris(M);
 			// kurangkan semua 
 			EliminasiOBE(M,i);
+			SortBaris(M);
 		}
+		BagiBaris(M,i);
 		// TulisMATRIKS(M);
 	}
 
@@ -529,15 +532,27 @@ public class ADTMat{
 		// 	}	
 		// }
 		// return M;
-
+		int i;
 		GaussSPL(M);
 		for (i = 1; i < M.NBrsEff; i++){
 			EliminasiOBEjordan(M, i);
 		}
-		TulisMATRIKS(M);
-
 	}
 
+	public void TestDwi(){
+		int a;
+		MATRIKS M1= new MATRIKS();
+		System.out.println("Masukkan elemen M1");
+		BacaMATRIKSAugmented(M1);
+		TulisMATRIKS(M1);
+		System.out.println();
+		GaussSPL(M1);
+		TulisMATRIKS(M1);
+		System.out.println();
+		System.out.println();
+		GaussJordan(M1);
+		TulisMATRIKS(M1);
+	}
 
 
 	public void SPLInvers (MATRIKS Maug) {
@@ -679,7 +694,7 @@ public class ADTMat{
 		//System.out.println("Masukkan elemen M1");
 		MATRIKS M = new MATRIKS();
 		BacaMATRIKS(M);
-		TulisMATRIKS(GaussSPL(M));
+		// TulisMATRIKS(GaussSPL(M));
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
