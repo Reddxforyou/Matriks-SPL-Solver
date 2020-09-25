@@ -1,5 +1,7 @@
 import java.util.Scanner;
 import java.lang.Math; 
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class ADTMat{
 	/* Tipe data matriks */
@@ -80,11 +82,7 @@ public class ADTMat{
 	}
 	public void TestReihan(){
 		MATRIKS M1= new MATRIKS();
-		System.out.println("Masukkan elemen M1");
-		BacaMATRIKSAugmented(M1);
-		TulisMATRIKS(M1);
-		System.out.println();
-		MetodeCramer(M1);
+		bacaFile(M1);
 	}
 
 	public MATRIKS KaliMATRIKS (MATRIKS M1, MATRIKS M2){
@@ -692,13 +690,7 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
-<<<<<<< HEAD
-		MATRIKS M = new MATRIKS();
-		BacaMATRIKS(M);
-		// TulisMATRIKS(GaussSPL(M));
-=======
 		Interpolasi();
->>>>>>> 48fa15182c20cfad194c2281bffe457a9b92e948
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
@@ -846,6 +838,67 @@ public class ADTMat{
 			System.out.println("Pastikan koordinat x titik sampel yang diinput selalu berbeda satu sama lain.");
 			System.out.println("Silahkan mengulang program.");
 		}
+		input.close();
+	}
+	public void bacaFile(MATRIKS M){
+		// Reihan Andhika P checked
+		// I.S. M masih kosong
+		// F.S. M berisi matriks yang ada di file , tiap orang pathnya bisa beda beda
+		int i,j,NB,NK;
+		Double kol;
+		String baris, baris1, barismatriks;
+		
+		Scanner sc = new Scanner(System.in);
+		try {
+			System.out.print("Tulis nama file beserta extension : ");
+			String reipath = "D:/Tugas Kuliah/IF/Semester 3/Aljabar Linier dan Geometri/Tubes1/Tubes1/test/";
+			File file = new File(reipath+sc.next());
+			System.out.println(file.getAbsolutePath());
+			Scanner CountNB = new Scanner(file);
+			NB = 0; 
+			while (CountNB.hasNextLine()) {
+				baris = CountNB.nextLine();
+				NB = NB + 1;
+			}
+			CountNB.close();
+
+			NK = 0;
+			Scanner CountNK = new Scanner(file);
+			if (CountNK.hasNextLine()) {
+				baris1 = CountNK.nextLine();
+				Scanner hitungNK = new Scanner(baris1);
+				while(hitungNK.hasNextDouble()){
+					kol = hitungNK.nextDouble();
+					NK = NK +1;
+				}
+				hitungNK.close();
+			}
+			CountNK.close();
+			MakeMATRIKS(NB,NK,M);
+			Scanner baca = new Scanner(file);
+			i = 0;
+
+			while (baca.hasNextLine()) {
+				barismatriks = baca.nextLine();
+				Scanner bacamatriks = new Scanner(barismatriks);
+				j = 0;
+				while(bacamatriks.hasNextDouble()){
+					M.Mem[i][j] = bacamatriks.nextDouble();
+					j = j + 1;
+				}
+				i = i + 1;
+				bacamatriks.close();
+			}
+			baca.close();
+			System.out.println("Matriks yang ada di file adalah :");
+			TulisMATRIKS(M);
+			System.out.println();
+		} 
+		catch (FileNotFoundException e) {
+			System.out.println("File tidak ada atau nama file salah");
+			e.printStackTrace();
+		}
+		sc.close();
 	}
 }
 
