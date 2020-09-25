@@ -714,10 +714,10 @@ public class ADTMat{
 		for(i = 0; i <= n ; i++){
 			for (j = 0; j < 2; j++){
 				if (j == 0){
-					System.out.println("Masukkan kooridnat x" + i);
+					System.out.print("Masukkan kooridnat x" + i + ": ");
 				}
 				else{
-					System.out.println("Masukkan koordinat y" + i);
+					System.out.print("Masukkan koordinat y" + i + ": ");
 				}
 				M.Mem[i][j]= input.nextDouble();
 			}
@@ -757,12 +757,12 @@ public class ADTMat{
 		op = input.nextInt();
 		
 		if (op == 1){		
-			System.out.println("Masukkan derajat polinom n: ");
+			System.out.print("Masukkan derajat polinom n: ");
 			n = input.nextInt();
 			Mout = MakeMatriksInterpolasi(n, Mout);
 			GetMATRIKSKoefisien(Mout, MK);
 			GetMATRIKSHasil(Mout, MH);		
-			System.out.println("Masukkan bilangan x yang ingin dicari nilainya: ");
+			System.out.print("Masukkan bilangan x yang ingin dicari nilainya: ");
 			x = input.nextDouble();
 		}
 		else{
