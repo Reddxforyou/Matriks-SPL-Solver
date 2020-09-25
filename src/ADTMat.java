@@ -602,11 +602,11 @@ public class ADTMat{
 				 	line1 = M.Mem[n][n];
 				 	line2 = M.Mem[i][n]; 
 					for (j = n; j < M.NKolEff; j++){
-						M.Mem[i][j] *= line1;
-						M.Mem[n][j] *= line2;
+						M.Mem[n][j] /= line1;
+						M.Mem[i][j] /= line2;
 						M.Mem[i][j] -= M.Mem[n][j];
 					}
-					count /= (line1 * line2);
+					count *= (line1 * line2);
 				}
 			}
 			count *= M.Mem[n][n];
@@ -657,11 +657,11 @@ public class ADTMat{
 				 	line1 = M.Mem[n][n];
 				 	line2 = M.Mem[i][n]; 
 					for (j = n; j >= 0; j--){
-						M.Mem[i][j] *= line1;
-						M.Mem[n][j] *= line2;
+						M.Mem[n][j] /= line1;
+						M.Mem[i][j] /= line2;
 						M.Mem[i][j] -= M.Mem[n][j];
 					}
-					count /= (line1 * line2);
+					count *= (line1 * line2);
 				}
 			}
 			count *= M.Mem[n][n];
@@ -677,7 +677,9 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
-		Interpolasi();
+		MATRIKS M = new MATRIKS();
+		BacaMATRIKS(M);
+		Segiatas(M);
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
