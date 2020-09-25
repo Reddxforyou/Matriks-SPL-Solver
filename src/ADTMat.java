@@ -777,7 +777,7 @@ public class ADTMat{
 				solusi[Mout.NBrsEff-1] = Mout.Mem[Mout.NBrsEff-1][Mout.NKolEff-1];
 				for (i = Mout.NBrsEff-2; i >= 0; i--){
 					for (j = Mout.NKolEff-2; j > i; j--){
-						Mout.Mem[i][Mout.NKolEff-1] -= Mout.Mem[i][j]*solusi[j+1];
+						Mout.Mem[i][Mout.NKolEff-1] -= Mout.Mem[i][j]*solusi[j];
 					}
 					solusi[i] = Mout.Mem[i][Mout.NKolEff-1];
 				}
