@@ -80,13 +80,11 @@ public class ADTMat{
 	}
 	public void TestReihan(){
 		MATRIKS M1= new MATRIKS();
-		MATRIKS M2= new MATRIKS();
 		System.out.println("Masukkan elemen M1");
 		BacaMATRIKSAugmented(M1);
 		TulisMATRIKS(M1);
 		System.out.println();
-		M2 = GaussSPL(M1);
-		TulisMATRIKS(M2);
+		MetodeCramer(M1);
 	}
 
 	public MATRIKS KaliMATRIKS (MATRIKS M1, MATRIKS M2){
@@ -129,8 +127,6 @@ public class ADTMat{
 		// Reihan Andhika Putra
 		/* I.S. M terdefinisi dan B1 , B2 dalam range, perhatikan bahwa indeks (0,x) adalah baris ke 1
 		/* F.S. M di baris ke B1 ditukar dengan B2*/
-		B1 = B1-1; 
-		B2 = B2-1;
 		int j ;
 		double temp;
 		for (j = 0; j < M.NKolEff; j++){
@@ -142,7 +138,7 @@ public class ADTMat{
 
 	public double EkspansiKofaktor(MATRIKS M)
 	{
-		// Reihan Andhika Putra
+		// Reihan Andhika Putra`
 		/* Prekondisi: IsBujurSangkar(M) */
 		/* Menghitung nilai determinan M menggunakan ekspansi kofaktor pada baris ke-1 */
 		if (M.NBrsEff == 1)
@@ -393,67 +389,170 @@ public class ADTMat{
 		}
 		if (j < M.NKolEff){
 			penyebut = M.Mem[i][j];
-			for (j1 = 0; j1 < M.NKolEff;j1++){
-				M.Mem[i][j] = M.Mem[i][i]/penyebut;
+			for (j1 = j; j1 < M.NKolEff;j1++){
+				M.Mem[i][j1] = M.Mem[i][j1]/penyebut;
 			}
 		}
 
 	}
 
-	public MATRIKS GaussSPL(MATRIKS M){
-		int i,j,a, k, awal, current; 
+	public int IndeksKolom(MATRIKS M, int i){
+		//  mencari indeks kolom yang berawal nilai 0 
+		int j, idxKol;
+		boolean isKetemu;
+		isKetemu = false;
 		j = 0;
-		i = 0; 
-		// kemungkinan terbanyak kita akan menukar sebanyanyak nbrseff -1 
-		for (k =0; k < M.NBrsEff-1; k++){
-			// inisiasikan indeks baris dengan k
-			a = k; 
-			while (M.Mem[a][j] == 0){
-				a +=1 ;
-				if (a >= M.NBrsEff){
-					a = 0 ; 
-					j += 1;
-				}
+		idxKol = 0;
+		while ( j < M.NKolEff && !isKetemu){
+			if (M.Mem[i][j] != 0){
+				isKetemu = true;
+				idxKol = j;
+			} else {
+				j +=1;
 			}
-			if (k != a){
-				TukarBaris(M, k, a);
-			}
-			for (i= 0 ;i < M.NBrsEff; i++){
-				BagiBaris(M, i);
-			}
+		} 
+		if (j >= M.NKolEff){
+			idxKol = M.NKolEff;
+		}
+		return idxKol;
+		
+	}
 
-			for (awal=k+1 ;awal < M.NBrsEff; awal++){
-				for (current = j ; current < M.NKolEff; current++ ){
-					M.Mem[awal][current] = M.Mem[awal][current] - M.Mem[i][current];
+	public void SortBaris(MATRIKS M){
+		int i, j; 
+		for (i= 0; i < M.NBrsEff-1; i++){
+			for (j = i+1; j < M.NBrsEff; j++){
+				if (IndeksKolom(M,i) > IndeksKolom(M,j)){
+					TukarBaris(M,i,j);
 				}
 			}
 		}
-		return M;
 	}
 
-	public MATRIKS GaussJordan(MATRIKS M){
-		int i,j,k, awal;
-		GaussSPL(M);
-		for (i = 1 ; i < M.NBrsEff; i++){
-			for (j=0; j < M.NKolEff; j++){
-				a = -1;
+
+
+	public void EliminasiOBE(MATRIKS M, int indeks){
+		// Prekondisi bahwa matriks udah di sort
+		int i,j,a; 
+		// buat semua dimulai dengan angka 1 
+		for (i=0; i < M.NBrsEff; i++){
+			BagiBaris(M,i);
+		}
+		j=0;
+		while (M.Mem[indeks][j] != 1 && j < M.NKolEff){
+			j+=1;
+		}
+		if (j < M.NKolEff){
+			for (i=indeks+1;i < M.NBrsEff;i++){
 				if (M.Mem[i][j] == 1){
-					a = j;
-				}
-			}
-			if (a != -1){
-				for (awal = i-1; awal >=0; awal--){
-					if (M.Mem[awal][a] != 0){
-						for (k = 0; k < M.NKolEff; k++){
-							M.Mem[awal][k] -= M.Mem[i][k]*M.Mem[awal][a];
-						}
+					for (a=j; a < M.NKolEff; a++){
+						M.Mem[i][a] -= M.Mem[indeks][a];
 					}
 				}
-			}	
+			}
 		}
-		return M;
+
 	}
 
+	public void EliminasiOBEjordan(MATRIKS M , int indeks){
+		int i,j,a, kali; 
+		j = 0;
+		while (M.Mem[indeks][j] != 1 && j < M.NKolEff){
+			j+=1;
+		}
+		if (j < M.NKolEff){
+			for (i=0; i < indeks; i++){
+				if (M.Mem[i][j] != 0){
+					for (a=j; a < M.NKolEff; a++){
+						M.Mem[i][a] -= (M.Mem[indeks][a] * M.Mem[i][j]);
+					}
+				}
+			}
+		}
+	}
+
+	public void GaussSPL(MATRIKS M){
+		// int i,j,a, k, awal, current; 
+		// j = 0;
+		// i = 0; 
+		// // kemungkinan terbanyak kita akan menukar sebanyanyak nbrseff -1 
+		// for (k =0; k < M.NBrsEff-1; k++){
+		// 	// inisiasikan indeks baris dengan k
+		// 	a = k; 
+		// 	while (M.Mem[a][j] == 0){
+		// 		a +=1 ;
+		// 		if (a >= M.NBrsEff){
+		// 			a = 0 ; 
+		// 			j += 1;
+		// 		}
+		// 	}
+		// 	if (k != a){
+		// 		TukarBaris(M, k, a);
+		// 	}
+		// 	for (i= 0 ;i < M.NBrsEff; i++){
+		// 		BagiBaris(M, i);
+		// 	}
+
+		// 	for (awal=k+1 ;awal < M.NBrsEff; awal++){
+		// 		for (current = j ; current < M.NKolEff; current++ ){
+		// 			M.Mem[awal][current] = M.Mem[awal][current] - M.Mem[i][current];
+		// 		}
+		// 	}
+		// }
+		// return M;
+		int i;
+		// urutkan matriks, yang ada 0 taruh paling bawah  
+		for (i = 0; i < M.NBrsEff-1; i++){
+			// kurangkan semua 
+			EliminasiOBE(M,i);
+			SortBaris(M);
+		}
+		BagiBaris(M,i);
+		// TulisMATRIKS(M);
+	}
+
+	public void GaussJordan(MATRIKS M){
+		// int i,j, a, k, awal;
+		// GaussSPL(M);
+		// for (i = 1 ; i < M.NBrsEff; i++){
+		// 	for (j=0; j < M.NKolEff; j++){
+		// 		a = -1;
+		// 		if (M.Mem[i][j] == 1){
+		// 			a = j;
+		// 		}
+		// 	}
+		// 	if (a != -1){
+		// 		for (awal = i-1; awal >=0; awal--){
+		// 			if (M.Mem[awal][a] != 0){
+		// 				for (k = 0; k < M.NKolEff; k++){
+		// 					M.Mem[awal][k] -= M.Mem[i][k]*M.Mem[awal][a];
+		// 				}
+		// 			}
+		// 		}
+		// 	}	
+		// }
+		// return M;
+		int i;
+		GaussSPL(M);
+		for (i = 1; i < M.NBrsEff; i++){
+			EliminasiOBEjordan(M, i);
+		}
+	}
+
+	public void TestDwi(){
+		int a;
+		MATRIKS M1= new MATRIKS();
+		System.out.println("Masukkan elemen M1");
+		BacaMATRIKSAugmented(M1);
+		TulisMATRIKS(M1);
+		System.out.println();
+		GaussSPL(M1);
+		TulisMATRIKS(M1);
+		System.out.println();
+		System.out.println();
+		GaussJordan(M1);
+		TulisMATRIKS(M1);
+	}
 
 
 	public void SPLInvers (MATRIKS Maug) {
@@ -518,11 +617,11 @@ public class ADTMat{
 				 	line1 = M.Mem[n][n];
 				 	line2 = M.Mem[i][n]; 
 					for (j = n; j < M.NKolEff; j++){
-						M.Mem[i][j] *= line1;
-						M.Mem[n][j] *= line2;
+						M.Mem[n][j] /= line1;
+						M.Mem[i][j] /= line2;
 						M.Mem[i][j] -= M.Mem[n][j];
 					}
-					count /= (line1 * line2);
+					count *= (line1 * line2);
 				}
 			}
 			count *= M.Mem[n][n];
@@ -573,11 +672,11 @@ public class ADTMat{
 				 	line1 = M.Mem[n][n];
 				 	line2 = M.Mem[i][n]; 
 					for (j = n; j >= 0; j--){
-						M.Mem[i][j] *= line1;
-						M.Mem[n][j] *= line2;
+						M.Mem[n][j] /= line1;
+						M.Mem[i][j] /= line2;
 						M.Mem[i][j] -= M.Mem[n][j];
 					}
-					count /= (line1 * line2);
+					count *= (line1 * line2);
 				}
 			}
 			count *= M.Mem[n][n];
@@ -593,9 +692,13 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
+<<<<<<< HEAD
 		MATRIKS M = new MATRIKS();
 		BacaMATRIKS(M);
-		TulisMATRIKS(GaussSPL(M));
+		// TulisMATRIKS(GaussSPL(M));
+=======
+		Interpolasi();
+>>>>>>> 48fa15182c20cfad194c2281bffe457a9b92e948
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
@@ -611,10 +714,10 @@ public class ADTMat{
 		for(i = 0; i <= n ; i++){
 			for (j = 0; j < 2; j++){
 				if (j == 0){
-					System.out.println("Masukkan kooridnat x" + i);
+					System.out.print("Masukkan kooridnat x" + i + ": ");
 				}
 				else{
-					System.out.println("Masukkan koordinat y" + i);
+					System.out.print("Masukkan koordinat y" + i + ": ");
 				}
 				M.Mem[i][j]= input.nextDouble();
 			}
@@ -654,12 +757,12 @@ public class ADTMat{
 		op = input.nextInt();
 		
 		if (op == 1){		
-			System.out.println("Masukkan derajat polinom n: ");
+			System.out.print("Masukkan derajat polinom n: ");
 			n = input.nextInt();
 			Mout = MakeMatriksInterpolasi(n, Mout);
 			GetMATRIKSKoefisien(Mout, MK);
 			GetMATRIKSHasil(Mout, MH);		
-			System.out.println("Masukkan bilangan x yang ingin dicari nilainya: ");
+			System.out.print("Masukkan bilangan x yang ingin dicari nilainya: ");
 			x = input.nextDouble();
 		}
 		else{
@@ -667,67 +770,81 @@ public class ADTMat{
 			n = 0; //nanti bakal dibikin klo udh tau cara input dri file
 		}
 
-		System.out.println("Pilihan Cara 1 = Gauss, 2 =GJordan, 3 = Balikan, 4 = Cramer");
-		op = input.nextInt();
+		System.out.println("Matriks SPL yang terbentuk adalah:");
+		TulisMATRIKS(Mout);
+
+		if (IsPunyaInvers(MK)){
+			System.out.println("\nPilihan Cara 1 = Gauss, 2 =GJordan, 3 = Balikan, 4 = Cramer");
+			op = input.nextInt();
 			
-		double[] solusi = new double[100];
-		// note to self: nanti array solusi dipake buat ngelist a0, a1, a2... dari tiap meetode
-		if (op == 1){
-
-		}
-		else if (op == 2){
-
-		}
-		else if (op == 3){
-			//Balikan
-			if (!IsPunyaInvers(MK)){
-				System.out.println("Tidak mempunyai solusi");
-			} else {
+			double[] solusi = new double[100];
+			// note to self: nanti array solusi dipake buat ngelist a0, a1, a2... dari tiap metode
+			if (op == 1){
+				int j;
+				GaussSPL(Mout);
+				solusi[Mout.NBrsEff-1] = Mout.Mem[Mout.NBrsEff-1][Mout.NKolEff-1];
+				for (i = Mout.NBrsEff-2; i >= 0; i--){
+					for (j = Mout.NKolEff-2; j > i; j--){
+						Mout.Mem[i][Mout.NKolEff-1] -= Mout.Mem[i][j]*solusi[j+1];
+					}
+					solusi[i] = Mout.Mem[i][Mout.NKolEff-1];
+				}
+			}
+			else if (op == 2){
+				GaussJordan(Mout);
+				GetMATRIKSHasil(Mout, MH);
+				for (i = 0; i < MH.NBrsEff; i++){
+					solusi[i] = MH.Mem[i][0];
+				}
+			}
+			else if (op == 3){
+				//Balikan
 				MK = Inverse(MK);
 				for (i = 0; i < MK.NKolEff; i++){
 					solusi[i] = KaliMATRIKS(MK, MH).Mem[i][0];
 				}
 			}
-		}
-		else if (op == 4){
-			//Cramer
-			if (!IsPunyaInvers(MK)){
-				System.out.println("Tidak mempunyai solusi");
-			} 
-			else {
+			else if (op == 4){
+				//Cramer
 				for (i=0; i < MK.NKolEff; i++){
 					solusi[i] = EkspansiKofaktor(MATRIKSCramer(MK, MH, i))/EkspansiKofaktor(MK);
 				}
 			}
-		}
-		// pilih jenis output
-		System.out.println("Pilih 1 output ke layar, 2 output ke file");
-		op = input.nextInt();
+	
+			// pilih jenis output
+			System.out.println("Pilih 1 output ke layar, 2 output ke file");
+			op = input.nextInt();
 
-		if (op == 1){
-			System.out.println("Fungsi interpolasi yang terbentuk adalah:");
-			System.out.print("y = ");
-			for (i = 0; i <= n; i++){
-				if (i == 0){
-					System.out.printf("%.2f", solusi[i]);
+			if (op == 1){
+				System.out.println("Fungsi interpolasi yang terbentuk adalah:");
+				System.out.print("y = ");
+				for (i = 0; i <= n; i++){
+					if (i == 0){
+						System.out.printf("%.2f", solusi[i]);
+					}
+					else if (i == 1){
+						System.out.print(" + ");
+						System.out.printf("%.2f", solusi[i]);
+						System.out.print("x");
+					}
+					else {
+						System.out.print(" + ");
+						System.out.printf("%.2f", solusi[i]);
+						System.out.print("x^" + i);
+					}
+					y += solusi[i]*(Math.pow(x, i));
 				}
-				else if (i == 1){
-					System.out.print(" + ");
-					System.out.printf("%.2f", solusi[i]);
-					System.out.print("x");
-				}
-				else {
-					System.out.print(" + ");
-					System.out.printf("%.2f", solusi[i]);
-					System.out.print("x^" + i);
-				}
-				y += solusi[i]*(Math.pow(x, i));
+				System.out.print("\nMaka input " + x + " berdasarkan interpolasi memiliki nilai ");
+				System.out.printf("%.2f\n", y);
 			}
-			System.out.print("\nMaka input " + x + " berdasarkan interpolasi memiliki nilai ");
-			System.out.printf("%.2f\n", y);
+			else if (op == 2){
+				//punten blom
+			}
 		}
-		else if (op == 2){
-			//punten blom
+		else{
+			System.out.println("\nTerjadi kesalahan pada input.");
+			System.out.println("Pastikan koordinat x titik sampel yang diinput selalu berbeda satu sama lain.");
+			System.out.println("Silahkan mengulang program.");
 		}
 	}
 }
