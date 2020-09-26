@@ -47,6 +47,9 @@ public class ADTMat{
 			}
 		}
 		MakeMATRIKS(n,n,M);
+		System.out.println("Matriks yang anda masukkan adalah :");
+		TulisMATRIKS(M);
+		System.out.println();
 	}
 
 	public void BacaMATRIKSAugmented(MATRIKS M){
@@ -351,6 +354,18 @@ public class ADTMat{
 		}
 	}
 
+	public void DeterminanKofaktor (MATRIKS M ){
+		double det = EkspansiKofaktor(M);
+		MATRIKSKofaktor2(M);
+		System.out.println("Matriks kofaktornya adalah: ");
+		TulisMATRIKS(M);
+		System.out.println("");
+		System.out.print("Determinannya adalah: ");
+		System.out.println(det);
+		M.NDesc = 1;
+		M.desc[0] = "Matriks Kofaktor, Determinannya adalah " + String.valueOf(det);
+	}
+
 	public double KofakElmt(MATRIKS M, int i, int j){
 		// Reihan Andhika Putra, Checked
 		/* I.S. M terdefinisi, i, j dalam range matriks */
@@ -393,8 +408,78 @@ public class ADTMat{
 		return Kofaktor;
 	}
 
-	public void DeterminanKofaktor (){
+	public void MATRIKSKofaktor2 (MATRIKS M){
+		// Reihan Andhika Putra, Checked
+		/* I.S. M terdefinisi */
+		/* F.S. Mengeluarkan Matriks kofaktor dari sebuah matriks */
+		int i,j;
+		MATRIKS Kofaktor = new MATRIKS();
+		MakeMATRIKS(M.NBrsEff,M.NKolEff,Kofaktor);
+		for (i = 0; i < M.NBrsEff; i++)
+		{
+			for (j = 0; j < M.NKolEff; j++)
+			{
+				Kofaktor.Mem[i][j] = KofakElmt(M, i, j);
+			}
+		}
+		M.Mem = Kofaktor.Mem;
+	}
 
+	public void MenuDeterminan(){
+		MATRIKS M = new MATRIKS();
+		int op,op2,op3;
+		System.out.println("Anda telah memilih menu Determinan");
+		System.out.println("Silahkan pilih metode pembacaan matriks [1= file, 2= keyboard]");
+		System.out.print("Masukkan pilihan : ");
+		op = sc.nextInt();
+		System.out.println("");
+		while (op != 1 && op !=2){
+			System.out.println("Pilihan salah !! Silahkan pilih metode pembacaan matriks [1= file, 2= keyboard]");
+			System.out.print("Masukkan pilihan : ");
+			op = sc.nextInt();
+			System.out.println("");
+		}
+		if (op==2) {
+			BacaMATRIKS(M);
+		} else if (op==1){
+			bacaFile(M);
+		}
+
+		if (!IsBujurSangkar(M)){
+			System.out.println("Tidak punya determinan karena bukan matriks persegi");	
+		} else {
+			System.out.println("Silahkan pilih metode pencarian determinan [1= Ekspansi Kofaktor, 2= Segitiga Atas, 3=Segitiga Bawah]");
+			System.out.print("Masukkan pilihan : ");
+			op2 = sc.nextInt();
+			while (op2 != 1 && op2 != 2 && op2 != 3){
+				System.out.println("Pilihan salah !! Silahkan pilih metode pencarian determinan [1= Ekspansi Kofaktor, 2= Segitiga Atas, 3=Segitiga Bawah]");
+				System.out.print("Masukkan pilihan : ");
+				op2 = sc.nextInt();
+				System.out.println("");
+			}
+			if (op2 == 1) {
+				DeterminanKofaktor(M);
+			} else if (op2 == 2){
+				Segiatas(M);
+			} else if (op2 == 3){
+				Segibawah(M);
+			}
+			System.out.println("Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+			System.out.print("Masukkan pilihan : ");
+			op3 = sc.nextInt();
+			while (op3 != 1 && op3 != 2){
+				System.out.println("Pilihan salah !! Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+				System.out.print("Masukkan pilihan : ");
+				op3 = sc.nextInt();
+				System.out.println("");
+			}
+			if (op3 == 1) {
+				TulisFileDesc(M);
+				MenuDeterminan();
+			} else {
+				MenuDeterminan();
+			}
+		}
 	}
 
 	public void Segiatas(MATRIKS M){
@@ -449,6 +534,8 @@ public class ADTMat{
 			TulisMATRIKS(M);
 			System.out.println();
 			System.out.println("Determinan matriks = " + count);
+			M.NDesc = 1;
+			M.desc[0] = "Matriks Segitiga Atas, Determinannya adalah " + String.valueOf(count);
 		}
 	}
 
@@ -481,7 +568,7 @@ public class ADTMat{
 					System.out.println("Kondisi matriks setelah melakukan OBE:");
 					TulisMATRIKS(M);
 					System.out.println();
-					System.out.println("Determinan matriks = 0.0");
+					System.out.println("Matriks Segitiga Bawah, Determinan matriks = 0.0");
 				}  
 			}
 		   	for (i = n-1; i >= 0; i--){       
@@ -504,6 +591,8 @@ public class ADTMat{
 			TulisMATRIKS(M);
 			System.out.println();
 			System.out.println("Determinan matriks = " + count);
+			M.NDesc = 1;
+			M.desc[0] = "Matriks Segitiga Bawah, Determinannya adalah " + String.valueOf(count);
 		}
 	}
 
@@ -1171,9 +1260,7 @@ public class ADTMat{
 
 	/* ********** Testing ********** */
 	public void TestReihan(){
-		MATRIKS M1 = new MATRIKS();
-		bacaFile(M1);
-		TulisFile(M1);
+		MenuDeterminan();
 	}
 
 	public void TestDwi(){
