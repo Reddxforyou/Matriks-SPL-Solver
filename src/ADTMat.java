@@ -1019,9 +1019,9 @@ public class ADTMat{
 			}
 			System.out.print("\nMaka input");
 			for (i = 0; i < Mout.NKolEff-2; i++){
-				 System.out.print(" x" + i + " = " + x[i] + ", ");
+				 System.out.print(" x" + i + " = " + x[i] + ",");
 			}
-			System.out.println("adalah: ");
+			System.out.print(" akan menghasilkan nilai: ");
 			System.out.printf("%.2f\n", y);
 		}
 		else if (op == 2){
