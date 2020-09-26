@@ -694,16 +694,16 @@ public class ADTMat{
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
-	public MATRIKS MakeMatriksInterpolasi(int n, MATRIKS Mout) {
+	public void BacaTitik(MATRIKS M){
 		// Ryo Richardo, Checked
-		// I.S. n (derajat interpolasi), Mout terdefinisi
-		// F.S. terbentuk matriks representasi Interpolasi inputnya.
-
-		int i, j;
-		MATRIKS M = new MATRIKS();
+		// I.S. M terdefinisi
+		// F.S. membaca jumlah titik sampel dan titik2 nya, membuat matriks titik
+		int i, j, n;
 		Scanner input = new Scanner(System.in);
 
-		for(i = 0; i <= n ; i++){
+		System.out.print("Masukkan banyak titik sampel n: ");
+		n = input.nextInt();
+		for(i = 0; i < n ; i++){
 			for (j = 0; j < 2; j++){
 				if (j == 0){
 					System.out.print("Masukkan kooridnat x" + i + ": ");
@@ -715,13 +715,20 @@ public class ADTMat{
 			}
 		}
 		MakeMATRIKS(n, 2, M);
+	}
 
-		for(i = 0; i <= n+1; i++){
-			for (j = 0; j <= n+1; j++){
+	public MATRIKS MakeMatriksInterpolasi(MATRIKS M) {
+		// Ryo Richardo, Checked
+		// I.S. M (matriks titik) terdefinisi
+		// F.S. terbentuk matriks representasi Interpolasi inputnya.
+		MATRIKS Mout = new MATRIKS();
+		int i, j, n = M.NBrsEff;
+		for(i = 0; i < n; i++){
+			for (j = 0; j <= n; j++){
 				if (j == 0){
 					Mout.Mem[i][j] = 1;
 				}
-				else if (j == n+1){
+				else if (j == n){
 					Mout.Mem[i][j] = M.Mem[i][1];
 				}
 				else{
@@ -729,7 +736,7 @@ public class ADTMat{
 				}
 			}
 		}
-		MakeMATRIKS(n+1, n+2, Mout);
+		MakeMATRIKS(n, n+1, Mout);
 		return Mout;
 	}
 
@@ -738,7 +745,7 @@ public class ADTMat{
 		// I.S. titik sampel tidak ada yang diinput 2 kali, dan tidak boleh ada 2 titik dengan x sama namun y berbeda (bukan fungsi)
 		// F.S. memberikan nilai y, yaitu hasil interpolasi x (prosedur bakal minta input derajat polinom, titik2 sampel, dan titik yg ingin dicari)
 		double x, y = 0;
-		int i, n, op;
+		int i, op;
 		MATRIKS Mout = new MATRIKS(); 
 		MATRIKS MH = new MATRIKS();
 		MATRIKS MK = new MATRIKS();
@@ -749,9 +756,8 @@ public class ADTMat{
 		op = input.nextInt();
 		
 		if (op == 1){		
-			System.out.print("Masukkan derajat polinom n: ");
-			n = input.nextInt();
-			Mout = MakeMatriksInterpolasi(n, Mout);
+			BacaTitik(MH);
+			Mout = MakeMatriksInterpolasi(MH);
 			GetMATRIKSKoefisien(Mout, MK);
 			GetMATRIKSHasil(Mout, MH);		
 			System.out.print("Masukkan bilangan x yang ingin dicari nilainya: ");
@@ -759,7 +765,7 @@ public class ADTMat{
 		}
 		else{
 			x = 0;
-			n = 0; //nanti bakal dibikin klo udh tau cara input dri file
+			 //nanti bakal dibikin klo udh tau cara input dri file
 		}
 
 		System.out.println("Matriks SPL yang terbentuk adalah:");
@@ -810,7 +816,7 @@ public class ADTMat{
 			if (op == 1){
 				System.out.println("Fungsi interpolasi yang terbentuk adalah:");
 				System.out.print("y = ");
-				for (i = 0; i <= n; i++){
+				for (i = 0; i < Mout.NBrsEff; i++){
 					if (i == 0){
 						System.out.printf("%.2f", solusi[i]);
 					}
