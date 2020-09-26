@@ -11,6 +11,8 @@ public class ADTMat{
 		public double [][] Mem = new double[100][100]; 
 		public int NBrsEff;
 		public int NKolEff; 
+		public String [] desc = new String[100];
+		public int NDesc;
 		/* Indeks matriks yang digunakan: [0..NBrsEff-1][0..NBrsEff-1] */
 		/* Memori matriks yang dipakai selalu di "ujung kiri atas" */
 	}
@@ -1008,14 +1010,14 @@ public class ADTMat{
 		// Reihan Andhika P checked
 		// I.S. M matriks dengan elemen
 		// F.S. Isi matriks disalin ke file .txt
-		Scanner scq = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		PrintWriter writer;
 	 
 		try
 		{
 			System.out.print("Tulis nama file beserta extension : ");
 			String reipath = "D:/Tugas Kuliah/IF/Semester 3/Aljabar Linier dan Geometri/Tubes1/Tubes1/test/";
-			writer = new PrintWriter(reipath + scq.next());
+			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NBrsEff; i++){
 				for(int j = 0; j < M.NKolEff; j++){
 					writer.print(M.Mem[i][j] + " ");
@@ -1030,11 +1032,66 @@ public class ADTMat{
 		}
 	}
 
+	public  void TulisFileDesc(MATRIKS M){
+		// Reihan Andhika P unchecked
+		// I.S. M matriks dengan elemen
+		// F.S. Isi matriks dan deskripsi disalin ke file .txt
+		Scanner sc = new Scanner(System.in);
+		PrintWriter writer;
+	 
+		try
+		{
+			System.out.print("Tulis nama file beserta extension : ");
+			String reipath = "D:/Tugas Kuliah/IF/Semester 3/Aljabar Linier dan Geometri/Tubes1/Tubes1/test/";
+			writer = new PrintWriter(reipath + sc.next());
+			for (int i = 0; i < M.NBrsEff; i++){
+				for(int j = 0; j < M.NKolEff; j++){
+					writer.print(M.Mem[i][j] + " ");
+				}
+				writer.println();
+			}
+			for (int i = 0; i < M.NDesc; i++){
+					writer.print(M.desc[i] + " ");
+				writer.println();
+			}		
+			writer.close();
+		}
+		catch (FileNotFoundException e){
+			System.out.println("Terjadi kesalahan");
+			e.printStackTrace();			
+		}
+	}
+
+	public  void TulisDesc(MATRIKS M){
+		// Reihan Andhika P unchecked
+		// I.S. M matriks dengan elemen
+		// F.S. Isi deskripsi disalin ke file .txt
+		Scanner sc = new Scanner(System.in);
+		PrintWriter writer;
+	 
+		try
+		{
+			System.out.print("Tulis nama file beserta extension : ");
+			String reipath = "D:/Tugas Kuliah/IF/Semester 3/Aljabar Linier dan Geometri/Tubes1/Tubes1/test/";
+			writer = new PrintWriter(reipath + sc.next());
+			for (int i = 0; i < M.NDesc; i++){
+					writer.print(M.desc[i] + " ");
+				writer.println();
+			}		
+			writer.close();
+		}
+		catch (FileNotFoundException e){
+			System.out.println("Terjadi kesalahan");
+			e.printStackTrace();			
+		}
+	}
+
 	/* ********** Testing ********** */
 	public void TestReihan(){
 		MATRIKS M1= new MATRIKS();
 		BacaMatriksHilbert(M1);
 		TulisMATRIKS(M1);
+
 	}
 
 	public void TestDwi(){
