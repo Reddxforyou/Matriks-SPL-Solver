@@ -82,6 +82,13 @@ public class ADTMat{
 			}
 		}
 	}
+	
+	public boolean IsBujurSangkar(MATRIKS M){
+		// Reihan Andhika Putra, Checked
+		/* Mengirimkan true jika M adalah matriks dg ukuran baris dan kolom sama */
+		return (M.NBrsEff == M.NKolEff);
+	}
+
 	public void TestReihan(){
 		MATRIKS M1= new MATRIKS();
 		bacaFile(M1);
