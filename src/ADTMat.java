@@ -690,10 +690,16 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
-		Interpolasi();
+		MATRIKS M = new MATRIKS();
+		BacaRegresi(M);
+		TulisMATRIKS(M);
+		System.out.println();
+		System.out.println();
+		TulisMATRIKS(MakeMatriksRegresi(M));
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
+	////////// INTERPOLASI/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void BacaTitik(MATRIKS M){
 		// Ryo Richardo, Checked
 		// I.S. M terdefinisi
@@ -846,6 +852,80 @@ public class ADTMat{
 		}
 		input.close();
 	}
+
+	//////////REGRESI////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void BacaRegresi(MATRIKS M){
+		// Ryo Richardo, Checked
+		// I.S. M terdefininsi
+		// F.S. terbentuk matriks M berupa var x (per kolom), var y (kolom terakhir), dan valuenya (per baris)
+		int i, j, n, k;
+		Scanner input = new Scanner(System.in);
+		System.out.print("Masukkan jumlah variabel x: ");
+		n = input.nextInt();
+		System.out.print("Masukkan jumlah sampel masing2 variabel: ");
+		k = input.nextInt();
+
+		for (i = 0; i <= n; i++){
+			for (j = 0; j < k; j++){
+				if (i != n){
+					System.out.print("Masukkan value variabel x");
+					System.out.print(i);
+					System.out.print(" ke-");
+					System.out.print(j+1);
+					System.out.print(": ");
+					M.Mem[j][i] = input.nextDouble();
+				} 
+				else{
+					System.out.print("Masukkan value variabel y ke-");
+					System.out.print(j+1);
+					System.out.print(": ");
+					M.Mem[j][i] = input.nextDouble();
+				}
+			}
+		}
+
+		MakeMATRIKS(k, n+1, M);
+	}
+
+	public MATRIKS MakeMatriksRegresi(MATRIKS M){
+		// Ryo Richardo, Checked
+		// I.S. Matriks input value x0...xn dan y  terdefinisi
+		// F.S. Terbentuk matriks M berupa matriks regresi yang siap di-"Gauss"-kan.
+		MATRIKS Mout = new MATRIKS();
+		int i, j, k, m = M.NBrsEff, n = M.NKolEff;
+		for (j = 0; j <= n; j++){
+			if (j == 0){
+				Mout.Mem[0][j] = m;
+			}
+			else{
+				for (i = 0; i < m; i++){
+					Mout.Mem[0][j] += M.Mem[i][j-1];
+				}
+			}
+		}
+		for (i = 1; i <= m+1; i++){
+			for (j = 0; j <= n; j++){
+				if (j == 0){
+					for (k = 0; k < m; k++){
+						Mout.Mem[i][j] += M.Mem[k][i-1];
+					}
+				}
+				else{
+					for (k = 0; k <= m; k++){
+						Mout.Mem[i][j] += M.Mem[k][j-1]*M.Mem[k][i-1];
+					}
+				}
+			}
+		}
+		MakeMATRIKS(m+2, n+1, Mout);
+		return Mout;
+	}
+
+	public void Regresi(){
+
+	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	public void bacaFile(MATRIKS M){
 		// Reihan Andhika P checked
 		// I.S. M masih kosong
