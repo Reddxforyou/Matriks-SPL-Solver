@@ -28,6 +28,39 @@ public class ADTMat{
 	   M.NBrsEff=NB;
 	   M.NKolEff=NK;
 	 }
+	
+	public MATRIKS InverseMatriks(MATRIKS M){
+		// I.S MATRIKS TELAH DI MERGE 
+		// F.S MATRIKS DI OBE
+		MATRIKS M1 = new MATRIKS();
+		M1 = AugmentedInverseJordan(M);
+		GaussJordan(M1);
+		return M1 ;
+	}
+
+	public MATRIKS AugmentedInverseJordan (MATRIKS M){
+		// I.S inputan matriks yang mau di inverse 
+		// F.S MERGE MATRIKS
+		int i,j;
+		MATRIKS M1 = new MATRIKS();
+		MakeMATRIKS(M.NBrsEff, 2*M.NKolEff, M1);
+		for (i=0; i <M1.NBrsEff; i++){
+			for (j=0; j<M1.NKolEff; j++){
+				if (j < M.NKolEff){
+					M1.Mem[i][j] = M.Mem[i][j];
+				}else {
+					if ((j- M.NKolEff) == i){
+						M1.Mem[i][j] = 1.0;
+					}else {
+						M1.Mem[i][j] = 0.0;
+					}				
+				}
+			}
+		}
+		return M1;
+		// GaussJordan(M1);
+		// TulisMATRIKS(M1);
+	}
 	 
 	 /* ********** KELOMPOK BACA/TULIS ********** */
 	public void BacaMATRIKS(MATRIKS M){
@@ -172,18 +205,18 @@ public class ADTMat{
 		M.Mem = M3.Mem;
 	}
 
-	public void TukarBaris(MATRIKS M, int B1, int B2) {
-		// Reihan Andhika Putra
-		/* I.S. M terdefinisi dan B1 , B2 dalam range, perhatikan bahwa indeks (0,x) adalah baris ke 1
-		/* F.S. M di baris ke B1 ditukar dengan B2*/
-		int j ;
-		double temp;
-		for (j = 0; j < M.NKolEff; j++){
-			temp = M.Mem[B1][j];
-			M.Mem[B1][j] = M.Mem[B2][j];
-			M.Mem[B2][j] = temp;
-		}
-	}
+	// public void TukarBaris(MATRIKS M, int B1, int B2) {
+	// 	// Reihan Andhika Putra
+	// 	/* I.S. M terdefinisi dan B1 , B2 dalam range, perhatikan bahwa indeks (0,x) adalah baris ke 1
+	// 	/* F.S. M di baris ke B1 ditukar dengan B2*/
+	// 	int j ;
+	// 	double temp;
+	// 	for (j = 0; j < M.NKolEff; j++){
+	// 		temp = M.Mem[B1][j];
+	// 		M.Mem[B1][j] = M.Mem[B2][j];
+	// 		M.Mem[B2][j] = temp;
+	// 	}
+	// }
 
 	public MATRIKS Inverse (MATRIKS M){
 		// Reihan Andhika Putra, Checked
@@ -230,6 +263,16 @@ public class ADTMat{
 				 MHsl.Mem[i][j] = MIn.Mem[i][j];
 			}
 	 }
+	}
+
+	public void TukarBaris(MATRIKS M, int i1, int i2) {
+		int j;
+		double temp; 
+		for(j=0;j < M.NKolEff;j++){
+			temp = M.Mem[i1][j];
+			M.Mem[i1][j] = M.Mem[i2][j];
+			M.Mem[i2][j] = temp;
+		} 
 	}
 
 	public boolean IsTidakAdaSolusi(MATRIKS M){
@@ -814,6 +857,8 @@ public class ADTMat{
 		}
 	}
 
+	
+
 
 	////////// INTERPOLASI/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void BacaTitik(MATRIKS M){
@@ -1270,12 +1315,9 @@ public class ADTMat{
 		BacaMATRIKSAugmented(M1);
 		TulisMATRIKS(M1);
 		System.out.println();
-		GaussSPL(M1);
-		TulisMATRIKS(M1);
+		TulisMATRIKS(AugmentedInverseJordan(M1));
 		System.out.println();
-		System.out.println();
-		GaussJordan(M1);
-		TulisMATRIKS(M1);
+		TulisMATRIKS(InverseMatriks(M1));
 	}
 
 	public void TestRyo(){
