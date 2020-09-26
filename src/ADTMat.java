@@ -16,6 +16,7 @@ public class ADTMat{
 		/* Indeks matriks yang digunakan: [0..NBrsEff-1][0..NBrsEff-1] */
 		/* Memori matriks yang dipakai selalu di "ujung kiri atas" */
 	}
+	static final Scanner sc = new Scanner(System.in);
 
 	/* ********** DEFINISI PROTOTIPE PRIMITIF ********** */
 	/* *** Konstruktor membentuk MATRIKS *** */
@@ -390,6 +391,10 @@ public class ADTMat{
 			}
 		}
 		return Kofaktor;
+	}
+
+	public void DeterminanKofaktor (){
+
 	}
 
 	public void Segiatas(MATRIKS M){
@@ -953,8 +958,6 @@ public class ADTMat{
 		// F.S. M berisi matriks yang ada di file , tiap orang pathnya bisa beda beda
 		int i,j,NB,NK;
 		String baris1, barismatriks;
-		
-		Scanner sc = new Scanner(System.in);
 		try {
 			System.out.print("Tulis nama file beserta extension : ");
 			String reipath = "D:/Tugas Kuliah/IF/Semester 3/Aljabar Linier dan Geometri/Tubes1/Tubes1/test/";
@@ -1010,7 +1013,6 @@ public class ADTMat{
 		// Reihan Andhika P checked
 		// I.S. M matriks dengan elemen
 		// F.S. Isi matriks disalin ke file .txt
-		Scanner sc = new Scanner(System.in);
 		PrintWriter writer;
 	 
 		try
@@ -1036,7 +1038,6 @@ public class ADTMat{
 		// Reihan Andhika P unchecked
 		// I.S. M matriks dengan elemen
 		// F.S. Isi matriks dan deskripsi disalin ke file .txt
-		Scanner sc = new Scanner(System.in);
 		PrintWriter writer;
 	 
 		try
@@ -1066,7 +1067,6 @@ public class ADTMat{
 		// Reihan Andhika P unchecked
 		// I.S. M matriks dengan elemen
 		// F.S. Isi deskripsi disalin ke file .txt
-		Scanner sc = new Scanner(System.in);
 		PrintWriter writer;
 	 
 		try
@@ -1088,10 +1088,9 @@ public class ADTMat{
 
 	/* ********** Testing ********** */
 	public void TestReihan(){
-		MATRIKS M1= new MATRIKS();
-		BacaMatriksHilbert(M1);
-		TulisMATRIKS(M1);
-
+		MATRIKS M1 = new MATRIKS();
+		bacaFile(M1);
+		TulisFile(M1);
 	}
 
 	public void TestDwi(){
