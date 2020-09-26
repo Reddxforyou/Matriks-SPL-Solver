@@ -2,6 +2,8 @@ import java.util.Scanner;
 import java.lang.Math; 
 import java.io.File;
 import java.io.FileNotFoundException;
+// import java.io.FileWriter;
+import java.io.PrintWriter;
 
 public class ADTMat{
 	/* Tipe data matriks */
@@ -83,6 +85,10 @@ public class ADTMat{
 	public void TestReihan(){
 		MATRIKS M1= new MATRIKS();
 		bacaFile(M1);
+		System.out.println(M1.NBrsEff);
+		System.out.println(M1.NKolEff);
+		TulisFile(M1);
+
 	}
 
 	public MATRIKS KaliMATRIKS (MATRIKS M1, MATRIKS M2){
@@ -931,8 +937,7 @@ public class ADTMat{
 		// I.S. M masih kosong
 		// F.S. M berisi matriks yang ada di file , tiap orang pathnya bisa beda beda
 		int i,j,NB,NK;
-		Double kol;
-		String baris, baris1, barismatriks;
+		String baris1, barismatriks;
 		
 		Scanner sc = new Scanner(System.in);
 		try {
@@ -943,7 +948,7 @@ public class ADTMat{
 			Scanner CountNB = new Scanner(file);
 			NB = 0; 
 			while (CountNB.hasNextLine()) {
-				baris = CountNB.nextLine();
+				CountNB.nextLine();
 				NB = NB + 1;
 			}
 			CountNB.close();
@@ -954,7 +959,7 @@ public class ADTMat{
 				baris1 = CountNK.nextLine();
 				Scanner hitungNK = new Scanner(baris1);
 				while(hitungNK.hasNextDouble()){
-					kol = hitungNK.nextDouble();
+					hitungNK.nextDouble();
 					NK = NK +1;
 				}
 				hitungNK.close();
@@ -984,7 +989,32 @@ public class ADTMat{
 			System.out.println("File tidak ada atau nama file salah");
 			e.printStackTrace();
 		}
-		sc.close();
+	}
+
+	public  void TulisFile(MATRIKS M){
+		// Reihan Andhika P checked
+		// I.S. M matriks dengan elemen
+		// F.S. Isi matriks disalin ke file .txt
+		Scanner scq = new Scanner(System.in);
+		PrintWriter writer;
+	 
+		try
+		{
+			System.out.print("Tulis nama file beserta extension : ");
+			String reipath = "D:/Tugas Kuliah/IF/Semester 3/Aljabar Linier dan Geometri/Tubes1/Tubes1/test/";
+			writer = new PrintWriter(reipath + scq.next());
+			for (int i = 0; i < M.NBrsEff; i++){
+				for(int j = 0; j < M.NKolEff; j++){
+					writer.print(M.Mem[i][j] + " ");
+				}
+				writer.println();
+			}	
+			writer.close();
+		}
+		catch (FileNotFoundException e){
+			System.out.println("Terjadi kesalahan");
+			e.printStackTrace();			
+		}
 	}
 }
 
