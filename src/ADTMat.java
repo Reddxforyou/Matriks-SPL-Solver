@@ -43,9 +43,9 @@ public class ADTMat{
 
 	public void BacaMATRIKSAugmented(MATRIKS M){
 		// Reihan Andhika Putra , Checked
-		/* I.S. IsIdxValid(NB,NK) */ 
+		/* I.S. M kosong */ 
 		/* F.S. M terdefinisi nilai elemen efektifnya, berukuran NB x NK */
-		/* Proses: Melakukan MakeMATRIKS(M,NB,NK) dan mengisi nilai efektifnya */
+		/* Proses: Melakukan MakeMATRIKS(NB,NK,M) dan mengisi nilai efektifnya */
 		/* Selanjutnya membaca nilai elemen per baris dan kolom */
 		int i,j,m,n;
 		Scanner input = new Scanner(System.in);
@@ -60,6 +60,40 @@ public class ADTMat{
 		}
 		MakeMATRIKS(m,n,M);
 	}
+
+	public void BacaMatriksHilbert (MATRIKS MAug){
+		// Reihan Andhika Putra , Checked
+		/* I.S. Maug */ 
+		/* F.S. Maug terdefinisi nilai elemen efektifnya, berukuran NB x NK+1 */
+		/* Proses: Melakukan MakeMATRIKS(NB,NB+1,M) dan mengisi nilai efektifnya */
+		/* Selanjutnya membaca nilai elemen per baris dan kolom dan mengisi nilai matriks kolom terakhir sesuai kaidah matriks hilbert */
+	  int i, j, n;
+	  double d;
+		
+		System.out.print("Masukkan ordo n*n untuk matriks koefisien dari matriks hilbert: ");
+	  Scanner keyboard = new Scanner(System.in);
+	  n = keyboard.nextInt();
+	  for (i = 0; i < n; i ++) {
+			for (j = 0; j <= n ; j ++) {
+				d = i + 1 + j; 
+				if (j != n ) {
+					MAug.Mem[i][j] = (1/(d));
+				} 
+				else
+				{
+					if (i == 0) {
+						MAug.Mem[i][j] = 1;
+					}
+					else 
+					{
+						MAug.Mem[i][j] = 0;
+					}
+				}
+			}
+		}
+		MakeMATRIKS(n, n+1, MAug);
+		
+  }
 	
 	public void TulisMATRIKS (MATRIKS M){
 		// Reihan Andhika Putra , Checked
@@ -82,7 +116,7 @@ public class ADTMat{
 			}
 		}
 	}
-	
+
 	public boolean IsBujurSangkar(MATRIKS M){
 		// Reihan Andhika Putra, Checked
 		/* Mengirimkan true jika M adalah matriks dg ukuran baris dan kolom sama */
@@ -91,10 +125,8 @@ public class ADTMat{
 
 	public void TestReihan(){
 		MATRIKS M1= new MATRIKS();
-		bacaFile(M1);
-		System.out.println(M1.NBrsEff);
-		System.out.println(M1.NKolEff);
-		TulisFile(M1);
+		BacaMatriksHilbert(M1);
+		TulisMATRIKS(M1);
 
 	}
 
@@ -299,13 +331,13 @@ public class ADTMat{
 		// Reihan Andhika Putra, Checked
 		/* I.S. MAug, dan MK terdefinisi */
 		/* F.S. Mengambil matriks yang merupakan matriks koefisien dari variabel di matriks augmented */
-    int i,j;
-    MakeMATRIKS(MAug.NBrsEff, MAug.NKolEff-1, MK);
-    for (i=0; i< MK.NBrsEff;i++){
-      for (j=0; j< MK.NKolEff;j++){
-        MK.Mem[i][j] = MAug.Mem[i][j];
-      }
-    }
+	int i,j;
+	MakeMATRIKS(MAug.NBrsEff, MAug.NKolEff-1, MK);
+	for (i=0; i< MK.NBrsEff;i++){
+	  for (j=0; j< MK.NKolEff;j++){
+		MK.Mem[i][j] = MAug.Mem[i][j];
+	  }
+	}
 	}
 
 	public void GetMATRIKSHasil (MATRIKS MAug, MATRIKS MH) {
