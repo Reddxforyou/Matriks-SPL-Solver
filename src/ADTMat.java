@@ -781,16 +781,15 @@ public class ADTMat{
 		System.out.println("Masukkan 1 untuk input keyboard, 2 untuk input dari file: ");
 		op = input.nextInt();
 		
+		System.out.print("Masukkan bilangan x yang ingin dicari nilainya: ");
+		x = input.nextDouble();
 		if (op == 1){		
 			BacaTitik(MH);
 			Mout = MakeMatriksInterpolasi(MH);
 			GetMATRIKSKoefisien(Mout, MK);
 			GetMATRIKSHasil(Mout, MH);		
-			System.out.print("Masukkan bilangan x yang ingin dicari nilainya: ");
-			x = input.nextDouble();
 		}
 		else{
-			x = 0;
 			 //nanti bakal dibikin klo udh tau cara input dri file
 		}
 
@@ -923,7 +922,7 @@ public class ADTMat{
 				}
 			}
 		}
-		for (i = 1; i <= m+1; i++){
+		for (i = 1; i <= m; i++){
 			for (j = 0; j <= n; j++){
 				if (j == 0){
 					for (k = 0; k < m; k++){
@@ -937,12 +936,96 @@ public class ADTMat{
 				}
 			}
 		}
-		MakeMATRIKS(m+2, n+1, Mout);
+		MakeMATRIKS(m+1, n+1, Mout);
 		return Mout;
 	}
 
 	public void Regresi(){
+		double y = 0;
+		double[] x = new double[100];
+		int i, op;
+		MATRIKS Mout = new MATRIKS(); 
+		MATRIKS MH = new MATRIKS();
+		MATRIKS MK = new MATRIKS();
+		
+		Scanner input = new Scanner(System.in);
 
+		System.out.println("Masukkan 1 untuk input keyboard, 2 untuk input dari file: ");
+		op = input.nextInt();
+		
+		if (op == 1){		
+			BacaRegresi(MH);
+			Mout = MakeMatriksRegresi(MH);
+			GetMATRIKSKoefisien(Mout, MK);
+			GetMATRIKSHasil(Mout, MH);	
+		}
+		else{
+			 //nanti bakal dibikin klo udh tau cara input dri file
+		}
+
+		for (i = 0; i < Mout.NKolEff-2; i++){
+			System.out.print("Masukkan nilai x" + i + " yang ingin dicari nilainya: ");
+			x[i] = input.nextDouble();
+		}
+
+		System.out.println("Matriks SPL yang terbentuk adalah:");
+		TulisMATRIKS(Mout);
+
+		System.out.println("\nPilihan Cara 1 = Gauss, 2 =GJordan");
+		op = input.nextInt();
+			
+		double[] solusi = new double[100];
+		// note to self: nanti array solusi dipake buat ngelist a0, a1, a2... dari tiap metode
+		if (op == 1){
+			int j;
+			GaussSPL(Mout);
+			solusi[Mout.NBrsEff-1] = Mout.Mem[Mout.NBrsEff-1][Mout.NKolEff-1];
+			for (i = Mout.NBrsEff-2; i >= 0; i--){
+				for (j = Mout.NKolEff-2; j > i; j--){
+					Mout.Mem[i][Mout.NKolEff-1] -= Mout.Mem[i][j]*solusi[j];
+				}
+				solusi[i] = Mout.Mem[i][Mout.NKolEff-1];
+			}
+		}
+		else if (op == 2){
+			GaussJordan(Mout);
+			GetMATRIKSHasil(Mout, MH);
+			for (i = 0; i < MH.NBrsEff; i++){
+				solusi[i] = MH.Mem[i][0];
+			}
+		}
+			
+	
+		// pilih jenis output
+		System.out.println("Pilih 1 output ke layar, 2 output ke file");
+		op = input.nextInt();
+
+		if (op == 1){
+			System.out.println("Persamaan regresi yang terbentuk adalah:");
+			System.out.print("y = ");
+			for (i = 0; i < Mout.NBrsEff; i++){
+				if (i == 0){
+					System.out.printf("%.2f", solusi[i]);
+					y += solusi[i];
+				}
+				else {
+					System.out.print(" + ");
+					System.out.printf("%.2f", solusi[i]);
+					System.out.print("x" + (i-1));
+					y += solusi[i]*x[i-1];
+				}
+			}
+			System.out.print("\nMaka input");
+			for (i = 0; i < Mout.NKolEff-2; i++){
+				 System.out.print(" x" + i + " = " + x[i] + ", ");
+			}
+			System.out.println("adalah: ");
+			System.out.printf("%.2f\n", y);
+		}
+		else if (op == 2){
+				//punten blom
+			}
+		input.close();
 	}
 ////FileHandlings//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void bacaFile(MATRIKS M){
@@ -1054,12 +1137,7 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
-		MATRIKS M = new MATRIKS();
-		BacaRegresi(M);
-		TulisMATRIKS(M);
-		System.out.println();
-		System.out.println();
-		TulisMATRIKS(MakeMatriksRegresi(M));
+		Regresi();
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 }
