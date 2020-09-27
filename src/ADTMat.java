@@ -1,4 +1,7 @@
 import java.util.Scanner;
+
+import org.graalvm.compiler.graph.InputEdges;
+
 import java.lang.Math; 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -911,7 +914,7 @@ public class ADTMat{
 		return Mout;
 	}
 
-	public void Interpolasi(){
+	public void MenuInterpolasi(){
 		// Ryo Richardo, Pake Invers, Cramer checked
 		// I.S. titik sampel tidak ada yang diinput 2 kali, dan tidak boleh ada 2 titik dengan x sama namun y berbeda (bukan fungsi)
 		// F.S. memberikan persamaan interpolasi dan nilai y dari x yang diinput
@@ -924,31 +927,43 @@ public class ADTMat{
 		
 		Scanner input = new Scanner(System.in);
 
-		System.out.println("Masukkan 1 untuk input keyboard, 2 untuk input dari file: ");
+		System.out.println("Anda telah memilih menu Interpolasi Polinom");
+		System.out.println("Silahkan pilih metode pembacaan matriks [1= file, 2= keyboard]");
+		System.out.print("Masukkan pilihan : ");
 		op = input.nextInt();
-		
+		System.out.println("");
+		while (op != 1 && op !=2){
+			System.out.println("Pilihan salah !! Silahkan pilih metode pembacaan matriks [1= file, 2= keyboard]");
+			System.out.print("Masukkan pilihan : ");
+			op = input.nextInt();
+			System.out.println("");
+		}
 		
 		if (op == 1){		
-			BacaTitik(M);
-			Mout = MakeMatriksInterpolasi(M);
-			GetMATRIKSKoefisien(Mout, MK);
-			GetMATRIKSHasil(Mout, MH);		
+			bacaFile(M);	
 		}
 		else{
-			bacaFile(M);
-			Mout = MakeMatriksInterpolasi(M);
-			GetMATRIKSKoefisien(Mout, MK);
-			GetMATRIKSHasil(Mout, MH);
+			BacaTitik(M);	
 		}
 
+		Mout = MakeMatriksInterpolasi(M);
+		GetMATRIKSKoefisien(Mout, MK);
+		GetMATRIKSHasil(Mout, MH);
 		System.out.print("Masukkan bilangan x yang ingin dicari nilainya: ");
 		x = input.nextDouble();
 		System.out.println("Matriks SPL yang terbentuk adalah:");
 		TulisMATRIKS(Mout);
 
 		if (IsPunyaInvers(MK)){
-			System.out.println("\nPilihan Cara 1 = Gauss, 2 =GJordan, 3 = Balikan, 4 = Cramer");
+			System.out.println("\nSilahkan pilih metode pencarian solusi Interpolasi [1= Gauss, 2= Gauss-Jordan, 3= Balikan, 4= Cramer]");
+			System.out.print("Masukkan pilihan : ");
 			op = input.nextInt();
+			while (op != 1 && op != 2 && op != 3 && op != 4){
+				System.out.println("Pilihan salah !! Silahkan pilih metode pencarian solusi Interpolasi [1= Gauss, 2= Gauss-Jordan, 3= Balikan, 4= Cramer]");
+				System.out.print("Masukkan pilihan : ");
+				op = input.nextInt();
+				System.out.println("");
+			}
 			
 			double[] solusi = new double[100];
 			// note to self: nanti array solusi dipake buat ngelist a0, a1, a2... dari tiap metode
@@ -1025,11 +1040,21 @@ public class ADTMat{
 			Mout.desc[Mout.NDesc] = "\nMaka input " + String.valueOf(x) + " berdasarkan interpolasi memiliki nilai " + String.format("%.2f", y);
 			Mout.NDesc++;
 			
-			System.out.println("Pilih 1 simpen ke file, 2 ga");
+			System.out.println("Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+			System.out.print("Masukkan pilihan : ");
 			op = input.nextInt();
+			while (op != 1 && op != 2){
+				System.out.println("Pilihan salah !! Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+				System.out.print("Masukkan pilihan : ");
+				op = input.nextInt();
+				System.out.println("");
+			}
 			if (op == 1){
 				TulisFileDesc(Mout);
-				Interpolasi();
+				MenuInterpolasi();
+			}
+			else{
+				MenuInterpolasi();
 			}
 		}
 		else{
@@ -1108,7 +1133,7 @@ public class ADTMat{
 		return Mout;
 	}
 
-	public void Regresi(){
+	public void MenuRegresi(){
 		// Ryo Richardo, Checked
 		// I.S. nilai sampel gabole ada yg sama persis.
 		// F.S. memberikan persamaan regresi dan nilai y dari x0, x1,...xn yang diinput.
@@ -1359,7 +1384,7 @@ public class ADTMat{
 		// GaussSPL(Maug);
 		// System.out.println("");
 		// TulisMATRIKS(Maug);
-		Interpolasi();
+		MenuInterpolasi();
 	}
 
 	public void TestDwi(){
@@ -1376,7 +1401,7 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
-		Regresi();
+		MenuInterpolasi();
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 }
