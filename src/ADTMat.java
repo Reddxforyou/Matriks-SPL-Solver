@@ -657,7 +657,7 @@ public class ADTMat{
 		// TulisMATRIKS(M1);
 	}
 
-	public void HasilInverseJordan(MATRIKS M){
+	public MATRIKS HasilInverseJordan(MATRIKS M){
 		// I.S MATRIKS TELAH DI OBE KAN  
 		// F.S MATRIKS INVERSE
 		int i,j;
@@ -668,6 +668,7 @@ public class ADTMat{
 				M.Mem[i][j] = M1.Mem[i][j+M.NKolEff];
 			}
 		}
+		return M;
 	}
 
 
@@ -741,6 +742,8 @@ public class ADTMat{
 
 	public void EliminasiOBE(MATRIKS M, int indeks){
 		// Prekondisi bahwa matriks udah di sort
+		// I.S MATRIKS 
+		// F.S dieliminasikan baris dengan indeks indeks
 		int i,j,a; 
 		// buat semua dimulai dengan angka 1 
 		for (i=0; i < M.NBrsEff; i++){
@@ -784,36 +787,9 @@ public class ADTMat{
 	}
 
 	public void GaussSPL(MATRIKS M){
-		// int i,j,a, k, awal, current; 
-		// j = 0;
-		// i = 0; 
-		// // kemungkinan terbanyak kita akan menukar sebanyanyak nbrseff -1 
-		// for (k =0; k < M.NBrsEff-1; k++){
-		// 	// inisiasikan indeks baris dengan k
-		// 	a = k; 
-		// 	while (M.Mem[a][j] == 0){
-		// 		a +=1 ;
-		// 		if (a >= M.NBrsEff){
-		// 			a = 0 ; 
-		// 			j += 1;
-		// 		}
-		// 	}
-		// 	if (k != a){
-		// 		TukarBaris(M, k, a);
-		// 	}
-		// 	for (i= 0 ;i < M.NBrsEff; i++){
-		// 		BagiBaris(M, i);
-		// 	}
-
-		// 	for (awal=k+1 ;awal < M.NBrsEff; awal++){
-		// 		for (current = j ; current < M.NKolEff; current++ ){
-		// 			M.Mem[awal][current] = M.Mem[awal][current] - M.Mem[i][current];
-		// 		}
-		// 	}
-		// }
-		// return M;
+		// I.S Matriks M 
+		// F.S Matriks echelon
 		int i;
-		// urutkan matriks, yang ada 0 taruh paling bawah  
 		for (i = 0; i < M.NBrsEff-1; i++){
 			// kurangkan semua 
 			EliminasiOBE(M,i);
@@ -824,32 +800,16 @@ public class ADTMat{
 	}
 
 	public void GaussJordan(MATRIKS M){
-		// int i,j, a, k, awal;
-		// GaussSPL(M);
-		// for (i = 1 ; i < M.NBrsEff; i++){
-		// 	for (j=0; j < M.NKolEff; j++){
-		// 		a = -1;
-		// 		if (M.Mem[i][j] == 1){
-		// 			a = j;
-		// 		}
-		// 	}
-		// 	if (a != -1){
-		// 		for (awal = i-1; awal >=0; awal--){
-		// 			if (M.Mem[awal][a] != 0){
-		// 				for (k = 0; k < M.NKolEff; k++){
-		// 					M.Mem[awal][k] -= M.Mem[i][k]*M.Mem[awal][a];
-		// 				}
-		// 			}
-		// 		}
-		// 	}	
-		// }
-		// return M;
+		// I.S MATRIKS M
+		// F.S matriks echelon tereduksi 
 		int i;
 		GaussSPL(M);
 		for (i = 1; i < M.NBrsEff; i++){
 			EliminasiOBEjordan(M, i);
 		}
 	}
+
+
 
 	public void SPLInvers (MATRIKS Maug) {
 		// Reihan Andhika Putra, Checked
