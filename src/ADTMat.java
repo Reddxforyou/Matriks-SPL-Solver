@@ -961,7 +961,6 @@ public class ADTMat{
 			}
 			else if (op == 2){
 				GaussJordan(Mout);
-				TulisMATRIKS(Mout);
 				GetMATRIKSHasil(Mout, MH);
 				for (i = 0; i < MH.NBrsEff; i++){
 					solusi[i] = MH.Mem[i][0];
