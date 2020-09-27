@@ -1366,7 +1366,7 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
-		Interpolasi();
+		Regresi();
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 }
