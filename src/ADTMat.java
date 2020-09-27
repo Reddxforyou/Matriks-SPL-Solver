@@ -29,39 +29,7 @@ public class ADTMat{
 	   M.NKolEff=NK;
 	 }
 	
-	public MATRIKS InverseMatriks(MATRIKS M){
-		// I.S MATRIKS TELAH DI MERGE 
-		// F.S MATRIKS DI OBE
-		MATRIKS M1 = new MATRIKS();
-		M1 = AugmentedInverseJordan(M);
-		GaussJordan(M1);
-		return M1 ;
-	}
-
-	public MATRIKS AugmentedInverseJordan (MATRIKS M){
-		// I.S inputan matriks yang mau di inverse 
-		// F.S MERGE MATRIKS
-		int i,j;
-		MATRIKS M1 = new MATRIKS();
-		MakeMATRIKS(M.NBrsEff, 2*M.NKolEff, M1);
-		for (i=0; i <M1.NBrsEff; i++){
-			for (j=0; j<M1.NKolEff; j++){
-				if (j < M.NKolEff){
-					M1.Mem[i][j] = M.Mem[i][j];
-				}else {
-					if ((j- M.NKolEff) == i){
-						M1.Mem[i][j] = 1.0;
-					}else {
-						M1.Mem[i][j] = 0.0;
-					}				
-				}
-			}
-		}
-		return M1;
-		// GaussJordan(M1);
-		// TulisMATRIKS(M1);
-	}
-	 
+	
 	 /* ********** KELOMPOK BACA/TULIS ********** */
 	public void BacaMATRIKS(MATRIKS M){
 		// Reihan Andhika Putra , Checked
@@ -656,6 +624,53 @@ public class ADTMat{
 			TulisMATRIKS(Adjoint);
 		}
 	}
+	public MATRIKS AugmentedInverseJordan(MATRIKS M){
+		// I.S MATRIKS TELAH DI MERGE 
+		// F.S MATRIKS DI OBE
+		MATRIKS M1 = new MATRIKS();
+		M1 = MergeInverseJordan(M);
+		GaussJordan(M1);
+		return M1 ;
+	}
+
+	public MATRIKS MergeInverseJordan (MATRIKS M){
+		// I.S inputan matriks yang mau di inverse 
+		// F.S MERGE MATRIKS
+		int i,j;
+		MATRIKS M1 = new MATRIKS();
+		MakeMATRIKS(M.NBrsEff, 2*M.NKolEff, M1);
+		for (i=0; i <M1.NBrsEff; i++){
+			for (j=0; j<M1.NKolEff; j++){
+				if (j < M.NKolEff){
+					M1.Mem[i][j] = M.Mem[i][j];
+				}else {
+					if ((j- M.NKolEff) == i){
+						M1.Mem[i][j] = 1.0;
+					}else {
+						M1.Mem[i][j] = 0.0;
+					}				
+				}
+			}
+		}
+		return M1;
+		// GaussJordan(M1);
+		// TulisMATRIKS(M1);
+	}
+
+	public void HasilInverseJordan(MATRIKS M){
+		// I.S MATRIKS TELAH DI OBE KAN  
+		// F.S MATRIKS INVERSE
+		int i,j;
+		MATRIKS M1 = new MATRIKS();
+		M1 = AugmentedInverseJordan(M);
+		for (i=0; i<M.NBrsEff;i++){
+			for (j=0; j <M.NKolEff; j++){
+				M.Mem[i][j] = M1.Mem[i][j+M.NKolEff];
+			}
+		}
+	}
+
+
 	
 //////////SPL////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void GetMATRIKSKoefisien (MATRIKS MAug, MATRIKS MK){	
@@ -748,7 +763,10 @@ public class ADTMat{
 	}
 
 	public void EliminasiOBEjordan(MATRIKS M , int indeks){
-		int i,j,a, kali; 
+		// I.S INPUTAN MATRIKS dan Indeks yang akan menjadi acuan untuk dikurangi 
+		// F.S semua diatas angka 1 adalah 0 
+		int i,j,a;
+		double kali; 
 		j = 0;
 		while (M.Mem[indeks][j] != 1 && j < M.NKolEff){
 			j+=1;
@@ -756,8 +774,9 @@ public class ADTMat{
 		if (j < M.NKolEff){
 			for (i=0; i < indeks; i++){
 				if (M.Mem[i][j] != 0){
+					kali = M.Mem[i][j];
 					for (a=j; a < M.NKolEff; a++){
-						M.Mem[i][a] -= (M.Mem[indeks][a] * M.Mem[i][j]);
+						M.Mem[i][a] = M.Mem[i][a] - (M.Mem[indeks][a] * kali);
 					}
 				}
 			}
@@ -1359,9 +1378,16 @@ public class ADTMat{
 		BacaMATRIKSAugmented(M1);
 		TulisMATRIKS(M1);
 		System.out.println();
+		// GaussJordan(M1);
+		// TulisMATRIKS(M1);
+		System.out.println();
+		TulisMATRIKS(MergeInverseJordan(M1));
+		System.out.println();
 		TulisMATRIKS(AugmentedInverseJordan(M1));
 		System.out.println();
-		TulisMATRIKS(InverseMatriks(M1));
+		HasilInverseJordan(M1);
+
+		TulisMATRIKS(M1);
 	}
 
 	public void TestRyo(){
@@ -1369,5 +1395,9 @@ public class ADTMat{
 		Regresi();
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
+
+	
+	 
+
 }
 
