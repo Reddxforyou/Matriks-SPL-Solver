@@ -1,4 +1,0 @@
-71.0 -568.0 -41.0 
-22.0 -176.0 -67.0 
-436.0 367.0 74.0 
-Matriks Kofaktor, Determinannya adalah 3855.0 

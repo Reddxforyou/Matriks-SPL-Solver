@@ -663,10 +663,14 @@ public class ADTMat{
 		/* I.S. MAug, dan MK terdefinisi */
 		/* F.S. Mengambil matriks yang merupakan matriks koefisien dari variabel di matriks augmented */
 		int i,j;
-		MakeMATRIKS(MAug.NBrsEff, MAug.NKolEff-1, MK);
-		for (i=0; i< MK.NBrsEff;i++){
-			for (j=0; j< MK.NKolEff;j++){
-				MK.Mem[i][j] = MAug.Mem[i][j];
+		if (MAug.NKolEff-1 > MAug.NBrsEff) {
+			System.out.println("Tidak bisa menggunakan metode cramer untuk menyelesaikan matriks ini");
+		} else {
+			MakeMATRIKS(MAug.NKolEff-1, MAug.NKolEff-1, MK);
+			for (i=0; i< MK.NBrsEff;i++){
+				for (j=0; j< MK.NKolEff;j++){
+					MK.Mem[i][j] = MAug.Mem[i][j];
+				}
 			}
 		}
 	}
@@ -1025,6 +1029,7 @@ public class ADTMat{
 			op = input.nextInt();
 			if (op == 1){
 				TulisFileDesc(Mout);
+				Interpolasi();
 			}
 		}
 		else{
@@ -1349,7 +1354,12 @@ public class ADTMat{
 
 	/* ********** Testing ********** */
 	public void TestReihan(){
-		MenuDeterminan();
+		// MATRIKS Maug = new MATRIKS();
+		// bacaFile(Maug);
+		// GaussSPL(Maug);
+		// System.out.println("");
+		// TulisMATRIKS(Maug);
+		Interpolasi();
 	}
 
 	public void TestDwi(){

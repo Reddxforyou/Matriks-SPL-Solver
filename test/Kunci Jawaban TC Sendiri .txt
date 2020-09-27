@@ -1,0 +1,51 @@
+Persoalan Biasa
+SPL_01 
+x1 = 7.148478475013977262
+x2 = -15.304704347594579481
+x3 = -2.5991320784856633204
+x4 = 13.233460238012832458
+
+SPL_02
+x1 = 0.75470780388192523447
+x2 = 0.22542523545275355565
+x3 = 1.4730101756284910763
+x4 = 1.294296524592480609
+x5 = -2.6358613821541236288
+x6 = 1.5202888478376506219
+
+Baris jauh lebih banyak dari kolom
+SPL_03
+x1 = 5
+x2 = 10
+x3 = 15
+
+SPL_04
+x1 = 1
+x2 = 2
+
+Tidak Konsisten ( Gaussnya ada yang 0 0 0 x)
+SPL_05
+SPL_06
+
+Tidak Konsisten dan banyak baris
+SPL_07
+
+Free element (Ada variabel yang nilainya bebas karena tidak mempengaruhi SPL)
+SPL_08:
+x1 = 50
+x2 = 10
+x4 = 7
+x3 - free
+
+SPL_09 :
+x2 = 0.5
+x3 = 0.5
+x4 = 0.5
+x1 - free
+
+Free element bisa banyak gajuma satu elemen aja yang free
+
+parametrik 
+parametrik dan free
+
+Untuk dua kasus diatas 80% TC asisten kayak gitu jadi pake tc asisten aja 
