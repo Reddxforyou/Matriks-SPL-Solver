@@ -1,0 +1,7 @@
+1.00 1.00 1.00 0.00 
+0.00 1.00 3.00 2.00 
+0.00 0.00 1.00 0.00 
+Matriks Gauss.
+Persamaan intepolasi yang terbentuk adalah:
+y = 0.00 + 2.00x+ 0.00x^2
+ Maka input 4.0 berdasarkan interpolasi memiliki nilai 8.00

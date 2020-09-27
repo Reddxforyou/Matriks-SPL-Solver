@@ -923,8 +923,7 @@ public class ADTMat{
 		System.out.println("Masukkan 1 untuk input keyboard, 2 untuk input dari file: ");
 		op = input.nextInt();
 		
-		System.out.print("Masukkan bilangan x yang ingin dicari nilainya: ");
-		x = input.nextDouble();
+		
 		if (op == 1){		
 			BacaTitik(M);
 			Mout = MakeMatriksInterpolasi(M);
@@ -932,9 +931,14 @@ public class ADTMat{
 			GetMATRIKSHasil(Mout, MH);		
 		}
 		else{
-			 //nanti bakal dibikin klo udh tau cara input dri file
+			bacaFile(M);
+			Mout = MakeMatriksInterpolasi(M);
+			GetMATRIKSKoefisien(Mout, MK);
+			GetMATRIKSHasil(Mout, MH);
 		}
 
+		System.out.print("Masukkan bilangan x yang ingin dicari nilainya: ");
+		x = input.nextDouble();
 		System.out.println("Matriks SPL yang terbentuk adalah:");
 		TulisMATRIKS(Mout);
 
@@ -954,6 +958,8 @@ public class ADTMat{
 					}
 					solusi[i] = Mout.Mem[i][Mout.NKolEff-1];
 				}
+				Mout.desc[0] = "Matriks Gauss.\n";
+				Mout.NDesc = 1;
 			}
 			else if (op == 2){
 				GaussJordan(Mout);
@@ -961,6 +967,8 @@ public class ADTMat{
 				for (i = 0; i < MH.NBrsEff; i++){
 					solusi[i] = MH.Mem[i][0];
 				}
+				Mout.desc[0] = "Matriks Gauss-Jordan.\n";
+				Mout.NDesc = 1;
 			}
 			else if (op == 3){
 				//Balikan
@@ -968,42 +976,55 @@ public class ADTMat{
 				for (i = 0; i < MK.NKolEff; i++){
 					solusi[i] = KaliMATRIKS(MK, MH).Mem[i][0];
 				}
+				Mout.desc[0] = "Matriks Balikan.\n";
+				Mout.NDesc = 1;
 			}
 			else if (op == 4){
 				//Cramer
 				for (i=0; i < MK.NKolEff; i++){
 					solusi[i] = EkspansiKofaktor(MATRIKSCramer(MK, MH, i))/EkspansiKofaktor(MK);
 				}
-			}
-	
-			// pilih jenis output
-			System.out.println("Pilih 1 output ke layar, 2 output ke file");
-			op = input.nextInt();
+				Mout.desc[0] = "Matriks Cramer.\n";
+				Mout.NDesc = 1;
+			}	
 
-			if (op == 1){
-				System.out.println("Fungsi interpolasi yang terbentuk adalah:");
-				System.out.print("y = ");
-				for (i = 0; i < Mout.NBrsEff; i++){
-					if (i == 0){
-						System.out.printf("%.2f", solusi[i]);
-					}
-					else if (i == 1){
-						System.out.print(" + ");
-						System.out.printf("%.2f", solusi[i]);
-						System.out.print("x");
-					}
-					else {
-						System.out.print(" + ");
-						System.out.printf("%.2f", solusi[i]);
-						System.out.print("x^" + i);
-					}
-					y += solusi[i]*(Math.pow(x, i));
+			System.out.println("Persamaan interpolasi yang terbentuk adalah:");
+			Mout.desc[Mout.NDesc] = "Persamaan intepolasi yang terbentuk adalah:\n";
+    		Mout.NDesc++;
+			System.out.print("y = ");
+			Mout.desc[Mout.NDesc] = "y = ";
+    		Mout.NDesc++;
+			for (i = 0; i < Mout.NBrsEff; i++){
+				if (i == 0){
+					System.out.printf("%.2f", solusi[i]);
+					Mout.desc[Mout.NDesc] = String.format("%.2f", solusi[i]);
+            		Mout.NDesc++;
 				}
-				System.out.print("\nMaka input " + x + " berdasarkan interpolasi memiliki nilai ");
-				System.out.printf("%.2f\n", y);
+				else if (i == 1){
+					System.out.print(" + ");
+					System.out.printf("%.2f", solusi[i]);
+					System.out.print("x");
+					Mout.desc[Mout.NDesc] = " + " + String.format("%.2f", solusi[i]) + "x";
+            		Mout.NDesc++;
+				}
+				else {
+					System.out.print(" + ");
+					System.out.printf("%.2f", solusi[i]);
+					System.out.print("x^" + i);
+					Mout.desc[Mout.NDesc] = "+ " + String.format("%.2f", solusi[i]) + "x^" + String.valueOf(i);
+            		Mout.NDesc++;
+				}
+				y += solusi[i]*(Math.pow(x, i));
 			}
-			else if (op == 2){
-				//punten blom
+			System.out.print("\nMaka input " + x + " berdasarkan interpolasi memiliki nilai ");
+			System.out.printf("%.2f\n", y);
+			Mout.desc[Mout.NDesc] = "\nMaka input " + String.valueOf(x) + " berdasarkan interpolasi memiliki nilai " + String.format("%.2f", y);
+			Mout.NDesc++;
+			
+			System.out.println("Pilih 1 simpen ke file, 2 ga");
+			op = input.nextInt();
+			if (op == 1){
+				TulisFileDesc(Mout);
 			}
 		}
 		else{
@@ -1106,8 +1127,8 @@ public class ADTMat{
 			GetMATRIKSHasil(Mout, MH);	
 		}
 		else{
-			bacaFile(MH);
-			Mout = MakeMatriksRegresi(MH);
+			bacaFile(M);
+			Mout = MakeMatriksRegresi(M);
 			GetMATRIKSKoefisien(Mout, MK);
 			GetMATRIKSHasil(Mout, MH);
 		}
@@ -1345,7 +1366,7 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
-		Regresi();
+		Interpolasi();
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 }
