@@ -149,12 +149,12 @@ public class ADTMat{
 		for(i = 0; i <= M.NBrsEff-1; i++){
 			for (j = 0; j <= M.NKolEff-1; j++){
 				if (j == (M.NKolEff-1) && i == (M.NBrsEff-1)) {
-					System.out.print(M.Mem[i][j]);
+					System.out.printf("%.2f", M.Mem[i][j]);
 				} else if (j == (M.NKolEff-1)){
-					System.out.print(M.Mem[i][j]);
+					System.out.printf("%.2f", M.Mem[i][j]);
 					System.out.println();
 				} else {
-					System.out.print(M.Mem[i][j]);
+					System.out.printf("%.2f", M.Mem[i][j]);
 					System.out.print(" ");
 				}
 			}
@@ -910,9 +910,10 @@ public class ADTMat{
 	public void Interpolasi(){
 		// Ryo Richardo, Pake Invers, Cramer checked
 		// I.S. titik sampel tidak ada yang diinput 2 kali, dan tidak boleh ada 2 titik dengan x sama namun y berbeda (bukan fungsi)
-		// F.S. memberikan nilai y, yaitu hasil interpolasi x (prosedur bakal minta input derajat polinom, titik2 sampel, dan titik yg ingin dicari)
+		// F.S. memberikan persamaan interpolasi dan nilai y dari x yang diinput
 		double x, y = 0;
 		int i, op;
+		MATRIKS M = new MATRIKS(); 
 		MATRIKS Mout = new MATRIKS(); 
 		MATRIKS MH = new MATRIKS();
 		MATRIKS MK = new MATRIKS();
@@ -925,8 +926,8 @@ public class ADTMat{
 		System.out.print("Masukkan bilangan x yang ingin dicari nilainya: ");
 		x = input.nextDouble();
 		if (op == 1){		
-			BacaTitik(MH);
-			Mout = MakeMatriksInterpolasi(MH);
+			BacaTitik(M);
+			Mout = MakeMatriksInterpolasi(M);
 			GetMATRIKSKoefisien(Mout, MK);
 			GetMATRIKSHasil(Mout, MH);		
 		}
@@ -1082,9 +1083,13 @@ public class ADTMat{
 	}
 
 	public void Regresi(){
+		// Ryo Richardo, Checked
+		// I.S. nilai sampel gabole ada yg sama persis.
+		// F.S. memberikan persamaan regresi dan nilai y dari x0, x1,...xn yang diinput.
 		double y = 0;
 		double[] x = new double[100];
 		int i, op;
+		MATRIKS M = new MATRIKS(); 
 		MATRIKS Mout = new MATRIKS(); 
 		MATRIKS MH = new MATRIKS();
 		MATRIKS MK = new MATRIKS();
@@ -1095,13 +1100,16 @@ public class ADTMat{
 		op = input.nextInt();
 		
 		if (op == 1){		
-			BacaRegresi(MH);
-			Mout = MakeMatriksRegresi(MH);
+			BacaRegresi(M);
+			Mout = MakeMatriksRegresi(M);
 			GetMATRIKSKoefisien(Mout, MK);
 			GetMATRIKSHasil(Mout, MH);	
 		}
 		else{
-			 //nanti bakal dibikin klo udh tau cara input dri file
+			bacaFile(MH);
+			Mout = MakeMatriksRegresi(MH);
+			GetMATRIKSKoefisien(Mout, MK);
+			GetMATRIKSHasil(Mout, MH);
 		}
 
 		for (i = 0; i < Mout.NKolEff-2; i++){
@@ -1127,6 +1135,8 @@ public class ADTMat{
 				}
 				solusi[i] = Mout.Mem[i][Mout.NKolEff-1];
 			}
+			Mout.desc[0] = "Matriks Gauss.\n";
+			Mout.NDesc = 1;
 		}
 		else if (op == 2){
 			GaussJordan(Mout);
@@ -1134,38 +1144,51 @@ public class ADTMat{
 			for (i = 0; i < MH.NBrsEff; i++){
 				solusi[i] = MH.Mem[i][0];
 			}
+			Mout.desc[0] = "Matriks Gauss-Jordan.\n";
+			Mout.NDesc = 1;
 		}
-			
-	
-		// pilih jenis output
-		System.out.println("Pilih 1 output ke layar, 2 output ke file");
+
+		System.out.println("Persamaan regresi yang terbentuk adalah:");
+		Mout.desc[Mout.NDesc] = "Persamaan regresi yang terbentuk adalah:\n";
+		Mout.NDesc++;
+		System.out.print("y = ");
+		Mout.desc[Mout.NDesc] = "y = ";
+		Mout.NDesc++;
+		for (i = 0; i < Mout.NBrsEff; i++){
+			if (i == 0){
+				System.out.printf("%.2f", solusi[i]);
+				Mout.desc[Mout.NDesc] = String.format("%.2f", solusi[i]);
+				Mout.NDesc++;
+				y += solusi[i];
+			}
+			else {
+				System.out.print(" + ");
+				System.out.printf("%.2f", solusi[i]);
+				System.out.print("x" + (i-1));
+				Mout.desc[Mout.NDesc] = " + " + String.format("%.2f", solusi[i]) + "x" + String.valueOf(i-1);
+				Mout.NDesc++;
+				y += solusi[i]*x[i-1];
+			}
+		}
+		System.out.print("\nMaka input");
+		Mout.desc[Mout.NDesc] = "\nMaka input";
+		Mout.NDesc++;
+		for (i = 0; i < Mout.NKolEff-2; i++){
+			 System.out.print(" x" + i + " = " + x[i] + ",");
+			 Mout.desc[Mout.NDesc] = " x" + String.valueOf(i) + " = " + String.valueOf(x[i]) + ",";
+			 Mout.NDesc++;
+		}
+		System.out.print(" akan menghasilkan nilai ");
+		System.out.printf("%.2f\n", y);
+		Mout.desc[Mout.NDesc] = " akan menghasilkan nilai " + String.format("%.2f", y);
+		Mout.NDesc++;
+
+		System.out.println("apakah ingin menyimpan ke file?");
 		op = input.nextInt();
 
 		if (op == 1){
-			System.out.println("Persamaan regresi yang terbentuk adalah:");
-			System.out.print("y = ");
-			for (i = 0; i < Mout.NBrsEff; i++){
-				if (i == 0){
-					System.out.printf("%.2f", solusi[i]);
-					y += solusi[i];
-				}
-				else {
-					System.out.print(" + ");
-					System.out.printf("%.2f", solusi[i]);
-					System.out.print("x" + (i-1));
-					y += solusi[i]*x[i-1];
-				}
-			}
-			System.out.print("\nMaka input");
-			for (i = 0; i < Mout.NKolEff-2; i++){
-				 System.out.print(" x" + i + " = " + x[i] + ",");
-			}
-			System.out.print(" akan menghasilkan nilai: ");
-			System.out.printf("%.2f\n", y);
+			TulisFileDesc(Mout);
 		}
-		else if (op == 2){
-				//punten blom
-			}
 		input.close();
 	}
 ////FileHandlings//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1239,7 +1262,8 @@ public class ADTMat{
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NBrsEff; i++){
 				for(int j = 0; j < M.NKolEff; j++){
-					writer.print(M.Mem[i][j] + " ");
+					writer.printf("%.2f", M.Mem[i][j]);
+					writer.print(" ");
 				}
 				writer.println();
 			}	
@@ -1264,13 +1288,13 @@ public class ADTMat{
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NBrsEff; i++){
 				for(int j = 0; j < M.NKolEff; j++){
-					writer.print(M.Mem[i][j] + " ");
+					writer.printf("%.2f", M.Mem[i][j]);
+					writer.print(" ");
 				}
 				writer.println();
 			}
 			for (int i = 0; i < M.NDesc; i++){
-					writer.print(M.desc[i] + " ");
-				writer.println();
+					writer.print(M.desc[i]);
 			}		
 			writer.close();
 		}
@@ -1292,8 +1316,7 @@ public class ADTMat{
 			String reipath = "./test/";
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NDesc; i++){
-					writer.print(M.desc[i] + " ");
-				writer.println();
+					writer.print(M.desc[i]);
 			}		
 			writer.close();
 		}
