@@ -982,6 +982,7 @@ public class ADTMat{
 			}
 			else if (op == 2){
 				GaussJordan(Mout);
+				TulisMATRIKS(Mout);
 				GetMATRIKSHasil(Mout, MH);
 				for (i = 0; i < MH.NBrsEff; i++){
 					solusi[i] = MH.Mem[i][0];
@@ -1147,22 +1148,27 @@ public class ADTMat{
 		
 		Scanner input = new Scanner(System.in);
 
-		System.out.println("Masukkan 1 untuk input keyboard, 2 untuk input dari file: ");
+		System.out.println("Anda telah memilih menu Regresi Linear Berganda");
+		System.out.println("Silahkan pilih metode pembacaan matriks [1= file, 2= keyboard]");
+		System.out.print("Masukkan pilihan : ");
 		op = input.nextInt();
+		System.out.println("");
+		while (op != 1 && op !=2){
+			System.out.println("Pilihan salah !! Silahkan pilih metode pembacaan matriks [1= file, 2= keyboard]");
+			System.out.print("Masukkan pilihan : ");
+			op = input.nextInt();
+			System.out.println("");
+		}
 		
 		if (op == 1){		
-			BacaRegresi(M);
-			Mout = MakeMatriksRegresi(M);
-			GetMATRIKSKoefisien(Mout, MK);
-			GetMATRIKSHasil(Mout, MH);	
+			bacaFile(M);
 		}
 		else{
-			bacaFile(M);
-			Mout = MakeMatriksRegresi(M);
-			GetMATRIKSKoefisien(Mout, MK);
-			GetMATRIKSHasil(Mout, MH);
+			BacaRegresi(M);
 		}
-
+		Mout = MakeMatriksRegresi(M);
+		GetMATRIKSKoefisien(Mout, MK);
+		GetMATRIKSHasil(Mout, MH);
 		for (i = 0; i < Mout.NKolEff-2; i++){
 			System.out.print("Masukkan nilai x" + i + " yang ingin dicari nilainya: ");
 			x[i] = input.nextDouble();
@@ -1171,8 +1177,15 @@ public class ADTMat{
 		System.out.println("Matriks SPL yang terbentuk adalah:");
 		TulisMATRIKS(Mout);
 
-		System.out.println("\nPilihan Cara 1 = Gauss, 2 =GJordan");
+		System.out.println("\nSilahkan pilih metode pencarian solusi Interpolasi [1= Gauss, 2= Gauss-Jordan]");
+		System.out.print("Masukkan pilihan : ");
 		op = input.nextInt();
+		while (op != 1 && op != 2){
+			System.out.println("Pilihan salah !! Silahkan pilih metode pencarian solusi Interpolasi [1= Gauss, 2= Gauss-Jordan]");
+			System.out.print("Masukkan pilihan : ");
+			op = input.nextInt();
+			System.out.println("");
+		}
 			
 		double[] solusi = new double[100];
 		// note to self: nanti array solusi dipake buat ngelist a0, a1, a2... dari tiap metode
@@ -1234,13 +1247,22 @@ public class ADTMat{
 		Mout.desc[Mout.NDesc] = " akan menghasilkan nilai " + String.format("%.2f", y);
 		Mout.NDesc++;
 
-		System.out.println("apakah ingin menyimpan ke file?");
+		System.out.println("Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+		System.out.print("Masukkan pilihan : ");
 		op = input.nextInt();
-
+		while (op != 1 && op != 2){
+			System.out.println("Pilihan salah !! Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+			System.out.print("Masukkan pilihan : ");
+			op = input.nextInt();
+			System.out.println("");
+		}
 		if (op == 1){
 			TulisFileDesc(Mout);
+			MenuRegresi();
 		}
-		input.close();
+		else{
+			MenuRegresi();
+		}
 	}
 ////FileHandlings//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void bacaFile(MATRIKS M){
