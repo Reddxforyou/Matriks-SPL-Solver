@@ -75,6 +75,9 @@ public class ADTMat{
 			}
 		}
 		MakeMATRIKS(m,n,M);
+		System.out.println("Matriks yang anda masukkan adalah :");
+		TulisMATRIKS(M);
+		System.out.println();
 	}
 
 	public void BacaMatriksHilbert (MATRIKS MAug){
@@ -108,7 +111,10 @@ public class ADTMat{
 			}
 		}
 		MakeMATRIKS(n, n+1, MAug);
-		
+		System.out.println("Matriks yang anda masukkan adalah :");
+		TulisMATRIKS(MAug);
+		System.out.println();
+
 	}
 	
 	public void TulisMATRIKS (MATRIKS M){
@@ -643,22 +649,99 @@ public class ADTMat{
 	}
 
 //////////INVERS////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void MenuInvers(){
+		// Reihan Andhika Putra, Checked
+		// Driver Invers
+		MATRIKS M = new MATRIKS();
+		int op,op2,op3;
+		System.out.println("Anda telah memilih menu Invers");
+		System.out.println("Silahkan pilih metode pembacaan matriks [1= file, 2= keyboard]");
+		System.out.print("Masukkan pilihan : ");
+		op = sc.nextInt();
+		System.out.println("");
+		while (op != 1 && op !=2){
+			System.out.println("Pilihan salah !! Silahkan pilih metode pembacaan matriks [1= file, 2= keyboard]");
+			System.out.print("Masukkan pilihan : ");
+			op = sc.nextInt();
+			System.out.println("");
+		}
+		if (op==2) {
+			BacaMATRIKS(M);
+		} else if (op==1){
+			bacaFile(M);
+		}
+
+		if (!IsBujurSangkar(M)){
+			System.out.println("Tidak punya determinan karena bukan matriks persegi");
+			System.out.println("Invers Tidak bisa dicari");	
+		} else if (!IsPunyaInvers(M)) {
+			System.out.println("Tidak mempunyai invers karena determinan 0");
+		} else {
+			System.out.println("Silahkan pilih metode pencarian invers [1= Adjoin , 2= Gauss Jordan ]");
+			System.out.print("Masukkan pilihan : ");
+			op2 = sc.nextInt();
+			while (op2 != 1 && op2 != 2){
+				System.out.println("Pilihan salah !! Silahkan pilih metode pencarian invers [1= Adjoin , 2= Gauss Jordan ]");
+				System.out.print("Masukkan pilihan : ");
+				op2 = sc.nextInt();
+				System.out.println("");
+			}
+			if (op2 == 1) {
+				InverseKofaktor(M);
+			} else if (op2 == 2){
+				InverseGaussJordan(M);
+			}
+			System.out.println("Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+			System.out.print("Masukkan pilihan : ");
+			op3 = sc.nextInt();
+			while (op3 != 1 && op3 != 2){
+				System.out.println("Pilihan salah !! Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+				System.out.print("Masukkan pilihan : ");
+				op3 = sc.nextInt();
+				System.out.println("");
+			}
+			if (op3 == 1) {
+				TulisFile(M);
+				MenuInvers();
+			} else {
+				MenuInvers();
+			}
+		}
+	}
+
 	public void InverseKofaktor (MATRIKS M){
 		// Reihan Andhika Putra, Checked
 		/* I.S. M terdefinisi */
 		/* F.S. Memprint matriks invers dari matriks M dengan metode determinant dan adjoint */
-		MATRIKS Adjoint = new MATRIKS();
-		Adjoint = MATRIKSKofaktor(M);
-		Transpose(Adjoint);
-		double perdet ;
-		if (!IsPunyaInvers(M)){
-			System.out.println("Tidak mempunyai invers");
-		} else {
-			perdet = 1/EkspansiKofaktor(M);
-			PKaliKons(Adjoint, perdet);
-			TulisMATRIKS(Adjoint);
-		}
+		double det = EkspansiKofaktor(M);
+		MATRIKSKofaktor2(M);
+		Transpose(M);
+		System.out.println("Matriks adjoint nya adalah :");
+		TulisMATRIKS(M);
+		System.out.println("");
+		System.out.printf("Determinannya adalah : %.2f", det );
+		System.out.println("");
+		det = 1/det;
+		PKaliKons(M, det);
+		System.out.println("Matriks inverse nya adalah :");
+		TulisMATRIKS(M);	
+		System.out.println();
 	}
+
+	public void InverseGaussJordan (MATRIKS M) {
+		System.out.println("Menggabungkan dengan matriks identitas!");
+		System.out.println("Matriksnya adalah :");
+		TulisMATRIKS(MergeInverseJordan(M));
+		System.out.println();
+		System.out.println("Melakukan GaussJordan");
+		TulisMATRIKS(AugmentedInverseJordan(M));
+		System.out.println();
+		System.out.println("Matriksnya  inversnya adalah :");
+		HasilInverseJordan(M);
+		TulisMATRIKS(M);
+		System.out.println();
+	}
+
 	public MATRIKS AugmentedInverseJordan(MATRIKS M){
 		// I.S MATRIKS TELAH DI MERGE 
 		// F.S MATRIKS DI OBE
@@ -692,7 +775,7 @@ public class ADTMat{
 		// TulisMATRIKS(M1);
 	}
 
-	public MATRIKS HasilInverseJordan(MATRIKS M){
+	public void HasilInverseJordan(MATRIKS M){
 		// I.S MATRIKS TELAH DI OBE KAN  
 		// F.S MATRIKS INVERSE
 		int i,j;
@@ -703,25 +786,107 @@ public class ADTMat{
 				M.Mem[i][j] = M1.Mem[i][j+M.NKolEff];
 			}
 		}
-		return M;
 	}
 
 
 	
 //////////SPL////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void MenuSPL(){
+		// Reihan Andhika Putra, Checked
+		// Driver SPL
+		MATRIKS Maug = new MATRIKS();
+		int op,op2,op3;
+		Boolean bisaDisolve = true;
+		System.out.println("Anda telah memilih menu SPL");
+		System.out.println("Silahkan pilih metode pembacaan matriks [1= file, 2= keyboard, 3= matriks hilbert] ");
+		System.out.print("Masukkan pilihan : ");
+		op = sc.nextInt();
+		System.out.println("");
+		while (op != 1 && op !=2 && op !=3){
+			System.out.println("Pilihan salah !! Silahkan pilih metode pembacaan matriks [1= file, 2= keyboard, 3= matriks hilbert]");
+			System.out.print("Masukkan pilihan : ");
+			op = sc.nextInt();
+			System.out.println("");
+		}
+		if (op==2) {
+			BacaMATRIKSAugmented(Maug);
+		} else if (op==1){
+			bacaFile(Maug);
+		} else if (op==3){
+			BacaMatriksHilbert(Maug);
+		}
+		System.out.println("Silahkan pilih metode penyelesaian SPL [1= Gauss, 2= Gauss Jordan, 3= Invers, 4= Metode Cramer ]");
+		System.out.print("Masukkan pilihan : ");
+		op2 = sc.nextInt();
+		while (op2 != 1 && op2 != 2 && op2 != 3 && op2 != 4){
+			System.out.println("Pilihan salah !! Silahkan pilih metode penyelesaian SPL [1= Gauss, 2= Gauss Jordan, 3= Invers, 4= Metode Cramer ]");
+			System.out.print("Masukkan pilihan : ");
+			op2 = sc.nextInt();
+			System.out.println("");
+		}
+		if (op2 == 1) {
+			// Gauss
+			System.out.println("Blom ada gan");
+			MenuSPL();
+		} else if (op2 == 2){
+			// Gauss Jordan
+			System.out.println("Blom ada gan");
+			MenuSPL();
+		} else if (op2 == 3 || op2==4){
+			if (Maug.NKolEff-1 > Maug.NBrsEff){
+				System.out.println("Tidak punya determinan karena matriks koefisien bukan matriks persegi");
+				System.out.println("Silahkan gunakan metode lain untuk menyelesaikan");	
+				bisaDisolve = false ;
+			} else {	
+				MATRIKS MH = new MATRIKS();
+				MATRIKS MK = new MATRIKS();
+				GetMATRIKSHasil(Maug, MH);
+				GetMATRIKSKoefisien(Maug, MK);
+				if (!IsPunyaInvers(MK)) {
+					System.out.println("Tidak bisa menggunakan metode cramer maupun metode invers karena determinannya 0");
+					System.out.println("Silahkan gunakan metode lain untuk menyelesaikan");	
+					bisaDisolve = false ;
+				} else {
+					if (op2 ==3 ){
+						SPLInvers(Maug, MK, MH);
+					} else if (op2 ==4){
+						MetodeCramer(Maug, MK, MH);
+					}
+				}
+			}
+		}
+		if (bisaDisolve) {
+			System.out.println("Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+			System.out.print("Masukkan pilihan : ");
+			op3 = sc.nextInt();
+			while (op3 != 1 && op3 != 2){
+				System.out.println("Pilihan salah !! Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+				System.out.print("Masukkan pilihan : ");
+				op3 = sc.nextInt();
+				System.out.println("");
+			}
+			if (op3 == 1) {
+				TulisFileDesc(Maug);
+				MenuSPL();
+			} else {
+				MenuSPL();
+			}
+		} else {
+			System.out.println("Kembali ke menu awal, silahkan input ulang file/matriks jika ingin menghitung dengan metode lain");
+			MenuSPL();
+		}
+
+	}
+
 	public void GetMATRIKSKoefisien (MATRIKS MAug, MATRIKS MK){	
 		// Reihan Andhika Putra, Checked
 		/* I.S. MAug, dan MK terdefinisi */
 		/* F.S. Mengambil matriks yang merupakan matriks koefisien dari variabel di matriks augmented */
 		int i,j;
-		if (MAug.NKolEff-1 > MAug.NBrsEff) {
-			System.out.println("Tidak bisa menggunakan metode cramer untuk menyelesaikan matriks ini");
-		} else {
-			MakeMATRIKS(MAug.NKolEff-1, MAug.NKolEff-1, MK);
-			for (i=0; i< MK.NBrsEff;i++){
-				for (j=0; j< MK.NKolEff;j++){
-					MK.Mem[i][j] = MAug.Mem[i][j];
-				}
+		MakeMATRIKS(MAug.NKolEff-1, MAug.NKolEff-1, MK);
+		for (i=0; i< MK.NBrsEff;i++){
+			for (j=0; j< MK.NKolEff;j++){
+				MK.Mem[i][j] = MAug.Mem[i][j];
 			}
 		}
 	}
@@ -731,7 +896,7 @@ public class ADTMat{
 		/* I.S. MAug, dan MH terdefinisi */
 		/* F.S. Membentuk matriks MK berukuran Nx1 yang berisikan bagian konstanta dari MAug */
 		int i;
-		MakeMATRIKS(MAug.NBrsEff, 1, MH);
+		MakeMATRIKS(MAug.NKolEff-1, 1, MH);
 		for (i=0; i< MAug.NBrsEff; i++){
 			MH.Mem[i][0]=MAug.Mem[i][MAug.NKolEff-1];
 		}
@@ -752,16 +917,12 @@ public class ADTMat{
 		return Cramer;
 	}
 
-	public void MetodeCramer (MATRIKS Maug) {
+	public void MetodeCramer (MATRIKS Maug, MATRIKS MK, MATRIKS MH) {
 		// Reihan Andhika Putra, Checked
 		/* I.S. Maug terdefinisi */
 		/* F.S. Menyelesaikan SPL dengan metode Cramer */
 		double[] solusi = new double[100];
-		MATRIKS MK = new MATRIKS();
-		MATRIKS MH = new MATRIKS();
 		int i;
-		GetMATRIKSKoefisien(Maug, MK);
-		GetMATRIKSHasil(Maug, MH);
 		System.out.println("Matrisk Koef");
 		TulisMATRIKS(MK);
 		System.out.println();
@@ -769,13 +930,13 @@ public class ADTMat{
 		TulisMATRIKS(MH);
 		System.out.println();
 		System.out.println("Nilai koef");
-		if (!IsPunyaInvers(MK)){
-			System.out.println("Tidak mempunyai solusi");
-		} else {
-			for (i=0; i < MK.NKolEff; i++){
-				solusi[i] = EkspansiKofaktor(MATRIKSCramer(MK, MH, i))/EkspansiKofaktor(MK);
-				System.out.println(solusi[i]);
-			}
+		Maug.NDesc = MK.NBrsEff+1;
+		Maug.desc[0] = "Diselesaikan dengan metode cramer";
+		for (i=0; i < MK.NKolEff; i++){
+			solusi[i] = EkspansiKofaktor(MATRIKSCramer(MK, MH, i))/EkspansiKofaktor(MK);
+			System.out.printf("x"+ String.valueOf(i+1)+": "+ String.format("%.2f",solusi[i]));
+			Maug.desc[i+1] = "x"+ String.valueOf(i+1)+": "+ String.format("%.2f",solusi[i]);
+			System.out.println("");
 		}
 	}
 
@@ -858,16 +1019,12 @@ public class ADTMat{
 	}
 
 
-
-	public void SPLInvers (MATRIKS Maug) {
+	public void SPLInvers (MATRIKS Maug, MATRIKS MK, MATRIKS MH) {
 		// Reihan Andhika Putra, Checked
 		/* I.S. Maug terdefinisi */
 		/* F.S. Menyelesaikan SPL dengan metode invers */
+		int i ;
 		MATRIKS Solusi = new MATRIKS();
-		MATRIKS MK = new MATRIKS();
-		MATRIKS MH = new MATRIKS();
-		GetMATRIKSKoefisien(Maug, MK);
-		GetMATRIKSHasil(Maug, MH);
 		System.out.println("Matrisk Koef");
 		TulisMATRIKS(MK);
 		System.out.println();
@@ -875,12 +1032,14 @@ public class ADTMat{
 		TulisMATRIKS(MH);
 		MakeMATRIKS(MK.NBrsEff, MH.NKolEff, Solusi);
 		System.out.println();
-		if (!IsPunyaInvers(MK)){
-			System.out.println("Tidak mempunyai solusi");
-		} else {
-			MK = Inverse(MK);
-			Solusi = KaliMATRIKS(MK, MH);
-			TulisMATRIKS(Solusi);
+		MK = Inverse(MK);
+		Solusi = KaliMATRIKS(MK, MH);
+		Maug.NDesc = MK.NBrsEff+1;
+		Maug.desc[0] = "Diselesaikan dengan Invers SPL";
+		for (i = 0 ; i< MK.NBrsEff; i++){
+			System.out.printf("x"+ String.valueOf(i+1)+": "+ String.format("%.2f",Solusi.Mem[i][0]));
+			System.out.println("");
+			Maug.desc[i+1] = "x"+ String.valueOf(i+1)+": "+ String.format("%.2f",Solusi.Mem[i][0]);
 		}
 	}
 
@@ -1301,7 +1460,7 @@ public class ADTMat{
 		String baris1, barismatriks;
 		try {
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "../test/";
+			String reipath = "./test/";
 			File file = new File(reipath+sc.next());
 			System.out.println(file.getAbsolutePath());
 			Scanner CountNB = new Scanner(file);
@@ -1359,7 +1518,7 @@ public class ADTMat{
 		try
 		{
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "../test/";
+			String reipath = "./test/";
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NBrsEff; i++){
 				for(int j = 0; j < M.NKolEff; j++){
@@ -1385,7 +1544,7 @@ public class ADTMat{
 		try
 		{
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "../test/";
+			String reipath = "./test/";
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NBrsEff; i++){
 				for(int j = 0; j < M.NKolEff; j++){
@@ -1396,6 +1555,7 @@ public class ADTMat{
 			}
 			for (int i = 0; i < M.NDesc; i++){
 					writer.print(M.desc[i]);
+					writer.println();
 			}		
 			writer.close();
 		}
@@ -1414,7 +1574,7 @@ public class ADTMat{
 		try
 		{
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "../test/";
+			String reipath = "./test/";
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NDesc; i++){
 					writer.print(M.desc[i]);
@@ -1431,10 +1591,10 @@ public class ADTMat{
 	public void TestReihan(){
 		// MATRIKS Maug = new MATRIKS();
 		// bacaFile(Maug);
-		// GaussSPL(Maug);
+		// GaussJordan(Maug);
 		// System.out.println("");
 		// TulisMATRIKS(Maug);
-		MenuInterpolasi();
+		MenuSPL();
 	}
 
 	public void TestDwi(){
