@@ -996,9 +996,6 @@ public class ADTMat{
 			// kurangkan semua
 			SortBaris(M); 
 			EliminasiOBE(M,i);
-			TulisMATRIKS(M);
-			System.out.println();
-			System.out.println();
 			// SortBaris(M); 
 		}
 		BagiBaris(M,i);
@@ -1011,9 +1008,6 @@ public class ADTMat{
 		int i;
 		GaussSPL(M);
 		for (i = 1; i < M.NBrsEff; i++){
-			TulisMATRIKS(M);
-			System.out.println();
-			System.out.println();
 			EliminasiOBEjordan(M, i);
 		}
 	}
@@ -1594,7 +1588,7 @@ public class ADTMat{
 		// GaussJordan(Maug);
 		// System.out.println("");
 		// TulisMATRIKS(Maug);
-		MenuSPL();
+		MenuInvers();
 	}
 
 	public void TestDwi(){
