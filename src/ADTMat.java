@@ -928,12 +928,15 @@ public class ADTMat{
 		Mout = MakeMatriksInterpolasi(M);
 		GetMATRIKSKoefisien(Mout, MK);
 		GetMATRIKSHasil(Mout, MH);
+		System.out.println();
 		System.out.print("Masukkan bilangan x yang ingin dicari nilainya: ");
 		x = input.nextDouble();
+		System.out.println();
 		System.out.println("Matriks SPL yang terbentuk adalah:");
 		TulisMATRIKS(Mout);
 
 		if (IsPunyaInvers(MK)){
+			System.out.println();
 			System.out.println("\nSilahkan pilih metode pencarian solusi Interpolasi [1= Gauss, 2= Gauss-Jordan, 3= Balikan, 4= Cramer]");
 			System.out.print("Masukkan pilihan : ");
 			op = input.nextInt();
@@ -986,6 +989,7 @@ public class ADTMat{
 				Mout.NDesc = 1;
 			}	
 
+			System.out.println();
 			System.out.println("Persamaan interpolasi yang terbentuk adalah:");
 			Mout.desc[Mout.NDesc] = "Persamaan intepolasi yang terbentuk adalah:\n";
     		Mout.NDesc++;
@@ -1037,6 +1041,7 @@ public class ADTMat{
 			}
 		}
 		else{
+			System.out.println();
 			System.out.println("\nTerjadi kesalahan pada input.");
 			System.out.println("Pastikan koordinat x titik sampel yang diinput selalu berbeda satu sama lain.");
 			System.out.println("Silahkan mengulang program.");
@@ -1094,10 +1099,10 @@ public class ADTMat{
 				}
 			}
 		}
-		for (i = 1; i <= m; i++){
+		for (i = 1; i < n; i++){
 			for (j = 0; j <= n; j++){
 				if (j == 0){
-					for (k = 0; k < m; k++){
+					for (k = 0; k < n; k++){
 						Mout.Mem[i][j] += M.Mem[k][i-1];
 					}
 				}
@@ -1108,7 +1113,7 @@ public class ADTMat{
 				}
 			}
 		}
-		MakeMATRIKS(m+1, n+1, Mout);
+		MakeMATRIKS(n, n+1, Mout);
 		return Mout;
 	}
 
@@ -1147,14 +1152,17 @@ public class ADTMat{
 		Mout = MakeMatriksRegresi(M);
 		GetMATRIKSKoefisien(Mout, MK);
 		GetMATRIKSHasil(Mout, MH);
+		System.out.println();
 		for (i = 0; i < Mout.NKolEff-2; i++){
 			System.out.print("Masukkan nilai x" + i + " yang ingin dicari nilainya: ");
 			x[i] = input.nextDouble();
 		}
 
+		System.out.println();
 		System.out.println("Matriks SPL yang terbentuk adalah:");
 		TulisMATRIKS(Mout);
 
+		System.out.println();
 		System.out.println("\nSilahkan pilih metode pencarian solusi Interpolasi [1= Gauss, 2= Gauss-Jordan]");
 		System.out.print("Masukkan pilihan : ");
 		op = input.nextInt();
@@ -1190,6 +1198,7 @@ public class ADTMat{
 			Mout.NDesc = 1;
 		}
 
+		System.out.println();
 		System.out.println("Persamaan regresi yang terbentuk adalah:");
 		Mout.desc[Mout.NDesc] = "Persamaan regresi yang terbentuk adalah:\n";
 		Mout.NDesc++;
@@ -1408,7 +1417,7 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
-		MenuRegresi();
+		MenuInterpolasi();
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
