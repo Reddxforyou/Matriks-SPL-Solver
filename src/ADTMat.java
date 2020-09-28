@@ -33,6 +33,7 @@ public class ADTMat{
 	 }
 	
 	
+	
 	 /* ********** KELOMPOK BACA/TULIS ********** */
 	public void BacaMATRIKS(MATRIKS M){
 		// Reihan Andhika Putra , Checked
@@ -119,6 +120,9 @@ public class ADTMat{
 		int i,j ;
 		for(i = 0; i <= M.NBrsEff-1; i++){
 			for (j = 0; j <= M.NKolEff-1; j++){
+				if (M.Mem[i][j]==-0.0){
+					M.Mem[i][j]= -0.0 + 0.0;
+				}
 				if (j == (M.NKolEff-1) && i == (M.NBrsEff-1)) {
 					System.out.printf("%.2f", M.Mem[i][j]);
 				} else if (j == (M.NKolEff-1)){
@@ -246,6 +250,21 @@ public class ADTMat{
 		} 
 	}
 
+	// public boolean isKoefesienZero(MATRIKS M, int i){
+	// 	boolean hasil = true;
+	// 	for (j=0; j <M.NKolEff-1; j++){
+	// 		if (M.Mem[i][j] != 0){
+	// 			hasil = false
+	// 		}
+	// 	}
+	// 	if (hasil){
+	// 		if (M.Mem[i][M.NKolEff -1] == 0){
+	// 			hasil = false
+	// 		}
+	// 	}
+	// 	return hasil;
+	// }
+
 	public boolean IsTidakAdaSolusi(MATRIKS M){
 		int i,j;
 		boolean solusi, hasil;
@@ -267,16 +286,29 @@ public class ADTMat{
 	}
 
 	public void BagiBaris(MATRIKS M, int i){
-		int j, j1;
+		int j, j1, j2;
 		double penyebut;
 		j = 0;
+		boolean a = true;
+		// for (i1 = i; i1 < M.NBrsEff; i++){
+		// 	if ()
+		// }
+		for (j2=0;j2<M.NKolEff;j2++){
+			if (M.Mem[i][j2] >= -0.00000000000001 && M.Mem[i][j2] < 0 ){
+				M.Mem[i][j2] = 0;
+			}
+		}
 		while (M.Mem[i][j] == 0 && j < M.NKolEff){
+			// if (M.Mem[i][j] >= -0.0000000000001 && M.Mem[i][j] < 0 ){
+			// 	M.Mem[i][j] = 0;
+			// }
 			j +=1; 
 		}
 		if (j < M.NKolEff){
 			penyebut = M.Mem[i][j];
 			for (j1 = j; j1 < M.NKolEff;j1++){
 				M.Mem[i][j1] = M.Mem[i][j1]/penyebut;
+				// M.Mem[i][j1] = (double)Math.round(M.Mem[i][j1] * 100000d) / 100000d;
 			}
 		}
 	}
@@ -786,7 +818,9 @@ public class ADTMat{
 				if (M.Mem[i][j] != 0){
 					kali = M.Mem[i][j];
 					for (a=j; a < M.NKolEff; a++){
-						M.Mem[i][a] = M.Mem[i][a] - (M.Mem[indeks][a] * kali);
+						if (j < M.NKolEff -1){
+							M.Mem[i][a] = M.Mem[i][a] - (M.Mem[indeks][a] * kali);
+						}
 					}
 				}
 			}
@@ -801,6 +835,10 @@ public class ADTMat{
 			// kurangkan semua
 			SortBaris(M); 
 			EliminasiOBE(M,i);
+			TulisMATRIKS(M);
+			System.out.println();
+			System.out.println();
+			// SortBaris(M); 
 		}
 		BagiBaris(M,i);
 		// TulisMATRIKS(M);
@@ -812,6 +850,9 @@ public class ADTMat{
 		int i;
 		GaussSPL(M);
 		for (i = 1; i < M.NBrsEff; i++){
+			TulisMATRIKS(M);
+			System.out.println();
+			System.out.println();
 			EliminasiOBEjordan(M, i);
 		}
 	}
@@ -1404,15 +1445,26 @@ public class ADTMat{
 		TulisMATRIKS(M1);
 		System.out.println();
 		System.out.println();
+		GaussSPL(M1);
+		TulisMATRIKS(M1);
+		System.out.println();
+		System.out.println();
 		GaussJordan(M1);
+		System.out.println();
+		System.out.println();
 		// TulisMATRIKS(M1);
 		// System.out.println();
 		// TulisMATRIKS(MergeInverseJordan(M1));
 		// System.out.println();
+		// System.out.println();
+		// System.out.println();
 		// TulisMATRIKS(AugmentedInverseJordan(M1));
+		// // System.out.println();
+		// System.out.println();
 		// System.out.println();
 		// HasilInverseJordan(M1);
 
+		
 		TulisMATRIKS(M1);
 	}
 
