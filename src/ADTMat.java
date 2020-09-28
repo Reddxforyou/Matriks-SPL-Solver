@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-import org.graalvm.compiler.graph.InputEdges;
+// import org.graalvm.compiler.graph.InputEdges;
 
 import java.lang.Math; 
 import java.io.File;
@@ -798,9 +798,9 @@ public class ADTMat{
 		// F.S Matriks echelon
 		int i;
 		for (i = 0; i < M.NBrsEff-1; i++){
-			// kurangkan semua 
+			// kurangkan semua
+			SortBaris(M); 
 			EliminasiOBE(M,i);
-			SortBaris(M);
 		}
 		BagiBaris(M,i);
 		// TulisMATRIKS(M);
@@ -1373,14 +1373,15 @@ public class ADTMat{
 		BacaMATRIKSAugmented(M1);
 		TulisMATRIKS(M1);
 		System.out.println();
-		// GaussJordan(M1);
+		System.out.println();
+		GaussJordan(M1);
 		// TulisMATRIKS(M1);
-		System.out.println();
-		TulisMATRIKS(MergeInverseJordan(M1));
-		System.out.println();
-		TulisMATRIKS(AugmentedInverseJordan(M1));
-		System.out.println();
-		HasilInverseJordan(M1);
+		// System.out.println();
+		// TulisMATRIKS(MergeInverseJordan(M1));
+		// System.out.println();
+		// TulisMATRIKS(AugmentedInverseJordan(M1));
+		// System.out.println();
+		// HasilInverseJordan(M1);
 
 		TulisMATRIKS(M1);
 	}
