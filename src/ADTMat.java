@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-import org.graalvm.compiler.graph.InputEdges;
+// import org.graalvm.compiler.graph.InputEdges;
 
 import java.lang.Math; 
 import java.io.File;
@@ -611,22 +611,99 @@ public class ADTMat{
 	}
 
 //////////INVERS////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void MenuInvers(){
+		// Reihan Andhika Putra, Checked
+		// Driver Invers
+		MATRIKS M = new MATRIKS();
+		int op,op2,op3;
+		System.out.println("Anda telah memilih menu Invers");
+		System.out.println("Silahkan pilih metode pembacaan matriks [1= file, 2= keyboard]");
+		System.out.print("Masukkan pilihan : ");
+		op = sc.nextInt();
+		System.out.println("");
+		while (op != 1 && op !=2){
+			System.out.println("Pilihan salah !! Silahkan pilih metode pembacaan matriks [1= file, 2= keyboard]");
+			System.out.print("Masukkan pilihan : ");
+			op = sc.nextInt();
+			System.out.println("");
+		}
+		if (op==2) {
+			BacaMATRIKS(M);
+		} else if (op==1){
+			bacaFile(M);
+		}
+
+		if (!IsBujurSangkar(M)){
+			System.out.println("Tidak punya determinan karena bukan matriks persegi");
+			System.out.println("Invers Tidak bisa dicari");	
+		} else if (!IsPunyaInvers(M)) {
+			System.out.println("Tidak mempunyai invers karena determinan 0");
+		} else {
+			System.out.println("Silahkan pilih metode pencarian invers [1= Adjoin , 2= Gauss Jordan ]");
+			System.out.print("Masukkan pilihan : ");
+			op2 = sc.nextInt();
+			while (op2 != 1 && op2 != 2){
+				System.out.println("Pilihan salah !! Silahkan pilih metode pencarian invers [1= Adjoin , 2= Gauss Jordan ]");
+				System.out.print("Masukkan pilihan : ");
+				op2 = sc.nextInt();
+				System.out.println("");
+			}
+			if (op2 == 1) {
+				InverseKofaktor(M);
+			} else if (op2 == 2){
+				InverseGaussJordan(M);
+			}
+			System.out.println("Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+			System.out.print("Masukkan pilihan : ");
+			op3 = sc.nextInt();
+			while (op3 != 1 && op3 != 2){
+				System.out.println("Pilihan salah !! Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+				System.out.print("Masukkan pilihan : ");
+				op3 = sc.nextInt();
+				System.out.println("");
+			}
+			if (op3 == 1) {
+				TulisFile(M);
+				MenuInvers();
+			} else {
+				MenuInvers();
+			}
+		}
+	}
+
 	public void InverseKofaktor (MATRIKS M){
 		// Reihan Andhika Putra, Checked
 		/* I.S. M terdefinisi */
 		/* F.S. Memprint matriks invers dari matriks M dengan metode determinant dan adjoint */
-		MATRIKS Adjoint = new MATRIKS();
-		Adjoint = MATRIKSKofaktor(M);
-		Transpose(Adjoint);
-		double perdet ;
-		if (!IsPunyaInvers(M)){
-			System.out.println("Tidak mempunyai invers");
-		} else {
-			perdet = 1/EkspansiKofaktor(M);
-			PKaliKons(Adjoint, perdet);
-			TulisMATRIKS(Adjoint);
-		}
+		double det = EkspansiKofaktor(M);
+		MATRIKSKofaktor2(M);
+		Transpose(M);
+		System.out.println("Matriks adjoint nya adalah :");
+		TulisMATRIKS(M);
+		System.out.println("");
+		System.out.printf("Determinannya adalah : %.2f", det );
+		System.out.println("");
+		det = 1/det;
+		PKaliKons(M, det);
+		System.out.println("Matriks inverse nya adalah :");
+		TulisMATRIKS(M);	
+		System.out.println();
 	}
+
+	public void InverseGaussJordan (MATRIKS M) {
+		System.out.println("Menggabungkan dengan matriks identitas!");
+		System.out.println("Matriksnya adalah :");
+		TulisMATRIKS(MergeInverseJordan(M));
+		System.out.println();
+		System.out.println("Melakukan GaussJordan");
+		TulisMATRIKS(AugmentedInverseJordan(M));
+		System.out.println();
+		System.out.println("Matriksnya  inversnya adalah :");
+		HasilInverseJordan(M);
+		TulisMATRIKS(M);
+		System.out.println();
+	}
+
 	public MATRIKS AugmentedInverseJordan(MATRIKS M){
 		// I.S MATRIKS TELAH DI MERGE 
 		// F.S MATRIKS DI OBE
@@ -660,7 +737,7 @@ public class ADTMat{
 		// TulisMATRIKS(M1);
 	}
 
-	public MATRIKS HasilInverseJordan(MATRIKS M){
+	public void HasilInverseJordan(MATRIKS M){
 		// I.S MATRIKS TELAH DI OBE KAN  
 		// F.S MATRIKS INVERSE
 		int i,j;
@@ -671,7 +748,6 @@ public class ADTMat{
 				M.Mem[i][j] = M1.Mem[i][j+M.NKolEff];
 			}
 		}
-		return M;
 	}
 
 
@@ -1379,12 +1455,12 @@ public class ADTMat{
 
 	/* ********** Testing ********** */
 	public void TestReihan(){
-		// MATRIKS Maug = new MATRIKS();
-		// bacaFile(Maug);
-		// GaussSPL(Maug);
-		// System.out.println("");
-		// TulisMATRIKS(Maug);
-		MenuInterpolasi();
+		MATRIKS Maug = new MATRIKS();
+		bacaFile(Maug);
+		GaussJordan(Maug);
+		System.out.println("");
+		TulisMATRIKS(Maug);
+		// MenuInvers();
 	}
 
 	public void TestDwi(){
