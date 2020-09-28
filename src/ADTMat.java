@@ -1260,7 +1260,7 @@ public class ADTMat{
 		String baris1, barismatriks;
 		try {
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "./test/";
+			String reipath = "../test/";
 			File file = new File(reipath+sc.next());
 			System.out.println(file.getAbsolutePath());
 			Scanner CountNB = new Scanner(file);
@@ -1318,7 +1318,7 @@ public class ADTMat{
 		try
 		{
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "./test/";
+			String reipath = "../test/";
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NBrsEff; i++){
 				for(int j = 0; j < M.NKolEff; j++){
@@ -1344,7 +1344,7 @@ public class ADTMat{
 		try
 		{
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "./test/";
+			String reipath = "../test/";
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NBrsEff; i++){
 				for(int j = 0; j < M.NKolEff; j++){
@@ -1373,7 +1373,7 @@ public class ADTMat{
 		try
 		{
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "./test/";
+			String reipath = "../test/";
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NDesc; i++){
 					writer.print(M.desc[i]);
