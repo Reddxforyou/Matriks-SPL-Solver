@@ -894,7 +894,7 @@ public class ADTMat{
 	}
 
 	public void MenuInterpolasi(){
-		// Ryo Richardo, Pake Invers, Cramer checked
+		// Ryo Richardo, Checked
 		// I.S. titik sampel tidak ada yang diinput 2 kali, dan tidak boleh ada 2 titik dengan x sama namun y berbeda (bukan fungsi)
 		// F.S. memberikan persamaan interpolasi dan nilai y dari x yang diinput
 		double x, y = 0;
@@ -1408,7 +1408,7 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
-		MenuInterpolasi();
+		MenuRegresi();
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
