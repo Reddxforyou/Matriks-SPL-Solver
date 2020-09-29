@@ -283,7 +283,7 @@ public class ADTMat{
 				 }
 			}
 			if (solusi){
-				if (M.Mem[i][j+1] != 0){
+				if (M.Mem[i][j] != 0){
 					hasil = true;
 				}
 			}
@@ -1595,11 +1595,13 @@ public class ADTMat{
 		MATRIKS M1= new MATRIKS();
 		System.out.println("Masukkan elemen M1");
 		BacaMATRIKSAugmented(M1);
-		TulisMATRIKS(M1);
 		System.out.println();
 		System.out.println();
-		GaussSPL(M1);
 		TulisMATRIKS(M1);
+		// System.out.println();
+		// System.out.println();
+		// GaussSPL(M1);
+		// TulisMATRIKS(M1);
 		System.out.println();
 		System.out.println();
 		GaussJordan(M1);
@@ -1615,10 +1617,15 @@ public class ADTMat{
 		// // System.out.println();
 		// System.out.println();
 		// System.out.println();
-		// HasilInverseJordan(M1);
-
-		
+		// HasilInverseJordan(M1);		
 		TulisMATRIKS(M1);
+		System.out.println();
+		System.out.println();
+		eliminasiBaris(M1);
+		TulisMATRIKS(M1);
+		System.out.println();
+		System.out.println();
+		solusiGauss(M1);
 	}
 
 	public void TestRyo(){
@@ -1627,8 +1634,131 @@ public class ADTMat{
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 
+	public boolean isAllZero(MATRIKS M, int i){
+		// apakah pada baris tersebut semuanya bernilai 0
+		int j;
+		boolean isZero = true;
+		for (j =0; j <M.NKolEff; j++){
+			if (M.Mem[i][j] != 0){
+				isZero = false;
+			}
+		}
+		return isZero;
+	}
+
+	public void eliminasiBaris(MATRIKS M){
+		// menngeliminasi baris yang isallzero
+		int i,j, eliminasi;
+		MATRIKS M1 = new MATRIKS();
+		eliminasi = 0;
+		for (i = 0; i < M.NBrsEff; i++){
+			if (isAllZero(M,i)){
+				eliminasi +=1;
+			}
+		}
+		i =0;
+		// BUAT matriks baru 
+
+		MakeMATRIKS(M.NBrsEff - eliminasi, M.NKolEff, M1);
+		for (i=0; i < M1.NBrsEff; i++){
+			for (j=0; j< M1.NKolEff; j++){
+				M1.Mem[i][j] = M.Mem[i][j];
+			}
+		}
+		// TulisMATRIKS(M1);
+		// System.out.println();
+		// System.out.println("CONTOH m1");
+
+		// Copy matriks 
+
+		MakeMATRIKS(M1.NBrsEff, M1.NKolEff, M);
+		for (i=0; i < M1.NBrsEff; i++){
+			for (j=0; j< M1.NKolEff; j++){
+				M.Mem[i][j] = M1.Mem[i][j];
+			}
+		}
+		// TulisMATRIKS(M);
+		// System.out.println();
+		// System.out.println("CONTOH m");
+
+	}
+
+	public Boolean isFree(MATRIKS M, int j){
+		//  APAKAH MATRIKS dengan indeks  kolom j free
+		int i;
+		boolean isfree;
+		isfree = true;
+		for (i=0; i < M.NBrsEff; i++ ){
+			if (M.Mem[i][j]  != 0){
+				isfree = false;
+			}
+		}
+		return isfree;
+
+	}
 	
-	 
+	public void solusiGauss(MATRIKS M){
+		// I.S MATRIKS M 
+		// F.S SOLUSI DARI MATRIKS 
+		int free, i,j, j1,j2;
+		
+		if (IsTidakAdaSolusi(M)){
+			System.out.println("Matriks tidak memiliki Solusi");
+		}else {
+			// variabel yang sebenarnya tidak berguna
+			free = 0; 
+			for (j=0; j < M.NKolEff - 1; j++){
+				if (isFree(M,j)){
+					free +=1;
+				}
+			}
+			j = 0;
+			System.out.println("JUMLAH FREE ADALAH "); 
+			System.out.println(free); // test aja
+			// ////////
+
+			if (M.NBrsEff == M.NKolEff - free -1){
+				System.out.println("Solusi unik "); 
+				for (i = 0; i < M.NBrsEff; i++){
+					j = IndeksKolom(M,i);
+					System.out.print("X"); 
+					System.out.print(j+1); 
+					System.out.print(" = "); 
+					System.out.printf("%.2f", M.Mem[i][M.NKolEff-1]);
+					System.out.println();
+				}
+				i =0;
+				 // test aja
+
+			}else {
+				System.out.println("Solusi paramatrik "); 
+				j1 = IndeksKolom(M,M.NBrsEff-1);
+				for (i = 0; i < M.NBrsEff; i++){
+					j = IndeksKolom(M,i);
+					System.out.print("X"); 
+					System.out.print(j+1); 
+					System.out.print(" = "); 
+					System.out.printf("%.2f", M.Mem[i][M.NKolEff-1]);
+					for (j2 = j1+1; j2 < M.NKolEff - 1; j2 ++ ){
+						System.out.print(" - "); 
+						if (!isFree(M,j2)){
+							System.out.printf("%.0f", M.Mem[i][j2]);
+							System.out.print("X"); 
+							System.out.print(j2+1); 
+						}
+				
+					}
+					System.out.println();
+				}
+			}
+
+
+
+		}
+		
+	}
+
+
 
 }
 
