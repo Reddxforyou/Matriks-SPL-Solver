@@ -935,7 +935,7 @@ public class ADTMat{
 		for (i=0; i < MK.NKolEff; i++){
 			solusi[i] = EkspansiKofaktor(MATRIKSCramer(MK, MH, i))/EkspansiKofaktor(MK);
 			System.out.printf("x"+ String.valueOf(i+1)+": "+ String.format("%.2f",solusi[i]));
-			Maug.desc[i+1] = "x"+ String.valueOf(i+1)+": "+ String.format("%.2f",solusi[i]);
+			Maug.desc[i+1] = "\nx"+ String.valueOf(i+1)+": "+ String.format("%.2f",solusi[i]);
 			System.out.println("");
 		}
 	}
@@ -1033,7 +1033,7 @@ public class ADTMat{
 		for (i = 0 ; i< MK.NBrsEff; i++){
 			System.out.printf("x"+ String.valueOf(i+1)+": "+ String.format("%.2f",Solusi.Mem[i][0]));
 			System.out.println("");
-			Maug.desc[i+1] = "x"+ String.valueOf(i+1)+": "+ String.format("%.2f",Solusi.Mem[i][0]);
+			Maug.desc[i+1] = "\nx"+ String.valueOf(i+1)+": "+ String.format("%.2f",Solusi.Mem[i][0]);
 		}
 	}
 
@@ -1348,7 +1348,7 @@ public class ADTMat{
 		GetMATRIKSHasil(Mout, MH);
 		System.out.println();
 		for (i = 0; i < Mout.NKolEff-2; i++){
-			System.out.print("Masukkan nilai x" + i + " yang ingin dicari nilainya: ");
+			System.out.print("Masukkan nilai x" + (i+1) + " yang ingin dicari nilainya: ");
 			x[i] = input.nextDouble();
 		}
 
@@ -1409,8 +1409,8 @@ public class ADTMat{
 			else {
 				System.out.print(" + ");
 				System.out.printf("%.2f", solusi[i]);
-				System.out.print("x" + (i-1));
-				Mout.desc[Mout.NDesc] = " + " + String.format("%.2f", solusi[i]) + "x" + String.valueOf(i-1);
+				System.out.print("x" + i);
+				Mout.desc[Mout.NDesc] = " + " + String.format("%.2f", solusi[i]) + "x" + String.valueOf(i);
 				Mout.NDesc++;
 				y += solusi[i]*x[i-1];
 			}
@@ -1419,8 +1419,8 @@ public class ADTMat{
 		Mout.desc[Mout.NDesc] = "\nMaka input";
 		Mout.NDesc++;
 		for (i = 0; i < Mout.NKolEff-2; i++){
-			 System.out.print(" x" + i + " = " + x[i] + ",");
-			 Mout.desc[Mout.NDesc] = " x" + String.valueOf(i) + " = " + String.valueOf(x[i]) + ",";
+			 System.out.print(" x" + (i+1) + " = " + x[i] + ",");
+			 Mout.desc[Mout.NDesc] = " x" + String.valueOf(i+1) + " = " + String.valueOf(x[i]) + ",";
 			 Mout.NDesc++;
 		}
 		System.out.print(" akan menghasilkan nilai ");
@@ -1549,7 +1549,6 @@ public class ADTMat{
 			}
 			for (int i = 0; i < M.NDesc; i++){
 					writer.print(M.desc[i]);
-					writer.println();
 			}		
 			writer.close();
 		}
@@ -1624,7 +1623,7 @@ public class ADTMat{
 
 	public void TestRyo(){
 		//System.out.println("Masukkan elemen M1");
-		MenuInterpolasi();
+		MenuRegresi();
 		//M1 = MakeMatriksInterpolasi(3, M1);
 	}
 

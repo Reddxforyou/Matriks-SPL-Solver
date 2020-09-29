@@ -1,0 +1,19 @@
+1.00 43.15 76.52 29.39 -0.00 
+0.00 1.00 1.13 0.42 -0.00 
+0.00 0.00 1.00 0.39 0.00 
+0.00 0.00 0.00 1.00 0.04 
+Matriks Gauss.
+
+Persamaan regresi yang terbentuk adalah:
+
+y = 
+-0.00
+ + -0.00x1
+ + 0.00x2
+ + 0.04x3
+
+Maka input
+ x1 = 2.0,
+ x2 = 3.0,
+ x3 = 4.0,
+ akan menghasilkan nilai 0.14
