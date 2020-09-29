@@ -1,11 +1,7 @@
 import java.util.Scanner;
-
-// import org.graalvm.compiler.graph.InputEdges;
-
 import java.lang.Math; 
 import java.io.File;
 import java.io.FileNotFoundException;
-// import java.io.FileWriter;
 import java.io.PrintWriter;
 
 public class ADTMat{
@@ -186,19 +182,6 @@ public class ADTMat{
 		M.Mem = M3.Mem;
 	}
 
-	// public void TukarBaris(MATRIKS M, int B1, int B2) {
-	// 	// Reihan Andhika Putra
-	// 	/* I.S. M terdefinisi dan B1 , B2 dalam range, perhatikan bahwa indeks (0,x) adalah baris ke 1
-	// 	/* F.S. M di baris ke B1 ditukar dengan B2*/
-	// 	int j ;
-	// 	double temp;
-	// 	for (j = 0; j < M.NKolEff; j++){
-	// 		temp = M.Mem[B1][j];
-	// 		M.Mem[B1][j] = M.Mem[B2][j];
-	// 		M.Mem[B2][j] = temp;
-	// 	}
-	// }
-
 	public MATRIKS Inverse (MATRIKS M){
 		// Reihan Andhika Putra, Checked
 		/* I.S. M terdefinisi dan pasti punya invers */
@@ -239,6 +222,7 @@ public class ADTMat{
 		/* I.S. MIn, dan MHsl terdefinisi */
 		/* F.S. Melakukan assignment MHsl  MIn */
 		int i,j;
+		MakeMATRIKS(MIn.NBrsEff, MIn.NKolEff, MHsl);
 		for (i=0; i< MIn.NBrsEff; i++){
 			for (j=0; j< MIn.NKolEff; j++){
 				 MHsl.Mem[i][j] = MIn.Mem[i][j];
@@ -256,34 +240,23 @@ public class ADTMat{
 		} 
 	}
 
-	// public boolean isKoefesienZero(MATRIKS M, int i){
-	// 	boolean hasil = true;
-	// 	for (j=0; j <M.NKolEff-1; j++){
-	// 		if (M.Mem[i][j] != 0){
-	// 			hasil = false
-	// 		}
-	// 	}
-	// 	if (hasil){
-	// 		if (M.Mem[i][M.NKolEff -1] == 0){
-	// 			hasil = false
-	// 		}
-	// 	}
-	// 	return hasil;
-	// }
-
 	public boolean IsTidakAdaSolusi(MATRIKS M){
+		MATRIKS M2 = new MATRIKS();
+		CopyMATRIKS(M, M2);
+		GaussJordan(M2);
+		eliminasiBaris(M2);
 		int i,j;
 		boolean solusi, hasil;
 		hasil = false;
-		for (i=0; i< M.NBrsEff; i++){
+		for (i=0; i< M2.NBrsEff; i++){
 			solusi = true;
-			for (j=0; j< M.NKolEff-1; j++){
-				 if (M.Mem[i][j] != 0){
+			for (j=0; j< M2.NKolEff-1; j++){
+				 if (M2.Mem[i][j] != 0){
 					solusi = false;
 				 }
 			}
 			if (solusi){
-				if (M.Mem[i][j] != 0){
+				if (M2.Mem[i][j] != 0){
 					hasil = true;
 				}
 			}
@@ -296,25 +269,18 @@ public class ADTMat{
 		double penyebut;
 		j = 0;
 		boolean a = true;
-		// for (i1 = i; i1 < M.NBrsEff; i++){
-		// 	if ()
-		// }
 		for (j2=0;j2<M.NKolEff;j2++){
 			if (M.Mem[i][j2] >= -0.00000000000001 && M.Mem[i][j2] < 0 ){
 				M.Mem[i][j2] = 0;
 			}
 		}
 		while (M.Mem[i][j] == 0 && j < M.NKolEff){
-			// if (M.Mem[i][j] >= -0.0000000000001 && M.Mem[i][j] < 0 ){
-			// 	M.Mem[i][j] = 0;
-			// }
 			j +=1; 
 		}
 		if (j < M.NKolEff){
 			penyebut = M.Mem[i][j];
 			for (j1 = j; j1 < M.NKolEff;j1++){
 				M.Mem[i][j1] = M.Mem[i][j1]/penyebut;
-				// M.Mem[i][j1] = (double)Math.round(M.Mem[i][j1] * 100000d) / 100000d;
 			}
 		}
 	}
@@ -527,9 +493,13 @@ public class ADTMat{
 			}
 			if (op3 == 1) {
 				TulisFileDesc(M);
-				MenuDeterminan();
+				System.out.println("Kembali ke Menu Utama");
+				System.out.println("");
+				MainMenu();
 			} else {
-				MenuDeterminan();
+				System.out.println("Kembali ke Menu Utama");
+				System.out.println("");
+				MainMenu();
 			}
 		}
 	}
@@ -674,8 +644,14 @@ public class ADTMat{
 		if (!IsBujurSangkar(M)){
 			System.out.println("Tidak punya determinan karena bukan matriks persegi");
 			System.out.println("Invers Tidak bisa dicari");	
+			System.out.println("Kembali ke Menu Utama");
+			System.out.println("");
+			MainMenu();
 		} else if (!IsPunyaInvers(M)) {
 			System.out.println("Tidak mempunyai invers karena determinan 0");
+			System.out.println("Kembali ke Menu Utama");
+			System.out.println("");
+			MainMenu();
 		} else {
 			System.out.println("Silahkan pilih metode pencarian invers [1= Adjoin , 2= Gauss Jordan ]");
 			System.out.print("Masukkan pilihan : ");
@@ -702,9 +678,13 @@ public class ADTMat{
 			}
 			if (op3 == 1) {
 				TulisFile(M);
-				MenuInvers();
+				System.out.println("Kembali ke Menu Utama");
+				System.out.println("");
+				MainMenu();
 			} else {
-				MenuInvers();
+				System.out.println("Kembali ke Menu Utama");
+				System.out.println("");
+				MainMenu();
 			}
 		}
 	}
@@ -771,8 +751,6 @@ public class ADTMat{
 			}
 		}
 		return M1;
-		// GaussJordan(M1);
-		// TulisMATRIKS(M1);
 	}
 
 	public void HasilInverseJordan(MATRIKS M){
@@ -796,7 +774,6 @@ public class ADTMat{
 		// Driver SPL
 		MATRIKS Maug = new MATRIKS();
 		int op,op2,op3;
-		Boolean bisaDisolve = true;
 		System.out.println("Anda telah memilih menu SPL");
 		System.out.println("Silahkan pilih metode pembacaan matriks [1= file, 2= keyboard, 3= matriks hilbert] ");
 		System.out.print("Masukkan pilihan : ");
@@ -815,6 +792,12 @@ public class ADTMat{
 		} else if (op==3){
 			BacaMatriksHilbert(Maug);
 		}
+		if (IsTidakAdaSolusi(Maug)){
+			System.out.println("Matriks tidak konsisten sehingga tidak memiliki solusi");
+			System.out.println("Kembali ke Menu Utama");
+			System.out.println("");
+			MainMenu();
+		}
 		System.out.println("Silahkan pilih metode penyelesaian SPL [1= Gauss, 2= Gauss Jordan, 3= Invers, 4= Metode Cramer ]");
 		System.out.print("Masukkan pilihan : ");
 		op2 = sc.nextInt();
@@ -826,17 +809,26 @@ public class ADTMat{
 		}
 		if (op2 == 1) {
 			// Gauss
-			System.out.println("Blom ada gan");
-			MenuSPL();
+			GaussSPL(Maug);
+			System.out.println("Matriks Hasil Eliminasi Gaussnya adalah");
+			TulisMATRIKS(Maug);
+			System.out.println("");
+			solusiGauss(Maug);
 		} else if (op2 == 2){
 			// Gauss Jordan
-			System.out.println("Blom ada gan");
-			MenuSPL();
+			GaussJordan(Maug);
+			System.out.println("Matriks Hasil Gauss Jordannya adalah");
+			TulisMATRIKS(Maug);
+			System.out.println("");
+			eliminasiBaris(Maug);
+			solusiGaussJordan(Maug);
 		} else if (op2 == 3 || op2==4){
 			if (Maug.NKolEff-1 > Maug.NBrsEff){
 				System.out.println("Tidak punya determinan karena matriks koefisien bukan matriks persegi");
 				System.out.println("Silahkan gunakan metode lain untuk menyelesaikan");	
-				bisaDisolve = false ;
+				System.out.println("Kembali ke Menu Utama");
+				System.out.println("");
+				MainMenu();
 			} else {	
 				MATRIKS MH = new MATRIKS();
 				MATRIKS MK = new MATRIKS();
@@ -845,7 +837,9 @@ public class ADTMat{
 				if (!IsPunyaInvers(MK)) {
 					System.out.println("Tidak bisa menggunakan metode cramer maupun metode invers karena determinannya 0");
 					System.out.println("Silahkan gunakan metode lain untuk menyelesaikan");	
-					bisaDisolve = false ;
+					System.out.println("Kembali ke Menu Utama");
+					System.out.println("");
+					MainMenu();
 				} else {
 					if (op2 ==3 ){
 						SPLInvers(Maug, MK, MH);
@@ -855,27 +849,25 @@ public class ADTMat{
 				}
 			}
 		}
-		if (bisaDisolve) {
-			System.out.println("Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+		System.out.println("Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
+		System.out.print("Masukkan pilihan : ");
+		op3 = sc.nextInt();
+		while (op3 != 1 && op3 != 2){
+			System.out.println("Pilihan salah !! Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
 			System.out.print("Masukkan pilihan : ");
 			op3 = sc.nextInt();
-			while (op3 != 1 && op3 != 2){
-				System.out.println("Pilihan salah !! Apakah anda ingin menyimpan hasil kedalam file? [1= ya, 2= tidak]");
-				System.out.print("Masukkan pilihan : ");
-				op3 = sc.nextInt();
-				System.out.println("");
-			}
-			if (op3 == 1) {
-				TulisFileDesc(Maug);
-				MenuSPL();
-			} else {
-				MenuSPL();
-			}
-		} else {
-			System.out.println("Kembali ke menu awal, silahkan input ulang file/matriks jika ingin menghitung dengan metode lain");
-			MenuSPL();
+			System.out.println("");
 		}
-
+		if (op3 == 1) {
+			TulisFileDesc(Maug);
+			System.out.println("Kembali ke Menu Utama");
+			System.out.println("");
+			MainMenu();
+		} else {
+			System.out.println("Kembali ke Menu Utama");
+			System.out.println("");
+			MainMenu();
+		}
 	}
 
 	public void GetMATRIKSKoefisien (MATRIKS MAug, MATRIKS MK){	
@@ -999,7 +991,6 @@ public class ADTMat{
 			// SortBaris(M); 
 		}
 		BagiBaris(M,i);
-		// TulisMATRIKS(M);
 	}
 
 	public void GaussJordan(MATRIKS M){
@@ -1036,10 +1027,192 @@ public class ADTMat{
 			Maug.desc[i+1] = "\nx"+ String.valueOf(i+1)+": "+ String.format("%.2f",Solusi.Mem[i][0]);
 		}
 	}
+	public void eliminasiBaris(MATRIKS M){
+		// menngeliminasi baris yang isallzero
+		int i,j, eliminasi;
+		MATRIKS M1 = new MATRIKS();
+		eliminasi = 0;
+		for (i = 0; i < M.NBrsEff; i++){
+			if (isAllZero(M,i)){
+				eliminasi +=1;
+			}
+		}
+		i =0;
+		// BUAT matriks baru 
+		MakeMATRIKS(M.NBrsEff - eliminasi, M.NKolEff, M1);
+		for (i=0; i < M1.NBrsEff; i++){
+			for (j=0; j< M1.NKolEff; j++){
+				M1.Mem[i][j] = M.Mem[i][j];
+			}
+		}
+		// Copy matriks 
+		MakeMATRIKS(M1.NBrsEff, M1.NKolEff, M);
+		for (i=0; i < M1.NBrsEff; i++){
+			for (j=0; j< M1.NKolEff; j++){
+				M.Mem[i][j] = M1.Mem[i][j];
+			}
+		}
+	}
 
-	
+	public Boolean isFree(MATRIKS M, int j){
+		//  APAKAH MATRIKS dengan indeks  kolom j free
+		int i;
+		boolean isfree;
+		isfree = true;
+		for (i=0; i < M.NBrsEff; i++ ){
+			if (M.Mem[i][j]  != 0){
+				isfree = false;
+			}
+		}
+		return isfree;
+
+	}
+
+	public boolean isAllZero(MATRIKS M, int i){
+		// apakah pada baris tersebut semuanya bernilai 0
+		int j;
+		boolean isZero = true;
+		for (j =0; j <M.NKolEff; j++){
+			if (M.Mem[i][j] != 0){
+				isZero = false;
+			}
+		}
+		return isZero;
+	}
+
+	public void solusiGauss(MATRIKS M){
+
+		// I.S MATRIKS M 
+		// F.S SOLUSI DARI MATRIKS 
+		MATRIKS Gauss = new MATRIKS();
+		CopyMATRIKS(M, Gauss);
+		int i,j,now;
+		boolean firstparam;
+		String[] solusi = new String[100];
+		for (i = 1; i < M.NBrsEff; i++){
+			EliminasiOBEjordan(M, i);
+		}
+		eliminasiBaris(M);
+		// variabel yang sebenarnya tidak berguna
+		for (j=0; j < M.NKolEff - 1; j++){
+			if (isFree(M,j)){
+				solusi[j] = "Free";
+			} else {
+				solusi[j] = ParametrikOrUnik(M,j);
+			}
+		}
+		for (i=0; i < M.NBrsEff; i++){
+			now = 99;
+			firstparam = true;
+			for (j=0; j <M.NKolEff-1; j++){
+				if (M.Mem[i][j]!= 0){
+					if (solusi[j] == "Unik" && now != 99){
+						solusi[j] = "Parametrik";
+					}
+					if (solusi[j] == "Unik" && M.Mem[i][j]==1){
+						now = j ;
+						if (M.Mem[i][M.NKolEff-1]==0){
+							solusi[j] ="X"+String.valueOf(j+1)+" :" ;
+						} else {
+							solusi[j] ="X"+String.valueOf(j+1)+" : " + String.format("%.2f",M.Mem[i][M.NKolEff-1]);
+						}
+					}
+					if (solusi[j] == "Parametrik"){
+						if (firstparam && M.Mem[i][M.NKolEff-1]==0){
+							solusi[now] = solusi[now] +" "+String.valueOf(M.Mem[i][j]*-1)+"X"+String.valueOf(j+1);
+							firstparam = false;
+						} else {
+							solusi[now] = solusi[now] +" + "+String.valueOf(M.Mem[i][j]*-1)+"X"+String.valueOf(j+1);
+						} 
+					}
+				}
+			}
+		}
+		System.out.println("Solusinya adalah :");
+		for (j=0; j < M.NKolEff - 1; j++){
+			if (solusi[j]=="Free" || solusi[j]=="Parametrik"){
+				solusi[j] = "X"+String.valueOf(j+1)+" : " + "Free";
+			}
+			System.out.println(solusi[j]);
+			M.desc[j] = "\n" + solusi[j];
+		}
+		M.NDesc = M.NKolEff - 1;
+		CopyMATRIKS(Gauss, M);
+	}
 
 
+	public String ParametrikOrUnik(MATRIKS M, int j){
+		//  APAKAH MATRIKS dengan indeks  kolom parametrik
+		int i, notzero, satu;
+		notzero = 0;
+		satu = 0;
+		for (i=0; i < M.NBrsEff; i++ ){
+			if (M.Mem[i][j]  != 0){
+				notzero = notzero + 1;
+			}
+			if (M.Mem[i][j]  == 1){
+				satu = satu + 1;
+			}
+		}
+		if (satu ==1 && notzero ==1){
+			return "Unik";
+		} else {
+			return "Parametrik";
+		}
+	}
+
+	public void solusiGaussJordan(MATRIKS M){
+		// I.S MATRIKS M 
+		// F.S SOLUSI DARI MATRIKS 
+		int i,j,now;
+		boolean firstparam;
+		String[] solusi = new String[100];
+		
+		// variabel yang sebenarnya tidak berguna
+		for (j=0; j < M.NKolEff - 1; j++){
+			if (isFree(M,j)){
+				solusi[j] = "Free";
+			} else {
+				solusi[j] = ParametrikOrUnik(M,j);
+			}
+		}
+		for (i=0; i < M.NBrsEff; i++){
+			now = 99;
+			firstparam = true;
+			for (j=0; j <M.NKolEff-1; j++){
+				if (M.Mem[i][j]!= 0){
+					if (solusi[j] == "Unik" && now != 99){
+						solusi[j] = "Parametrik";
+					}
+					if (solusi[j] == "Unik" && M.Mem[i][j]==1){
+						now = j ;
+						if (M.Mem[i][M.NKolEff-1]==0){
+							solusi[j] ="X"+String.valueOf(j+1)+" :" ;
+						} else {
+							solusi[j] ="X"+String.valueOf(j+1)+" : " + String.format("%.2f",M.Mem[i][M.NKolEff-1]);
+						}
+					}
+					if (solusi[j] == "Parametrik"){
+						if (firstparam && M.Mem[i][M.NKolEff-1]==0){
+							solusi[now] = solusi[now] +" "+String.valueOf(M.Mem[i][j]*-1)+"X"+String.valueOf(j+1);
+							firstparam = false;
+						} else {
+							solusi[now] = solusi[now] +" + "+String.valueOf(M.Mem[i][j]*-1)+"X"+String.valueOf(j+1);
+						} 
+					}
+				}
+			}
+		}
+		System.out.println("Solusinya adalah :");
+		for (j=0; j < M.NKolEff - 1; j++){
+			if (solusi[j]=="Free" || solusi[j]=="Parametrik"){
+				solusi[j] = "X"+String.valueOf(j+1)+" : " + "Free";
+			}
+			System.out.println(solusi[j]);
+			M.desc[j] = "\n" + solusi[j];
+		}
+		M.NDesc = M.NKolEff - 1;
+	}
 	////////// INTERPOLASI/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void BacaTitik(MATRIKS M){
 		// Ryo Richardo, Checked
@@ -1228,10 +1401,14 @@ public class ADTMat{
 			}
 			if (op == 1){
 				TulisFileDesc(Mout);
-				MenuInterpolasi();
+				System.out.println("Kembali ke Menu Utama");
+				System.out.println("");
+				MainMenu();
 			}
 			else{
-				MenuInterpolasi();
+				System.out.println("Kembali ke Menu Utama");
+				System.out.println("");
+				MainMenu();
 			}
 		}
 		else{
@@ -1239,6 +1416,9 @@ public class ADTMat{
 			System.out.println("\nTerjadi kesalahan pada input.");
 			System.out.println("Pastikan koordinat x titik sampel yang diinput selalu berbeda satu sama lain.");
 			System.out.println("Silahkan mengulang program.");
+			System.out.println("Kembali ke Menu Utama");
+			System.out.println("");
+			MainMenu();
 		}
 		input.close();
 	}
@@ -1439,10 +1619,14 @@ public class ADTMat{
 		}
 		if (op == 1){
 			TulisFileDesc(Mout);
-			MenuRegresi();
+			System.out.println("Kembali ke Menu Utama");
+			System.out.println("");
+			MainMenu();
 		}
 		else{
-			MenuRegresi();
+			System.out.println("Kembali ke Menu Utama");
+			System.out.println("");
+			MainMenu();
 		}
 	}
 ////FileHandlings//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1498,8 +1682,11 @@ public class ADTMat{
 			System.out.println();
 		} 
 		catch (FileNotFoundException e) {
-			System.out.println("File tidak ada atau nama file salah");
+			System.out.println("File tidak ada atau nama file salah, Kadang ada bug terhadap pathnya, minta tolong lapor ke pembuat jangan di 0 in :)");
 			e.printStackTrace();
+			System.out.println("Kembali ke Menu Utama");
+			System.out.println("");
+			MainMenu();
 		}
 	}
 
@@ -1512,7 +1699,7 @@ public class ADTMat{
 		try
 		{
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "./test/";
+			String reipath = "./output/";
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NBrsEff; i++){
 				for(int j = 0; j < M.NKolEff; j++){
@@ -1525,7 +1712,10 @@ public class ADTMat{
 		}
 		catch (FileNotFoundException e){
 			System.out.println("Terjadi kesalahan");
-			e.printStackTrace();			
+			e.printStackTrace();
+			System.out.println("Kembali ke Menu Utama");
+			System.out.println("");
+			MainMenu();			
 		}
 	}
 
@@ -1538,7 +1728,7 @@ public class ADTMat{
 		try
 		{
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "./test/";
+			String reipath = "./output/";
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NBrsEff; i++){
 				for(int j = 0; j < M.NKolEff; j++){
@@ -1553,8 +1743,11 @@ public class ADTMat{
 			writer.close();
 		}
 		catch (FileNotFoundException e){
-			System.out.println("Terjadi kesalahan");
-			e.printStackTrace();			
+			System.out.println("Terjadi kesalahan, Kadang ada bug terhadap pathnya, minta tolong lapor ke pembuat jangan di 0 in :)");
+			e.printStackTrace();
+			System.out.println("Kembali ke Menu Utama");
+			System.out.println("");
+			MainMenu();			
 		}
 	}
 
@@ -1567,7 +1760,7 @@ public class ADTMat{
 		try
 		{
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "./test/";
+			String reipath = "./output/";
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NDesc; i++){
 					writer.print(M.desc[i]);
@@ -1575,190 +1768,72 @@ public class ADTMat{
 			writer.close();
 		}
 		catch (FileNotFoundException e){
-			System.out.println("Terjadi kesalahan");
+			System.out.println("Terjadi kesalahan, Kadang ada bug terhadap pathnya, minta tolong lapor ke pembuat jangan di 0 in :)");
 			e.printStackTrace();			
 		}
 	}
 
 	/* ********** Testing ********** */
 	public void TestReihan(){
-		// MATRIKS Maug = new MATRIKS();
-		// bacaFile(Maug);
-		// GaussJordan(Maug);
-		// System.out.println("");
-		// TulisMATRIKS(Maug);
-		MenuInvers();
+		MainMenu();
 	}
 
-	public void TestDwi(){
-		int a;
-		MATRIKS M1= new MATRIKS();
-		System.out.println("Masukkan elemen M1");
-		BacaMATRIKSAugmented(M1);
-		System.out.println();
-		System.out.println();
-		TulisMATRIKS(M1);
-		// System.out.println();
-		// System.out.println();
-		// GaussSPL(M1);
-		// TulisMATRIKS(M1);
-		System.out.println();
-		System.out.println();
-		GaussJordan(M1);
-		System.out.println();
-		System.out.println();
-		// TulisMATRIKS(M1);
-		// System.out.println();
-		// TulisMATRIKS(MergeInverseJordan(M1));
-		// System.out.println();
-		// System.out.println();
-		// System.out.println();
-		// TulisMATRIKS(AugmentedInverseJordan(M1));
-		// // System.out.println();
-		// System.out.println();
-		// System.out.println();
-		// HasilInverseJordan(M1);		
-		TulisMATRIKS(M1);
-		System.out.println();
-		System.out.println();
-		eliminasiBaris(M1);
-		TulisMATRIKS(M1);
-		System.out.println();
-		System.out.println();
-		solusiGauss(M1);
-	}
-
-	public void TestRyo(){
-		//System.out.println("Masukkan elemen M1");
-		MenuRegresi();
-		//M1 = MakeMatriksInterpolasi(3, M1);
-	}
-
-	public boolean isAllZero(MATRIKS M, int i){
-		// apakah pada baris tersebut semuanya bernilai 0
-		int j;
-		boolean isZero = true;
-		for (j =0; j <M.NKolEff; j++){
-			if (M.Mem[i][j] != 0){
-				isZero = false;
-			}
+	public void MainMenu(){
+		int op;
+		System.out.println("Main Menu");
+		System.out.println("Baca Instruksi dan beberapa hal penting di README Github");
+		System.out.println("");
+		System.out.println("Aljabar Linear dan Geometri ~ ALGEO");
+		System.out.println("Tubes 1");
+		System.out.println("Sistem Persamaan Linear, Determinan, dan Aplikasinya");
+		System.out.println("");
+		System.out.println("Created by : ");
+		System.out.println("13519043 - Reihan Andhika Putra");
+		System.out.println("13519057 - Kadek Dwi Bagus Ananta Udayana");
+		System.out.println("13519193 - Ryo Richardo");
+		System.out.println("");
+		System.out.println("MENU PROGRAM");
+		System.out.println("1. Determinan");
+		System.out.println("2. Invers");
+		System.out.println("3. Sistem Persamaan Linear");
+		System.out.println("4. Interpolasi Polinom");
+		System.out.println("5. Regresi Linear Berganda");
+		System.out.println("6. Keluar");
+		System.out.print("Masukkan pilihan menu yang diinginkan : ");
+		op = sc.nextInt();
+		while (op != 1 && op != 2 && op != 3 && op != 4 && op != 5 && op !=6){
+			System.out.println("");
+			System.out.println("Anda Memasukkan Menu yang salah, silahkan ulangi");
+			System.out.println("Masukkan pilihan menu yang diinginkan : ");
+			System.out.println("MENU PROGRAM");
+			System.out.println("1. Determinan");
+			System.out.println("2. Invers");
+			System.out.println("3. Sistem Persamaan Linear");
+			System.out.println("4. Interpolasi Polinom");
+			System.out.println("5. Regresi Linear Berganda");
+			System.out.println("6. Keluar");
+			System.out.print("Masukkan pilihan menu yang diinginkan : ");
+			op = sc.nextInt();
 		}
-		return isZero;
+		System.out.println("");
+		if (op ==1) {
+			MenuDeterminan();
+		} else if(op == 2){
+			MenuInvers();
+		} else if(op == 3){
+			MenuSPL();
+		} else if(op == 4){
+			MenuInterpolasi();
+		} else if(op == 5 ){
+			MenuRegresi();
+		} else if(op ==6){
+			Exit();
+		} 
 	}
 
-	public void eliminasiBaris(MATRIKS M){
-		// menngeliminasi baris yang isallzero
-		int i,j, eliminasi;
-		MATRIKS M1 = new MATRIKS();
-		eliminasi = 0;
-		for (i = 0; i < M.NBrsEff; i++){
-			if (isAllZero(M,i)){
-				eliminasi +=1;
-			}
-		}
-		i =0;
-		// BUAT matriks baru 
-
-		MakeMATRIKS(M.NBrsEff - eliminasi, M.NKolEff, M1);
-		for (i=0; i < M1.NBrsEff; i++){
-			for (j=0; j< M1.NKolEff; j++){
-				M1.Mem[i][j] = M.Mem[i][j];
-			}
-		}
-		// TulisMATRIKS(M1);
-		// System.out.println();
-		// System.out.println("CONTOH m1");
-
-		// Copy matriks 
-
-		MakeMATRIKS(M1.NBrsEff, M1.NKolEff, M);
-		for (i=0; i < M1.NBrsEff; i++){
-			for (j=0; j< M1.NKolEff; j++){
-				M.Mem[i][j] = M1.Mem[i][j];
-			}
-		}
-		// TulisMATRIKS(M);
-		// System.out.println();
-		// System.out.println("CONTOH m");
-
-	}
-
-	public Boolean isFree(MATRIKS M, int j){
-		//  APAKAH MATRIKS dengan indeks  kolom j free
-		int i;
-		boolean isfree;
-		isfree = true;
-		for (i=0; i < M.NBrsEff; i++ ){
-			if (M.Mem[i][j]  != 0){
-				isfree = false;
-			}
-		}
-		return isfree;
-
-	}
-	
-	public void solusiGauss(MATRIKS M){
-		// I.S MATRIKS M 
-		// F.S SOLUSI DARI MATRIKS 
-		int free, i,j, j1,j2;
-		
-		if (IsTidakAdaSolusi(M)){
-			System.out.println("Matriks tidak memiliki Solusi");
-		}else {
-			// variabel yang sebenarnya tidak berguna
-			free = 0; 
-			for (j=0; j < M.NKolEff - 1; j++){
-				if (isFree(M,j)){
-					free +=1;
-				}
-			}
-			j = 0;
-			System.out.println("JUMLAH FREE ADALAH "); 
-			System.out.println(free); // test aja
-			// ////////
-
-			if (M.NBrsEff == M.NKolEff - free -1){
-				System.out.println("Solusi unik "); 
-				for (i = 0; i < M.NBrsEff; i++){
-					j = IndeksKolom(M,i);
-					System.out.print("X"); 
-					System.out.print(j+1); 
-					System.out.print(" = "); 
-					System.out.printf("%.2f", M.Mem[i][M.NKolEff-1]);
-					System.out.println();
-				}
-				i =0;
-				 // test aja
-
-			}else {
-				System.out.println("Solusi paramatrik "); 
-				j1 = IndeksKolom(M,M.NBrsEff-1);
-				for (i = 0; i < M.NBrsEff; i++){
-					j = IndeksKolom(M,i);
-					System.out.print("X"); 
-					System.out.print(j+1); 
-					System.out.print(" = "); 
-					System.out.printf("%.2f", M.Mem[i][M.NKolEff-1]);
-					for (j2 = j1+1; j2 < M.NKolEff - 1; j2 ++ ){
-						System.out.print(" - "); 
-						if (!isFree(M,j2)){
-							System.out.printf("%.0f", M.Mem[i][j2]);
-							System.out.print("X"); 
-							System.out.print(j2+1); 
-						}
-				
-					}
-					System.out.println();
-				}
-			}
-
-
-
-		}
-		
-	}
-
-
-
+	public void Exit(){
+		// Exit  
+     System.exit(0);
+  }
 }
 
