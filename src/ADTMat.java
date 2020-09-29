@@ -915,10 +915,10 @@ public class ADTMat{
 		/* F.S. Menyelesaikan SPL dengan metode Cramer */
 		double[] solusi = new double[100];
 		int i;
-		System.out.println("Matrisk Koef");
+		System.out.println("Matriks Koef");
 		TulisMATRIKS(MK);
 		System.out.println();
-		System.out.println("Matrisk Hasil");
+		System.out.println("Matriks Hasil");
 		TulisMATRIKS(MH);
 		System.out.println();
 		System.out.println("Nilai koef");
@@ -1010,10 +1010,10 @@ public class ADTMat{
 		/* F.S. Menyelesaikan SPL dengan metode invers */
 		int i ;
 		MATRIKS Solusi = new MATRIKS();
-		System.out.println("Matrisk Koef");
+		System.out.println("Matriks Koef");
 		TulisMATRIKS(MK);
 		System.out.println();
-		System.out.println("Matrisk Hasil");
+		System.out.println("Matriks Hasil");
 		TulisMATRIKS(MH);
 		MakeMATRIKS(MK.NBrsEff, MH.NKolEff, Solusi);
 		System.out.println();
@@ -1778,7 +1778,6 @@ public class ADTMat{
 		MainMenu();
 	}
 
-<<<<<<< Updated upstream
 	public void MainMenu(){
 		int op;
 		System.out.println("Main Menu");
@@ -1830,43 +1829,6 @@ public class ADTMat{
 		} else if(op ==6){
 			Exit();
 		} 
-=======
-	public void TestDwi(){
-		int a;
-		MATRIKS M1= new MATRIKS();
-		System.out.println("Masukkan elemen M1");
-		BacaMATRIKSAugmented(M1);
-		TulisMATRIKS(M1);
-		System.out.println();
-		System.out.println();
-		GaussSPL(M1);
-		TulisMATRIKS(M1);
-		System.out.println();
-		System.out.println();
-		GaussJordan(M1);
-		System.out.println();
-		System.out.println();
-		// TulisMATRIKS(M1);
-		// System.out.println();
-		// TulisMATRIKS(MergeInverseJordan(M1));
-		// System.out.println();
-		// System.out.println();
-		// System.out.println();
-		// TulisMATRIKS(AugmentedInverseJordan(M1));
-		// // System.out.println();
-		// System.out.println();
-		// System.out.println();
-		// HasilInverseJordan(M1);
-
-		
-		TulisMATRIKS(M1);
-	}
-
-	public void TestRyo(){
-		//System.out.println("Masukkan elemen M1");
-		MenuInterpolasi();
-		//M1 = MakeMatriksInterpolasi(3, M1);
->>>>>>> Stashed changes
 	}
 
 	public void Exit(){
