@@ -45,23 +45,18 @@ javac app.java AdtMat,java
 java app
 ```
 2.  Masukkan menu dan submenu penyelesaian matriks yang diinginkan dengan mengetik angka 1-9
+> :exclamation: Input menu yang diijinkan adalah integer sehingga apabila anda menginput string saat pilihan menu maka program akan error dan auto exit
 3.  Masukkan cara pembacaan matriks , ada 3cara untuk membaca matriks
     - Keyboard
     - File
     - Matriks Hilbert ( Khusus SPL)
+> :exclamation: File yang digunakan sebagai input matriks wajib berada di dalam folder test
+> :exclamation: Dalam mengetikkan nama file, wajib sertakan extension file
 4. Tergantung situasi dan kondisi maka matriks anda bisa saja diselesaikan ataupun ditolak karena penggunaan metode yang tidak cocok, input matriks yang tidak valid, dan beberapa alasan lainnnya
 5. Apabila matriks anda berhasil diselesaikan, maka output yang bersesuaian akan muncul di layar , dan anda dapat memilih untuk save matriks di file atau tidak
-# WARNING
-1. > :exclamation: Input menu yang diijinkan adalah integer sehingga apabila anda menginput string saat pilihan menu maka program akan error dan auto exit
-2. > :exclamation: File yang digunakan sebagai input matriks wajib berada di dalam folder test
-3. > :exclamation: File yang digunakan sebagai ouput matriks akan berada di dalam folder output
-4. > :exclamation: Dalam mengetikkan nama file, wajib sertakan extension file
-
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+> :exclamation: File yang digunakan sebagai ouput matriks akan berada di dalam folder output
+> :exclamation: Apabila terdapat error dalam file handling (input onput) maka anda akan dilempar ke menu utama lagi 
+6. Anda bisa mengulangi proses diatas sesuai kebutuhan
+7. Jika dirasa sudah cukup, pilih menu keluar untuk keluar dari program
 
 
