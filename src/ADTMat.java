@@ -915,10 +915,10 @@ public class ADTMat{
 		/* F.S. Menyelesaikan SPL dengan metode Cramer */
 		double[] solusi = new double[100];
 		int i;
-		System.out.println("Matrisk Koef");
+		System.out.println("Matriks Koef");
 		TulisMATRIKS(MK);
 		System.out.println();
-		System.out.println("Matrisk Hasil");
+		System.out.println("Matriks Hasil");
 		TulisMATRIKS(MH);
 		System.out.println();
 		System.out.println("Nilai koef");
@@ -1010,10 +1010,10 @@ public class ADTMat{
 		/* F.S. Menyelesaikan SPL dengan metode invers */
 		int i ;
 		MATRIKS Solusi = new MATRIKS();
-		System.out.println("Matrisk Koef");
+		System.out.println("Matriks Koef");
 		TulisMATRIKS(MK);
 		System.out.println();
-		System.out.println("Matrisk Hasil");
+		System.out.println("Matriks Hasil");
 		TulisMATRIKS(MH);
 		MakeMATRIKS(MK.NBrsEff, MH.NKolEff, Solusi);
 		System.out.println();
