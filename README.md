@@ -53,6 +53,7 @@ java app
 > :exclamation: File yang digunakan sebagai input matriks wajib berada di dalam folder test <br/>
 > :exclamation: Dalam mengetikkan nama file, wajib sertakan extension file
 4. Tergantung situasi dan kondisi maka matriks anda bisa saja diselesaikan ataupun ditolak karena penggunaan metode yang tidak cocok, input matriks yang tidak valid, dan beberapa alasan lainnnya
+> :exclamation: Dalam menulis input/output ke layar kami membulatkan ke 2 angka dibelakang koma supaya tidak terlalu banyak angka, namun terkadang ada interpretasi angka yang ambigu (0.0004 menjadi 0.00) harap dimaklumi !
 5. Apabila matriks anda berhasil diselesaikan, maka output yang bersesuaian akan muncul di layar , dan anda dapat memilih untuk save matriks di file atau tidak
 > :exclamation: File yang digunakan sebagai ouput matriks akan berada di dalam folder output <br/>
 > :exclamation: Apabila terdapat error dalam file handling (input onput) maka anda akan dilempar ke menu utama lagi 
