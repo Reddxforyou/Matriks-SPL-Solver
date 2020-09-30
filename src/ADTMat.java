@@ -41,7 +41,7 @@ public class ADTMat{
 		Scanner input = new Scanner(System.in);
 		System.out.print("Masukkan ordo matriks nxn : ");
 		n = input.nextInt();
-
+		System.out.println("Tulis Elemen Matriks ");
 		for(i = 0; i < n; i++){
 			for (j = 0; j < n; j++){
 				M.Mem[i][j]= input.nextDouble();
@@ -64,7 +64,7 @@ public class ADTMat{
 		System.out.print("Masukkan ordo matriks mxn : ");
 		m = input.nextInt();
 		n = input.nextInt();
-
+		System.out.println("Tulis Elemen Matriks ");
 		for(i = 0; i < m; i++){
 			for (j = 0; j < n; j++){
 				M.Mem[i][j]= input.nextDouble();
