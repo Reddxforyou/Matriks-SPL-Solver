@@ -50,11 +50,11 @@ java app
     - Keyboard
     - File
     - Matriks Hilbert ( Khusus SPL)
-> :exclamation: File yang digunakan sebagai input matriks wajib berada di dalam folder test
+> :exclamation: File yang digunakan sebagai input matriks wajib berada di dalam folder test <br/>
 > :exclamation: Dalam mengetikkan nama file, wajib sertakan extension file
 4. Tergantung situasi dan kondisi maka matriks anda bisa saja diselesaikan ataupun ditolak karena penggunaan metode yang tidak cocok, input matriks yang tidak valid, dan beberapa alasan lainnnya
 5. Apabila matriks anda berhasil diselesaikan, maka output yang bersesuaian akan muncul di layar , dan anda dapat memilih untuk save matriks di file atau tidak
-> :exclamation: File yang digunakan sebagai ouput matriks akan berada di dalam folder output
+> :exclamation: File yang digunakan sebagai ouput matriks akan berada di dalam folder output <br/>
 > :exclamation: Apabila terdapat error dalam file handling (input onput) maka anda akan dilempar ke menu utama lagi 
 6. Anda bisa mengulangi proses diatas sesuai kebutuhan
 7. Jika dirasa sudah cukup, pilih menu keluar untuk keluar dari program
