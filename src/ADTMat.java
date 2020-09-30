@@ -1442,7 +1442,7 @@ public class ADTMat{
 			for (j = 0; j < k; j++){
 				if (i != n){
 					System.out.print("Masukkan value variabel x");
-					System.out.print(i);
+					System.out.print(i+1);
 					System.out.print(" ke-");
 					System.out.print(j+1);
 					System.out.print(": ");
@@ -1641,7 +1641,7 @@ public class ADTMat{
 		String baris1, barismatriks;
 		try {
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "./test/";
+			String reipath = "../test/";
 			File file = new File(reipath+sc.next());
 			System.out.println(file.getAbsolutePath());
 			Scanner CountNB = new Scanner(file);
@@ -1702,7 +1702,7 @@ public class ADTMat{
 		try
 		{
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "./output/";
+			String reipath = "../output/";
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NBrsEff; i++){
 				for(int j = 0; j < M.NKolEff; j++){
@@ -1731,7 +1731,7 @@ public class ADTMat{
 		try
 		{
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "./output/";
+			String reipath = "../output/";
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NBrsEff; i++){
 				for(int j = 0; j < M.NKolEff; j++){
@@ -1763,7 +1763,7 @@ public class ADTMat{
 		try
 		{
 			System.out.print("Tulis nama file beserta extension : ");
-			String reipath = "./output/";
+			String reipath = "../output/";
 			writer = new PrintWriter(reipath + sc.next());
 			for (int i = 0; i < M.NDesc; i++){
 					writer.print(M.desc[i]);
