@@ -1439,7 +1439,7 @@ public class ADTMat{
 			for (j = 0; j < k; j++){
 				if (i != n){
 					System.out.print("Masukkan value variabel x");
-					System.out.print(i);
+					System.out.print(i+1);
 					System.out.print(" ke-");
 					System.out.print(j+1);
 					System.out.print(": ");
