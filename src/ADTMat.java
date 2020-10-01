@@ -1262,8 +1262,8 @@ public class ADTMat{
 
 	public void MenuInterpolasi(){
 		// Ryo Richardo, Checked
-		// I.S. titik sampel tidak ada yang diinput 2 kali, dan tidak boleh ada 2 titik dengan x sama namun y berbeda (bukan fungsi)
-		// F.S. memberikan persamaan interpolasi dan nilai y dari x yang diinput
+		// I.S. sembarang
+		// F.S. memberikan persamaan interpolasi dan nilai y dari x yang diinput 
 		double x, y = 0;
 		int i, op;
 		MATRIKS M = new MATRIKS(); 
@@ -1493,7 +1493,7 @@ public class ADTMat{
 
 	public void MenuRegresi(){
 		// Ryo Richardo, Checked
-		// I.S. nilai sampel gabole ada yg sama persis.
+		// I.S. sembarang
 		// F.S. memberikan persamaan regresi dan nilai y dari x0, x1,...xn yang diinput.
 		double y = 0;
 		double[] x = new double[100];
