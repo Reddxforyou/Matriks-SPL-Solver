@@ -464,7 +464,10 @@ public class ADTMat{
 		}
 
 		if (!IsBujurSangkar(M)){
-			System.out.println("Tidak punya determinan karena bukan matriks persegi");	
+			System.out.println("Tidak punya determinan karena bukan matriks persegi");
+			System.out.println("Kembali ke Menu Utama");
+			System.out.println("");
+			MainMenu();	
 		} else {
 			System.out.println("Silahkan pilih metode pencarian determinan [1= Ekspansi Kofaktor, 2= Segitiga Atas, 3=Segitiga Bawah]");
 			System.out.print("Masukkan pilihan : ");

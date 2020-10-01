@@ -1,0 +1,4 @@
+-280.00 70.00 230.00 
+0.00 0.00 0.00 
+-56.00 14.00 46.00 
+Matriks Kofaktor, Determinannya adalah 0.0
