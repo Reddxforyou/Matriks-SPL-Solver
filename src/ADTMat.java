@@ -1115,7 +1115,7 @@ public class ADTMat{
 					if (solusi[j] == "Unik" && M.Mem[i][j]==1){
 						now = j ;
 						if (M.Mem[i][M.NKolEff-1]==0){
-							solusi[j] ="X"+String.valueOf(j+1)+" :" ;
+							solusi[j] ="X"+String.valueOf(j+1)+" :" +" 0" ;
 						} else {
 							solusi[j] ="X"+String.valueOf(j+1)+" : " + String.format("%.2f",M.Mem[i][M.NKolEff-1]);
 						}
@@ -1190,7 +1190,7 @@ public class ADTMat{
 					if (solusi[j] == "Unik" && M.Mem[i][j]==1){
 						now = j ;
 						if (M.Mem[i][M.NKolEff-1]==0){
-							solusi[j] ="X"+String.valueOf(j+1)+" :" ;
+							solusi[j] ="X"+String.valueOf(j+1)+" :"+" 0"  ;
 						} else {
 							solusi[j] ="X"+String.valueOf(j+1)+" : " + String.format("%.2f",M.Mem[i][M.NKolEff-1]);
 						}
