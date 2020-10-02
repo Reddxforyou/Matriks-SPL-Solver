@@ -1,8 +1,0 @@
-1.00 0.00 0.00 0.00 -0.00 
-0.00 1.00 0.00 0.00 -0.00 
-0.00 0.00 1.00 0.00 0.00 
-0.00 0.00 0.00 1.00 0.04 
-Matriks Gauss-Jordan.
-Persamaan regresi yang terbentuk adalah:
-y = -0.00 + -0.00x1 + 0.00x2 + 0.04x3
-Maka input x1 = 3.0, x2 = 4.0, x3 = 5.0, akan menghasilkan nilai 0.17
