@@ -39,10 +39,10 @@ Menu dalam program :
     - Apabila akan di run menggunakan IDE atau aplikasi lainnya maka caranya mengikuti aplikasi tersebut
 ```
 (1)
-java app
+java App
 (2)
-javac app.java AdtMat,java
-java app
+javac App.java AdtMat.java
+java App
 ```
 2.  Masukkan menu dan submenu penyelesaian matriks yang diinginkan dengan mengetik angka 1-9
 > :exclamation: Input menu yang diijinkan adalah integer sehingga apabila anda menginput string saat pilihan menu maka program akan error dan auto exit
@@ -57,6 +57,7 @@ java app
 5. Apabila matriks anda berhasil diselesaikan, maka output yang bersesuaian akan muncul di layar , dan anda dapat memilih untuk save matriks di file atau tidak
 > :exclamation: File yang digunakan sebagai ouput matriks akan berada di dalam folder output <br/>
 > :exclamation: Apabila terdapat error dalam file handling (input onput) maka anda akan dilempar ke menu utama lagi 
+> :exclamation: TC6 disarankan pake GAUSS/GAUSSJORDAN
 6. Anda bisa mengulangi proses diatas sesuai kebutuhan
 7. Jika dirasa sudah cukup, pilih menu keluar untuk keluar dari program
 
