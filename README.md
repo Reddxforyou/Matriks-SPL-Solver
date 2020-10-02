@@ -29,7 +29,8 @@ Menu dalam program :
 4.  Interpolasi Polinom
     - Sama seperti SPL
 5.  Regresi Linear Berganda
-    - Sama seperti SPL
+    - Eliminasi Gauss
+    - Eliminasi Gauss Jordan
 6.  Keluar
 
 ## Cara Run Program
@@ -46,10 +47,10 @@ java App
 ```
 2.  Masukkan menu dan submenu penyelesaian matriks yang diinginkan dengan mengetik angka 1-9
 > :exclamation: Input menu yang diijinkan adalah integer sehingga apabila anda menginput string saat pilihan menu maka program akan error dan auto exit
-3.  Masukkan cara pembacaan matriks , ada 3cara untuk membaca matriks
+3.  Masukkan cara pembacaan matriks , ada 3 cara untuk membaca matriks
     - Keyboard
     - File
-    - Matriks Hilbert ( Khusus SPL)
+    - Matriks Hilbert (Khusus SPL)
 > :exclamation: File yang digunakan sebagai input matriks wajib berada di dalam folder test <br/>
 > :exclamation: Dalam mengetikkan nama file, wajib sertakan extension file
 4. Tergantung situasi dan kondisi maka matriks anda bisa saja diselesaikan ataupun ditolak karena penggunaan metode yang tidak cocok, input matriks yang tidak valid, dan beberapa alasan lainnnya
