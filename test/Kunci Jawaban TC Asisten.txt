@@ -1,6 +1,3 @@
-Sabtu Malem gw cari sambil ngelengkapin tc nya
-- Reihan
-
 TC1_a : Tidak ada solusi
 TC1_b : 
 x1 = 3 + x5
