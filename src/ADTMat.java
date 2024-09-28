@@ -145,19 +145,22 @@ public class ADTMat{
 		return (M.NBrsEff == M.NKolEff);
 	}
 
-	public MATRIKS KaliMATRIKS (MATRIKS M1, MATRIKS M2){
+	public MATRIKS KaliMATRIKS(MATRIKS M1, MATRIKS M2) {
 		// Reihan Andhika Putra ,Checked
 		/* Prekondisi : Ukuran kolom efektif M1 = ukuran baris efektif M2 */
 		/* Mengirim hasil perkalian matriks: salinan M1 * M2 */
-		int i,j,k;
+		int i, j, k;
 		double el;
 		MATRIKS M3 = new MATRIKS();
-		MakeMATRIKS(M1.NBrsEff,M2.NKolEff,M3);
-		for(i = 0; i <= M3.NBrsEff-1; i++){
-			for (j = 0; j <= M3.NKolEff-1; j++){
+	
+		// Membuat matriks M3 dengan jumlah baris M1 dan jumlah kolom M2
+		MakeMATRIKS(M1.NBrsEff, M2.NKolEff, M3);
+	
+		for (i = 0; i < M1.NBrsEff; i++) {
+			for (j = 0; j < M2.NKolEff; j++) {
 				el = 0;
-				for (k = 0 ; k <= M1.NKolEff; k++){
-					el = el + M1.Mem[i][k]*M2.Mem[k][j];
+				for (k = 0; k < M1.NKolEff; k++) {
+					el += M1.Mem[i][k] * M2.Mem[k][j];
 				}
 				M3.Mem[i][j] = el;
 			}
@@ -165,6 +168,79 @@ public class ADTMat{
 		return M3;
 	}
 
+	public MATRIKS inputMatriks() {
+		MATRIKS M = new MATRIKS();
+		System.out.print("Masukkan jumlah baris: ");
+		M.NBrsEff = sc.nextInt(); // Input jumlah baris
+		System.out.print("Masukkan jumlah kolom: ");
+		M.NKolEff = sc.nextInt(); // Input jumlah kolom
+	
+		// Membuat array untuk menyimpan elemen matriks
+		M.Mem = new double[M.NBrsEff][M.NKolEff];
+	
+		// Mengisi elemen matriks
+		for (int i = 0; i < M.NBrsEff; i++) {
+			for (int j = 0; j < M.NKolEff; j++) {
+				System.out.printf("Masukkan elemen M[%d][%d]: ", i + 1, j + 1);
+				M.Mem[i][j] = sc.nextDouble(); // Input elemen matriks
+			}
+		}
+		return M; // Mengembalikan objek matriks yang sudah diisi
+	}
+	
+
+	// Metode untuk menangani perkalian matriks
+	public void MenuPerkalianMatriks() {
+		int choice;
+		System.out.println("Menu Perkalian Matriks");
+		System.out.println("1. Perkalian Skalar");
+		System.out.println("2. Perkalian 2 Matriks");
+		System.out.print("Masukkan pilihan: ");
+		choice = sc.nextInt();
+	
+		if (choice == 1) {
+			// Fungsi untuk perkalian skalar
+			System.out.print("Masukkan matriks (M) \n");
+			MATRIKS M = inputMatriks(); // Memanggil metode input matriks
+			System.out.print("Masukkan skalar (K): ");
+			double K = sc.nextDouble();
+			PKaliKons(M, K);
+			System.out.println("Hasil perkalian: ");
+			TulisMATRIKS(M);
+			System.out.println("\nTekan enter untuk kembali ke menu utama");
+			sc.nextLine();
+			sc.nextLine();
+			MainMenu();
+		} else if (choice == 2) {
+			// Fungsi untuk perkalian dua matriks
+			System.out.println("Masukkan matriks pertama (M1): ");
+			MATRIKS M1 = inputMatriks(); // Memanggil metode input matriks
+			TulisMATRIKS(M1);
+			System.out.println("\nMasukkan matriks kedua (M2): ");
+			MATRIKS M2 = inputMatriks(); // Memanggil metode input matriks
+			TulisMATRIKS(M2);
+			
+			try {
+				MATRIKS result = KaliMATRIKS(M1, M2);
+				System.out.println("\nHasil perkalian: ");
+				TulisMATRIKS(result);
+			} catch (IllegalArgumentException e) {
+				System.out.println(e.getMessage());
+			}
+	
+			System.out.println("\nTekan enter untuk kembali ke menu utama");
+			sc.nextLine();
+			sc.nextLine();
+			MainMenu();
+		} else {
+			System.out.println("Pilihan tidak valid.");
+			System.out.println("\nTekan enter untuk kembali ke menu utama");
+			sc.nextLine();
+			sc.nextLine();
+			MainMenu();
+		}
+	}
+	
 	public void Transpose(MATRIKS M){
 		// Reihan Andhika Putra
 		/* I.S. M terdefinisi dan IsBujursangkar(M) */
@@ -1781,7 +1857,7 @@ public class ADTMat{
 		MainMenu();
 	}
 
-	public void MainMenu(){
+	public void MainMenu() {
 		int op;
 		System.out.println("Main Menu");
 		System.out.println("Baca Instruksi dan beberapa hal penting di README Github");
@@ -1801,39 +1877,34 @@ public class ADTMat{
 		System.out.println("3. Sistem Persamaan Linear");
 		System.out.println("4. Interpolasi Polinom");
 		System.out.println("5. Regresi Linear Berganda");
-		System.out.println("6. Keluar");
+		System.out.println("6. Perkalian Matriks"); // Menambahkan menu perkalian matriks
+		System.out.println("7. Keluar");
 		System.out.print("Masukkan pilihan menu yang diinginkan : ");
 		op = sc.nextInt();
-		while (op != 1 && op != 2 && op != 3 && op != 4 && op != 5 && op !=6){
+		while (op < 1 || op > 7) { // Memperbaiki validasi input
 			System.out.println("");
 			System.out.println("Anda Memasukkan Menu yang salah, silahkan ulangi");
-			System.out.println("Masukkan pilihan menu yang diinginkan : ");
-			System.out.println("MENU PROGRAM");
-			System.out.println("1. Determinan");
-			System.out.println("2. Invers");
-			System.out.println("3. Sistem Persamaan Linear");
-			System.out.println("4. Interpolasi Polinom");
-			System.out.println("5. Regresi Linear Berganda");
-			System.out.println("6. Keluar");
 			System.out.print("Masukkan pilihan menu yang diinginkan : ");
 			op = sc.nextInt();
 		}
 		System.out.println("");
-		if (op ==1) {
+		if (op == 1) {
 			MenuDeterminan();
-		} else if(op == 2){
+		} else if (op == 2) {
 			MenuInvers();
-		} else if(op == 3){
+		} else if (op == 3) {
 			MenuSPL();
-		} else if(op == 4){
+		} else if (op == 4) {
 			MenuInterpolasi();
-		} else if(op == 5 ){
+		} else if (op == 5) {
 			MenuRegresi();
-		} else if(op ==6){
+		} else if (op == 6) {
+			MenuPerkalianMatriks(); 
+		} else if (op == 7) {
 			Exit();
-		} 
+		}
 	}
-
+	
 	public void Exit(){
 		// Exit  
      System.exit(0);
