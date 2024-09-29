@@ -28,7 +28,12 @@ public class ADTMat{
 	   M.NKolEff=NK;
 	 }
 	
-	
+	 public void clearScreen() {
+		// Ais laksana
+		// membersihkan layar
+		System.out.print("\033[H\033[2J");
+	}
+
 	
 	 /* ********** KELOMPOK BACA/TULIS ********** */
 	public void BacaMATRIKS(MATRIKS M){
@@ -144,6 +149,81 @@ public class ADTMat{
 		/* Mengirimkan true jika M adalah matriks dg ukuran baris dan kolom sama */
 		return (M.NBrsEff == M.NKolEff);
 	}
+
+	public MATRIKS JumlahMATRIKS(MATRIKS M1, MATRIKS M2) {
+		// Ais Laksana
+		// mengirimkan hasil penjumlahan 2 matriks
+		int i, j;
+		if (M1.NBrsEff == M2.NBrsEff && M1.NKolEff == M2.NKolEff) {
+			for (i = 0; i < M1.NBrsEff; i++) {
+				for (j = 0; j < M1.NKolEff; j++) {
+					M1.Mem[i][j] = M1.Mem[i][j] + M2.Mem[i][j];
+				}
+				TulisMATRIKS(M1);
+			}
+		}
+		return M1;
+	}
+
+	public MATRIKS selisihMATRIKS(MATRIKS M1, MATRIKS M2) {
+		// Ais Laksana
+		// mengirimkan hasil selisih 2 matriks
+		if (M1.NBrsEff == M2.NBrsEff && M1.NKolEff == M2.NKolEff) {
+			for (int i = 0; i < M1.NBrsEff; i++) {
+				for (int j = 0; j < M1.NKolEff; j++) {
+					M1.Mem[i][j] = M1.Mem[i][j] - M2.Mem[i][j];
+				}
+			}
+		}
+		return M1;
+	}
+
+	public void menuOperasiBasic() {
+		int input;
+		MATRIKS M1 = new MATRIKS();
+		BacaMATRIKS(M1);
+		do {
+			clearScreen();
+			TulisMATRIKS(M1);
+			MATRIKS M2 = new MATRIKS();
+			do {
+				clearScreen();
+				TulisMATRIKS(M1);
+				System.out.println("\nPilih operasi matriks yang ingin dilakukan : ");
+				System.out.println("1. Penjumlahan Matriks");
+				System.out.println("2. Selisih Matriks");
+				System.out.println("3. Exit ");
+				input = sc.nextInt();
+			} while (input != 1 && input != 2  && input != 3);
+			if (input == 1) {
+				System.out.println("Masukkan matriks untuk dijumlahkan : ");
+				do {
+					BacaMATRIKS(M2);
+					if (M2.NBrsEff != M1.NBrsEff || M2.NKolEff != M1.NKolEff) {
+						System.out.println("\nUkuran matriks tidak sama, silahkan masukkan kembali\n");
+					}
+				} while (M2.NBrsEff != M1.NBrsEff || M2.NKolEff != M1.NKolEff);
+				M1 = JumlahMATRIKS(M1, M2);
+				clearScreen();
+				System.out.println("Hasil penjumlahan matriks adalah : ");
+			} else if (input == 2) {
+				System.out.println("Masukkan matriks untuk dikurangi : ");
+				do {
+					BacaMATRIKS(M2);
+					if (M2.NBrsEff != M1.NBrsEff || M2.NKolEff != M1.NKolEff) {
+						System.out.println("\nUkuran matriks tidak sama, silahkan masukkan kembali\n");
+					}
+				} while (M2.NBrsEff != M1.NBrsEff || M2.NKolEff != M1.NKolEff);
+				M1 = selisihMATRIKS(M1, M2);
+				clearScreen();
+				System.out.println("Hasil selisih matriks adalah : ");
+			} else if (input == 3) {
+				clearScreen();
+				MainMenu();
+			}
+		} while (input != 3);
+	}
+
 
 	public MATRIKS KaliMATRIKS(MATRIKS M1, MATRIKS M2) {
 		// Reihan Andhika Putra ,Checked
@@ -1878,7 +1958,8 @@ public class ADTMat{
 		System.out.println("4. Interpolasi Polinom");
 		System.out.println("5. Regresi Linear Berganda");
 		System.out.println("6. Perkalian Matriks"); // Menambahkan menu perkalian matriks
-		System.out.println("7. Keluar");
+		System.out.println("7. Operasi Basic Matriks"); // Menambahkan menu Basic matriks
+		System.out.println("0. Keluar");
 		System.out.print("Masukkan pilihan menu yang diinginkan : ");
 		op = sc.nextInt();
 		while (op < 1 || op > 7) { // Memperbaiki validasi input
@@ -1900,7 +1981,11 @@ public class ADTMat{
 			MenuRegresi();
 		} else if (op == 6) {
 			MenuPerkalianMatriks(); 
-		} else if (op == 7) {
+		}else if(op == 7){
+			clearScreen();
+			menuOperasiBasic();
+		}
+		 else if (op == 0) {
 			Exit();
 		}
 	}
