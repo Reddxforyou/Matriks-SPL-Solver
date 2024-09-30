@@ -1962,7 +1962,7 @@ public class ADTMat{
 		System.out.println("0. Keluar");
 		System.out.print("Masukkan pilihan menu yang diinginkan : ");
 		op = sc.nextInt();
-		while (op < 1 || op > 7) { // Memperbaiki validasi input
+		while (op < 0 || op > 7) { // Memperbaiki validasi input
 			System.out.println("");
 			System.out.println("Anda Memasukkan Menu yang salah, silahkan ulangi");
 			System.out.print("Masukkan pilihan menu yang diinginkan : ");
