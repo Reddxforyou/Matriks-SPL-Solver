@@ -1946,10 +1946,11 @@ public class ADTMat{
 		System.out.println("Tubes 1");
 		System.out.println("Sistem Persamaan Linear, Determinan, dan Aplikasinya");
 		System.out.println("");
-		System.out.println("Created by : ");
-		System.out.println("13519043 - Reihan Andhika Putra");
-		System.out.println("13519057 - Kadek Dwi Bagus Ananta Udayana");
-		System.out.println("13519193 - Ryo Richardo");
+		System.out.println("Modefied by Team D.E.U.S ");
+		System.out.println("231524035 - Ais Laksana");
+		System.out.println("231524050 - Mohammad Amadeus Andika Fadhil");
+		System.out.println("231524051 - Muhammad Adhyaksa Fadillah");
+		System.out.println("231524064 - Yahya Alfon Sinaga");
 		System.out.println("");
 		System.out.println("MENU PROGRAM");
 		System.out.println("1. Determinan");
@@ -1962,7 +1963,7 @@ public class ADTMat{
 		System.out.println("0. Keluar");
 		System.out.print("Masukkan pilihan menu yang diinginkan : ");
 		op = sc.nextInt();
-		while (op < 1 || op > 7) { // Memperbaiki validasi input
+		while (op < 0 || op > 7) { // Memperbaiki validasi input
 			System.out.println("");
 			System.out.println("Anda Memasukkan Menu yang salah, silahkan ulangi");
 			System.out.print("Masukkan pilihan menu yang diinginkan : ");
@@ -1970,16 +1971,22 @@ public class ADTMat{
 		}
 		System.out.println("");
 		if (op == 1) {
+			clearScreen();
 			MenuDeterminan();
 		} else if (op == 2) {
+			clearScreen();
 			MenuInvers();
 		} else if (op == 3) {
+			clearScreen();
 			MenuSPL();
 		} else if (op == 4) {
+			clearScreen();
 			MenuInterpolasi();
 		} else if (op == 5) {
+			clearScreen();
 			MenuRegresi();
 		} else if (op == 6) {
+			clearScreen();
 			MenuPerkalianMatriks(); 
 		}else if(op == 7){
 			clearScreen();
