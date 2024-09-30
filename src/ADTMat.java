@@ -1,7 +1,11 @@
 import java.util.Scanner;
-import java.lang.Math; 
+import java.lang.Math;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 public class ADTMat{
@@ -1951,6 +1955,13 @@ public class ADTMat{
 		System.out.println("13519057 - Kadek Dwi Bagus Ananta Udayana");
 		System.out.println("13519193 - Ryo Richardo");
 		System.out.println("");
+		System.out.println("Modified by : ");
+		System.out.println("Team D.E.U.S ");
+		System.out.println("231524035 - Ais Laksana");
+		System.out.println("231524050 - Mohammad Amadeus Andika Fadhil");
+		System.out.println("231524051 - Muhammad Adhyaksa Fadillah");
+		System.out.println("231524064 - Yahya Alfon Sinaga");
+		System.out.println("");
 		System.out.println("MENU PROGRAM");
 		System.out.println("1. Determinan");
 		System.out.println("2. Invers");
@@ -1962,7 +1973,7 @@ public class ADTMat{
 		System.out.println("0. Keluar");
 		System.out.print("Masukkan pilihan menu yang diinginkan : ");
 		op = sc.nextInt();
-		while (op < 1 || op > 7) { // Memperbaiki validasi input
+		while (op < 0 || op > 7) { // Memperbaiki validasi input
 			System.out.println("");
 			System.out.println("Anda Memasukkan Menu yang salah, silahkan ulangi");
 			System.out.print("Masukkan pilihan menu yang diinginkan : ");
@@ -1970,16 +1981,22 @@ public class ADTMat{
 		}
 		System.out.println("");
 		if (op == 1) {
+			clearScreen();
 			MenuDeterminan();
 		} else if (op == 2) {
+			clearScreen();
 			MenuInvers();
 		} else if (op == 3) {
+			clearScreen();
 			MenuSPL();
 		} else if (op == 4) {
+			clearScreen();
 			MenuInterpolasi();
 		} else if (op == 5) {
+			clearScreen();
 			MenuRegresi();
 		} else if (op == 6) {
+			clearScreen();
 			MenuPerkalianMatriks(); 
 		}else if(op == 7){
 			clearScreen();
