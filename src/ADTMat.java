@@ -304,12 +304,16 @@ public class ADTMat{
 			MATRIKS M2 = inputMatriks(); // Memanggil metode input matriks
 			TulisMATRIKS(M2);
 			
-			try {
+			if (M1.NKolEff != M2.NBrsEff) {
+				System.out.println("\n\nTidak bisa melakukan perkalian matriks karena jumlah kolom M1 tidak sama dengan jumlah baris M2.");
+				System.out.println("\nTekan enter untuk kembali ke menu utama");
+				sc.nextLine();
+				sc.nextLine();
+				MainMenu();
+			} else {
 				MATRIKS result = KaliMATRIKS(M1, M2);
 				System.out.println("\nHasil perkalian: ");
 				TulisMATRIKS(result);
-			} catch (IllegalArgumentException e) {
-				System.out.println(e.getMessage());
 			}
 	
 			System.out.println("\nTekan enter untuk kembali ke menu utama");
