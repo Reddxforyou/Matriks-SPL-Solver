@@ -1,11 +1,7 @@
 import java.util.Scanner;
 import java.lang.Math;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 public class ADTMat{
@@ -1947,74 +1943,96 @@ public class ADTMat{
 
 	public void MainMenu() {
 		int op;
-		System.out.println("Main Menu");
-		System.out.println("Baca Instruksi dan beberapa hal penting di README Github");
+		System.out.println("\033[1;92m"); // Menambahkan warna hijau cerah
+		System.out.println("============================================");
+		System.out.println("          ~ Aljabar Linear ~");
+		System.out.println("============================================");
+		System.out.println("                ~ Team D.E.U.S ~");
 		System.out.println("");
-		System.out.println("Aljabar Linear dan Geometri ~ ALGEO");
-		System.out.println("Tubes 1");
-		System.out.println("Sistem Persamaan Linear, Determinan, dan Aplikasinya");
-		System.out.println("");
-		System.out.println("Modefied by Team D.E.U.S ");
-		System.out.println("231524035 - Ais Laksana");
-		System.out.println("231524050 - Mohammad Amadeus Andika Fadhil");
-		System.out.println("231524051 - Muhammad Adhyaksa Fadillah");
-		System.out.println("231524064 - Yahya Alfon Sinaga");
-		System.out.println("");
-		System.out.println("Modified by : ");
-		System.out.println("Team D.E.U.S ");
-		System.out.println("231524035 - Ais Laksana");
-		System.out.println("231524050 - Mohammad Amadeus Andika Fadhil");
-		System.out.println("231524051 - Muhammad Adhyaksa Fadillah");
-		System.out.println("231524064 - Yahya Alfon Sinaga");
-		System.out.println("");
-		System.out.println("MENU PROGRAM");
-		System.out.println("1. Determinan");
-		System.out.println("2. Invers");
-		System.out.println("3. Sistem Persamaan Linear");
-		System.out.println("4. Interpolasi Polinom");
-		System.out.println("5. Regresi Linear Berganda");
-		System.out.println("6. Perkalian Matriks"); // Menambahkan menu perkalian matriks
-		System.out.println("7. Operasi Basic Matriks"); // Menambahkan menu Basic matriks
-		System.out.println("0. Keluar");
-		System.out.print("Masukkan pilihan menu yang diinginkan : ");
+		System.out.println("\033[1;93mSistem Persamaan Linear, Determinan,");
+		System.out.println("          dan Aplikasinya\033[1;92m");
+		System.out.println("--------------------------------------------");
+		System.out.println(" \033[1;96mModified by:");
+		System.out.println(" \033[1;94m231524035 - Ais Laksana");
+		System.out.println(" 231524050 - Mohammad Amadeus Andika Fadhil");
+		System.out.println(" 231524051 - Muhammad Adhyaksa Fadillah");
+		System.out.println(" 231524064 - Yahya Alfon Sinaga");
+		System.out.println("\033[1;92m============================================");
+		System.out.println();
+		
+		try { Thread.sleep(1000); } catch (InterruptedException e) { } // Delay untuk efek dramatis
+	
+		System.out.println("\033[1;95m MENU PROGRAM \033[1;92m");
+		System.out.println("============================================");
+		System.out.println("\033[1;93m 1. Determinan \033[0m⟶ Hitung Determinan Matriks");
+		System.out.println("\033[1;93m 2. Invers \033[0m⟶ Cari Invers Matriks");
+		System.out.println("\033[1;93m 3. Sistem Persamaan Linear \033[0m⟶ Selesaikan SPL");
+		System.out.println("\033[1;93m 4. Interpolasi Polinom \033[0m⟶ Interpolasi Polinomial");
+		System.out.println("\033[1;93m 5. Regresi Linear Berganda \033[0m⟶ Hitung Regresi Linear");
+		System.out.println("\033[1;93m 6. Perkalian Matriks \033[0m⟶ Operasi Perkalian Matriks");
+		System.out.println("\033[1;93m 7. Operasi Basic Matriks \033[0m⟶ Operasi Dasar Matriks");
+		System.out.println("\033[1;91m 0. Keluar \033[0m⟶ Tutup Program");
+		System.out.println("============================================");
+	
+		System.out.print("\033[1;92m Masukkan pilihan menu yang diinginkan: \033[0m");
 		op = sc.nextInt();
-		while (op < 0 || op > 7) { // Memperbaiki validasi input
-			System.out.println("");
-			System.out.println("Anda Memasukkan Menu yang salah, silahkan ulangi");
-			System.out.print("Masukkan pilihan menu yang diinginkan : ");
+		
+		while (op < 0 || op > 7) {
+			System.out.println();
+			System.out.println("\033[1;91m  Pilihan tidak valid! Coba lagi.\033[0m");
+			System.out.print("\033[1;92mMasukkan pilihan menu yang diinginkan: \033[0m");
 			op = sc.nextInt();
 		}
-		System.out.println("");
-		if (op == 1) {
-			clearScreen();
-			MenuDeterminan();
-		} else if (op == 2) {
-			clearScreen();
-			MenuInvers();
-		} else if (op == 3) {
-			clearScreen();
-			MenuSPL();
-		} else if (op == 4) {
-			clearScreen();
-			MenuInterpolasi();
-		} else if (op == 5) {
-			clearScreen();
-			MenuRegresi();
-		} else if (op == 6) {
-			clearScreen();
-			MenuPerkalianMatriks(); 
-		}else if(op == 7){
-			clearScreen();
-			menuOperasiBasic();
-		}
-		 else if (op == 0) {
-			Exit();
+	
+		System.out.println();
+		clearScreen(); // Membersihkan layar sebelum masuk ke menu berikutnya
+		
+		// Animasi sederhana saat berpindah menu
+		String loadingText = "D.E.U.S";
+		for (int i = 0; i < loadingText.length(); i++) {
+  			  System.out.print(loadingText.charAt(i));
+   			 try { 
+   			     Thread.sleep(100); // Tunggu selama 500 milidetik
+  					  } catch (InterruptedException e) { 
+      					  e.printStackTrace();
+   					 }
+			}
+		System.out.println();
+	
+		// Menggunakan switch-case untuk memanggil menu yang dipilih
+		switch (op) {
+			case 1:
+				MenuDeterminan();
+				break;
+			case 2:
+				MenuInvers();
+				break;
+			case 3:
+				MenuSPL();
+				break;
+			case 4:
+				MenuInterpolasi();
+				break;
+			case 5:
+				MenuRegresi();
+				break;
+			case 6:
+				MenuPerkalianMatriks();
+				break;
+			case 7:
+				menuOperasiBasic();
+				break;
+			case 0:
+				Exit();
+				break;
 		}
 	}
 	
-	public void Exit(){
-		// Exit  
-     System.exit(0);
-  }
+	public void Exit() {
+		System.out.println("\033[1;94mTerima kasih telah menggunakan program ini.\033[0m");
+		System.out.println("\033[1;92mSampai jumpa lagi! \033[0m");
+		System.exit(0);
+	}
 }
+
 
