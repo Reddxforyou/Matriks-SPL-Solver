@@ -2,15 +2,18 @@
 
 ## SPESIFIKASI TUGAS
 Buatlah program dalam Bahasa Java untuk :
-1. Menghitung solusi SPL dengan metode eliminasi Gauss, metode Eliminasi Gauss-Jordan, metode matriks balikan, dan kaidah Cramer (kaidah Cramer khusus untuk SPL dengan n peubah dan n persamaan).
-2. Menyelesaikan persoalan interpolasi dan regresi linier.
-3. Menghitung matriks balikan
-4. Menghitung determinan matriks dengan berbagai metode (reduksi baris dan ekspansi kofaktor).
+1. Menghitung Pertambahan dan Pengurangan dari dua buah matriks.
+2. Menghitung perkalian matriks (matriks skalar dan perkalian dua buah matriks).
+3. Menghitung solusi SPL dengan metode eliminasi Gauss, metode Eliminasi Gauss-Jordan, metode matriks balikan, dan kaidah Cramer (kaidah Cramer khusus untuk SPL dengan n peubah dan n persamaan).
+4. Menyelesaikan persoalan interpolasi dan regresi linier.
+5. Menghitung matriks balikan
+6. Menghitung determinan matriks dengan berbagai metode (reduksi baris dan ekspansi kofaktor).
 
 ## Nama Anggota Kelompok
-1. 13519043 - Reihan Andhika Putra
-2. 13519057 - Kadek Dwi Bagus Ananta Udayana
-3. 13519193 - Ryo Richardo
+1. 231524035 - Ais Laksana
+2. 231524050 - Mohammad Amadeus Andika Fadhil
+3. 231524051 - Muhammad Adhyaksa Fadillah
+4. 231524064 - Yahya Alfon Sinaga
 
 ## Menu
 Menu dalam program :
@@ -31,7 +34,13 @@ Menu dalam program :
 5.  Regresi Linear Berganda
     - Eliminasi Gauss
     - Eliminasi Gauss Jordan
-6.  Keluar
+6. Perkalian Matriks
+    - Perkalian Skalar
+    - Perkalian dua buah matriks
+8. Operasi Basic Matriks
+    - Pertambahan
+    - Pengurangan
+9. Keluar 
 
 ## Cara Run Program
 1.  Run Program 

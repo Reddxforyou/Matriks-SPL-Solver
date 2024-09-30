@@ -1950,10 +1950,11 @@ public class ADTMat{
 		System.out.println("Tubes 1");
 		System.out.println("Sistem Persamaan Linear, Determinan, dan Aplikasinya");
 		System.out.println("");
-		System.out.println("Created by : ");
-		System.out.println("13519043 - Reihan Andhika Putra");
-		System.out.println("13519057 - Kadek Dwi Bagus Ananta Udayana");
-		System.out.println("13519193 - Ryo Richardo");
+		System.out.println("Modefied by Team D.E.U.S ");
+		System.out.println("231524035 - Ais Laksana");
+		System.out.println("231524050 - Mohammad Amadeus Andika Fadhil");
+		System.out.println("231524051 - Muhammad Adhyaksa Fadillah");
+		System.out.println("231524064 - Yahya Alfon Sinaga");
 		System.out.println("");
 		System.out.println("Modified by : ");
 		System.out.println("Team D.E.U.S ");
