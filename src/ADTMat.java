@@ -2031,6 +2031,13 @@ public class ADTMat{
 	public void Exit() {
 		System.out.println("\033[1;94mTerima kasih telah menggunakan program ini.\033[0m");
 		System.out.println("\033[1;92mSampai jumpa lagi! \033[0m");
+		  
+    // Animasi penutupan
+    for (int i = 3; i > 0; i--) {
+        System.out.print("\033[1;91mMenutup dalam " + i + " detik...\033[0m\n");
+        try { Thread.sleep(1000); } catch (InterruptedException e) { }
+    }
+    
 		System.exit(0);
 	}
 }
