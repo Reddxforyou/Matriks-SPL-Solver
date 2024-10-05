@@ -403,17 +403,24 @@ public class ADTMat{
 	public boolean IsTidakAdaSolusi(MATRIKS M){
 		MATRIKS M2 = new MATRIKS();
 		CopyMATRIKS(M, M2);
-		GaussJordan(M2);
-		eliminasiBaris(M2);
+		GaussJordan(M2); // Lakukan Gauss-Jordan untuk eliminasi
+		eliminasiBaris(M2); // Eliminasi baris nol
+
 		int i,j;
 		boolean solusi, hasil;
 		hasil = false;
+
+		// Tampilkan matriks hasil eliminasi Gauss-Jordan sebelum pemeriksaan inkonsistensi
+		System.out.println("Matriks setelah eliminasi Gauss-Jordan:");
+		TulisMATRIKS(M2); // Cetak matriks yang telah dieliminasi
+
+		// Periksa apakah matriks tidak memiliki solusi
 		for (i=0; i< M2.NBrsEff; i++){
 			solusi = true;
 			for (j=0; j< M2.NKolEff-1; j++){
-				 if (M2.Mem[i][j] != 0){
+				if (M2.Mem[i][j] != 0){
 					solusi = false;
-				 }
+				}
 			}
 			if (solusi){
 				if (M2.Mem[i][j] != 0){
@@ -421,8 +428,10 @@ public class ADTMat{
 				}
 			}
 		}
+
 		return hasil;
 	}
+
 
 	public void BagiBaris(MATRIKS M, int i){
 		int j, j1, j2;
@@ -956,6 +965,7 @@ public class ADTMat{
 			BacaMatriksHilbert(Maug);
 		}
 		if (IsTidakAdaSolusi(Maug)){
+			System.out.println(" ");
 			System.out.println("Matriks tidak konsisten sehingga tidak memiliki solusi");
 			System.out.println("Kembali ke Menu Utama");
 			System.out.println("");
