@@ -971,6 +971,7 @@ public class ADTMat{
 			System.out.println("");
 			MainMenu();
 		}
+		System.out.println(" ");
 		System.out.println("Silahkan pilih metode penyelesaian SPL [1= Gauss, 2= Gauss Jordan, 3= Invers, 4= Metode Cramer ]");
 		System.out.print("Masukkan pilihan : ");
 		op2 = sc.nextInt();
